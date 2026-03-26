@@ -14,13 +14,13 @@ description: >
 Codify manual security work into idempotent Ansible roles. Every hardening step
 performed by hand should eventually become a role in this collection.
 
-## Roles Needed
+## Roles Needed (from manual work done 2026-03-21)
 
 ### crowdsec
 Installs CrowdSec agent + firewall bouncer, configures collections, whitelists LAN.
 ```yaml
 # defaults
-crowdsec_lapi_port: 8088          # moved from 8080 to avoid conflicts
+crowdsec_lapi_port: 8088          # moved from 8080 for OpenShell
 crowdsec_collections:
   - crowdsecurity/sshd
   - crowdsecurity/linux
@@ -45,6 +45,7 @@ auditd_watch_paths:
   - { path: /etc/sudoers, key: sudoers_changes }
   - { path: /etc/sudoers.d/, key: sudoers_changes }
   - { path: /etc/ssh/sshd_config, key: ssh_config }
+  - { path: /etc/monero/, key: monero_config }
 ```
 
 ### tailscale
@@ -75,12 +76,12 @@ sudoers_nopasswd_commands:
   - /usr/bin/journalctl
   - /usr/bin/apt
   - /usr/bin/apt-get
-  # Add commands as needed for your deployment
+  # ... full list from /etc/sudoers.d/swarm_user
 ```
 
 ## Implementation Pattern
 
-Each role follows standard Ansible conventions:
+Each role follows monero-farm conventions:
 - `defaults/main.yml` — all variables with safe defaults
 - `tasks/main.yml` — idempotent tasks
 - `handlers/main.yml` — restart/reload handlers
@@ -92,4 +93,13 @@ Each role follows standard Ansible conventions:
 - Never remove existing security controls — only add/tighten
 - Whitelist LAN subnet before enabling firewall bouncers
 - Tailscale auth is interactive — can't be fully automated
-- Test on one host first, then roll to fleet
+- Test on node_primary first, then roll to fleet
+
+## Where To Build
+
+These roles belong in `/opt/swarm-projects/project-b/ansible/roles/` alongside the existing
+5 roles (base, monero, p2pool, xmrig, monitoring). The security roles extend
+the base role's hardening.
+
+Alternatively, create a standalone `ansible-hardening` collection at
+`/opt/ansible-hardening/` if the scope grows beyond monero-farm.

@@ -5,19 +5,19 @@ description: >
   policy configuration, Tailscale integration, security hardening, skill vetting.
   Trigger on: "OpenClaw", "NemoClaw", "OpenShell", "sandbox", "openclaw tui",
   "agent assistant", "ClawHub", "gateway token", or any task involving the
-  personal AI assistant deployment.
+  personal AI assistant deployment on node_primary.
 ---
 
 # OpenClaw/NemoClaw Operations
 
-## Deployment Architecture
+## Deployment on node_primary
 
 | Component | Status | Port | Access |
 |---|---|---|---|
-| OpenClaw | latest | 18789 (loopback) | Tailscale Serve -> HTTPS |
-| NemoClaw | alpha | 8080 (OpenShell gateway) | Internal |
-| Sandbox | configurable | — | `nemoclaw <name> connect` |
-| Tailscale | Connected | YOUR_TAILSCALE_IP | `https://YOUR_HOST.YOUR_TAILNET/` |
+| OpenClaw | v2026.3.13 | 18789 (loopback) | Tailscale Serve → HTTPS |
+| NemoClaw | v0.1.0 (alpha) | 8080 (OpenShell gateway) | Internal |
+| Sandbox | `my-assistant` | — | `nemoclaw my-assistant connect` |
+| Tailscale | Connected | 100.64.0.1 | `https://node_primary.tailf8542c.ts.net/` |
 
 ## Security Posture
 
@@ -27,29 +27,31 @@ description: >
 - Gateway bind: **loopback only** (127.0.0.1:18789)
 - UFW: port 18789 **denied** from LAN, **allowed** via tailscale0
 - NemoClaw sandbox: OpenShell with Landlock + seccomp + network namespace isolation
+- CrowdSec LAPI moved to 8088 to free 8080 for OpenShell
 
 ## Interaction
 
 **Recommended: CLI/TUI via Tailscale SSH (most secure)**
 ```bash
 # From any device on your tailnet
-ssh user@YOUR_HOST    # via Tailscale
-openclaw tui          # interactive chat
+ssh swarm_user@node_primary    # via Tailscale
+openclaw tui         # interactive chat
 
 # Or inside the sandbox
 nemoclaw my-assistant connect
 openclaw tui
 ```
 
-**Web dashboard:** `https://YOUR_HOST.YOUR_TAILNET/` (tailnet only)
+**Web dashboard:** `https://node_primary.tailf8542c.ts.net/` (tailnet only)
 
 ## Inference
 
-**Primary:** Local Ollama (recommended for privacy)
-- Point to your Ollama instance (e.g., YOUR_OLLAMA_HOST:11434)
-- Available models depend on your setup
+**Primary:** Local Ollama on node_gpu (10.0.0.10:11434)
+- Available models: qwen3:8b/14b, llama3.3:70b, deepseek-r1:70b, mistral-nemo:12b, gemma2:9b
+- Requires node_gpu to be online
 
 **Fallback:** Anthropic Claude API (if configured)
+- Known Ollama bugs: cold-start timeouts (#43946), API key after reconfig (#28927)
 
 ## Key Commands
 
@@ -79,8 +81,8 @@ sudo tailscale serve --https=443 off  # disable serve
 
 ## Security Warnings
 
-1. **CVE-2026-25253** (CVSS 8.8) — patched in >= 2026.1.29. Ensure you run a patched version.
-2. **Large attack surface** from messaging integrations — keep them all disabled unless needed.
+1. **CVE-2026-25253** (CVSS 8.8) — patched in >= 2026.1.29. We run 2026.3.13.
+2. **29 pages of GitHub Security Advisories** — large attack surface from messaging integrations (all disabled).
 3. **ClawHub skills** — no mandatory vetting. Treat all as untrusted. Audit before installing.
 4. **NemoClaw is alpha** — expect instability. The sandbox is the security-critical layer.
 5. **API keys** — never paste in chat. Use env vars or config files with 600 permissions.

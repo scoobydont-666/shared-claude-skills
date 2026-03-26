@@ -161,32 +161,30 @@ Bump **down** one tier if ALL of:
 ## Multi-Call Pipeline Design
 
 ```
-[Router / Planner]   -> Tier 1 or 2 (classify intent, decompose task)
-[Subtask Workers]    -> Tier 1 (extraction, formatting, simple transforms)
-[Synthesizer]        -> Tier 2 (combine, reason across results)
-[Quality Gate]       -> Tier 1 (schema check) -> escalate to Tier 2 if fail
-[Final Response]     -> Tier matching user-facing quality bar
+[Router / Planner]   → Tier 1 or 2 (classify intent, decompose task)
+[Subtask Workers]    → Tier 1 (extraction, formatting, simple transforms)
+[Synthesizer]        → Tier 2 (combine, reason across results)
+[Quality Gate]       → Tier 1 (schema check) → escalate to Tier 2 if fail
+[Final Response]     → Tier matching user-facing quality bar
 ```
 
 **General rule:** cheap models do the volume work; expensive models do the judgment.
 
 ---
 
-## Project-Specific Routing Examples
+## Project-Specific Routing
 
-These examples show how to apply token-miser to different pipeline architectures:
-
-### Tax/Financial AI Pipeline (LangGraph)
-- Intent classification: Haiku | RAG scoring: Haiku | Domain reasoning: Sonnet/Opus
+### ProjectA (LangGraph tax pipeline)
+- Intent classification: Haiku | RAG scoring: Haiku | Tax reasoning: Sonnet/Opus
 - Response synthesis: Sonnet minimum | Security guardrails: Haiku
 
-### Guest Messaging Pipeline
+### STR Manager (guest messaging pipeline)
 - Webhook parsing: Haiku | Guest messages: Sonnet | Review responses: Sonnet
 
-### Interview/Wizard Pipeline
-- Form extraction: Haiku | State transitions: Haiku | Calculation: Sonnet
+### ProjectD (interview pipeline)
+- Form extraction: Haiku | State transitions: Haiku | Tax calculation: Sonnet
 
-### Infrastructure / DevOps
+### ProjectB / Infrastructure
 - No API calls — token-miser applies only to subagent routing during Claude Code sessions
 
 ---
@@ -201,9 +199,9 @@ SUBAGENT ROUTING (Claude Code):
   Docs/formatting:      haiku     Debugging:            sonnet
 
 API / ARTIFACT ROUTING:
-  Task complexity:   LOW  -> Haiku    MED  -> Sonnet    HIGH -> Opus
-  Context size:      <20K -> Haiku    20K-100K -> Sonnet  >100K -> Sonnet/Opus
-  User-facing:       No   -> Haiku    Yes -> +1 tier if quality-sensitive
+  Task complexity:   LOW  → Haiku    MED  → Sonnet    HIGH → Opus
+  Context size:      <20K → Haiku    20K-100K → Sonnet  >100K → Sonnet/Opus
+  User-facing:       No   → Haiku    Yes → +1 tier if quality-sensitive
   Cost ratio:        1x         ~3x              ~5x
 
 NOTE: Opus 4.6 at $5/$25 is only 5x Haiku (not 15x like legacy Opus 4.1).

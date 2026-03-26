@@ -46,15 +46,16 @@ budi doctor                   # health check
 | Files touched | PostToolUse (Read/Write/Edit/Glob) | Yes (paths only, not content) |
 | Subagent spawns | SubagentStart | Yes |
 
-## Hook Coexistence
+## Coexistence with Our Hooks
 
-budi hooks don't conflict with custom hooks (e.g., token-miser's PreToolUse[Agent]):
-- Different events and matchers
-- budi uses HTTP hooks to daemon, custom hooks use command hooks
+budi hooks don't conflict with our custom hooks:
+- Our `PreToolUse[Agent]` (token-miser) → different event + matcher
+- Our `SubagentStop` (cost-tracker) → different event
+- budi uses HTTP hooks to daemon, ours use command hooks
 
 ## Cost Model
 
-budi uses Anthropic's published pricing:
+budi uses Anthropic's published pricing. Same rates as token-miser:
 - Haiku 4.5: $1/$5 per MTok (in/out)
 - Sonnet 4.6: $3/$15 per MTok
 - Opus 4.6: $5/$25 per MTok
