@@ -1,21 +1,50 @@
 # shared-claude-skills
 
-A collection of original [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills for developer productivity, infrastructure ops, and cost optimization.
+A collection of original [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills for developer productivity, infrastructure ops, security, and cost optimization.
 
 These are **Claude Code skills** (SKILL.md files in `~/.claude/skills/`), not Cursor rules. If you want Cursor-compatible `.mdc` files, see the [claude-to-cursor](#claude-to-cursor) skill included here for conversion guidance.
 
-## Skills
+## Skills (20)
 
+### Code Quality & Review
 | Skill | Description |
 |-------|-------------|
-| [token-miser](skills/token-miser/) | Subagent model routing and API cost optimization. Routes every Claude Code subagent and API call to the cheapest model that can handle it. Includes pricing reference data, routing tables, escalation logic, and pipeline design patterns. |
-| [skill-updater](skills/skill-updater/) | Meta-skill that audits your installed skills for staleness, gaps, overlaps, and freshness. Proposes and executes updates on approval. |
-| [ansible-hardening](skills/ansible-hardening/) | Security hardening blueprints for Ansible roles — CrowdSec, fail2ban, auditd, Tailscale, Semaphore, scoped sudoers. Ready-to-implement role definitions with defaults. |
-| [claude-to-cursor](skills/claude-to-cursor/) | Converts Claude Code skills to Cursor-compatible `.mdc` rule files. Includes classification logic for which skills convert well and which are Claude Code-only. |
-| [fleet-manager](skills/fleet-manager/) | Multi-machine fleet operations via SSH, rsync, and Ansible. Health checks, cross-host syncing, inventory management. Templated for any fleet topology. |
-| [budi-analytics](skills/budi-analytics/) | Reference for [budi](https://github.com/jwalsh/budi) (WakaTime for Claude Code) — CLI commands, architecture, hook coexistence, cost model, troubleshooting. |
-| [openclaw-ops](skills/openclaw-ops/) | OpenClaw/NemoClaw secure deployment guide — sandbox management, Tailscale integration, inference config, security hardening, ClawHub skill vetting. |
-| [inbound-sync](skills/inbound-sync/) | Structured sync bundles for capturing decisions from claude.ai conversations and ingesting them into local projects via Claude Code. Template-based with reconcile script integration. |
+| [code-consistency](skills/code-consistency/) | Language-specific style enforcement for Python, Go, Bash, Rust, PowerShell, Terraform, Ansible. 7 reference files with idiomatic patterns. |
+| [code-quality](skills/code-quality/) | Deep analysis: performance (Big-O, hot paths), security (injection, secrets), testability (coverage gaps, DI), architecture (SOLID, coupling). 4 reference files. |
+| [differential-review](skills/differential-review/) | Security-focused PR/commit review. Blast radius calculation, test coverage checks, adversarial pattern detection. Markdown report output. |
+| [insecure-defaults](skills/insecure-defaults/) | Detect fail-open security patterns — hardcoded secrets, weak auth, permissive configs that let apps run insecurely in production. |
+
+### Development Methodology
+| Skill | Description |
+|-------|-------------|
+| [systematic-debugging](skills/systematic-debugging/) | Structured debugging before proposing fixes. Root cause analysis, hypothesis testing, evidence gathering. Prevents shotgun fixes. |
+| [property-based-testing](skills/property-based-testing/) | Property-based testing guidance across Python, JS/TS, Go, Rust, and smart contracts. When to use PBT vs example-based tests. |
+| [modern-python](skills/modern-python/) | Configure Python projects with modern tooling: uv, ruff, ty. Migration paths from pip/Poetry/mypy/black. |
+| [grill-me](skills/grill-me/) | Stress-test plans and designs through relentless questioning. Resolves every branch of the decision tree before you build. |
+
+### Infrastructure & Ops
+| Skill | Description |
+|-------|-------------|
+| [ansible-hardening](skills/ansible-hardening/) | Security hardening blueprints for Ansible roles — CrowdSec, fail2ban, auditd, Tailscale, Semaphore, scoped sudoers. |
+| [fleet-manager](skills/fleet-manager/) | Multi-machine fleet operations via SSH, rsync, and Ansible. Health checks, cross-host syncing, inventory management. |
+| [infosec-architect](skills/infosec-architect/) | CISSP/GSE-depth security architecture — threat modeling, container hardening, network segmentation, incident response, NIST/CIS frameworks. |
+| [openclaw-ops](skills/openclaw-ops/) | OpenClaw/NemoClaw secure deployment — sandbox management, Tailscale integration, inference config, security hardening. |
+
+### Cost & Session Management
+| Skill | Description |
+|-------|-------------|
+| [token-miser](skills/token-miser/) | Subagent model routing and API cost optimization. Routes Claude Code subagents to the cheapest capable model. Pricing reference data included. |
+| [session-miser](skills/session-miser/) | Intelligent model routing for Claude Code sessions. Recommends Opus/Sonnet/Haiku based on task complexity. Delegates mechanical work to cheaper subagents. |
+| [budi-analytics](skills/budi-analytics/) | Reference for [budi](https://github.com/jwalsh/budi) (WakaTime for Claude Code) — CLI commands, architecture, cost model. |
+
+### Coordination & Workflow
+| Skill | Description |
+|-------|-------------|
+| [claude-swarm](skills/claude-swarm/) | Multi-instance Claude Code coordination via NFS + git. Task queuing, worktree isolation, session summaries, context handoff. |
+| [claude-to-cursor](skills/claude-to-cursor/) | Convert Claude Code skills to Cursor-compatible `.mdc` rule files. Classification logic for what converts well. |
+| [inbound-sync](skills/inbound-sync/) | Structured sync bundles for capturing decisions from claude.ai conversations and ingesting into local projects. |
+| [skill-updater](skills/skill-updater/) | Meta-skill that audits installed skills for staleness, gaps, overlaps. Cross-references CLAUDE.md and memory files for contradictions. |
+| [project-management](skills/project-management/) | Autonomous work execution loop. Priority framework, session protocol, work queue management, fleet resource routing. |
 
 ## Installation
 
@@ -28,47 +57,36 @@ cp -r skills/<skill-name> ~/.claude/skills/
 ### All skills
 
 ```bash
-cp -r skills/* ~/.claude/skills/
+for skill in skills/*/; do
+  cp -r "$skill" ~/.claude/skills/
+done
 ```
 
-### Verify
+### Stay updated
 
 ```bash
-ls ~/.claude/skills/
+git clone https://github.com/your-github-user/shared-claude-skills.git ~/shared-claude-skills
+# Then periodically:
+cd ~/shared-claude-skills && git pull
+for skill in skills/*/; do cp -r "$skill" ~/.claude/skills/; done
 ```
 
-Skills are loaded automatically by Claude Code when their trigger phrases match your prompt. No restart required.
+## Skill Anatomy
 
-## How Skills Work
+Each skill is a directory containing:
+- `SKILL.md` — The skill definition (YAML frontmatter + markdown body)
+- `references/` — Optional reference data files loaded on demand
 
-Claude Code skills are markdown files (`SKILL.md`) placed in `~/.claude/skills/<name>/`. Each skill has:
+The YAML frontmatter includes `name`, `description`, and `triggers` (keywords that activate the skill).
 
-- **YAML frontmatter** with `name` and `description` (including trigger phrases)
-- **Markdown body** with instructions, tables, rules, and reference data
-- **Optional `references/` subdirectory** for large reference data (pricing tables, etc.)
+## Contributing
 
-Claude Code reads all installed skills at session start and activates them based on description matching against your prompts.
-
-## Customization
-
-These skills are designed to be forked and customized:
-
-- **fleet-manager**: Replace `YOUR_IP` and `YOUR_HOST` placeholders with your actual fleet inventory
-- **openclaw-ops**: Replace `YOUR_TAILSCALE_IP`, `YOUR_HOST`, and `YOUR_TAILNET` with your Tailscale details
-- **token-miser**: The routing tables work as-is; update `references/model-pricing.md` when Anthropic changes pricing
-- **inbound-sync**: Customize the save path and reconcile script path for your project structure
-
-## Acknowledgments
-
-Some skills in this collection were inspired by community work:
-
-- [Matt Pocock's claude-code-skills](https://github.com/mattpocock/claude-code-skills) — pioneered the skill-sharing pattern
-- [Trail of Bits](https://github.com/trailofbits) — security-focused AI tooling patterns that influenced the hardening and ops skills
+PRs welcome. Each skill should:
+1. Have a clear, specific trigger description
+2. Be self-contained (no external dependencies beyond standard tools)
+3. Include reference files for domain-specific data
+4. Not contain personal information, IP addresses, or project-specific paths
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
-
-## Author
-
-Created by [your-github-user](https://github.com/your-github-user).
+MIT
