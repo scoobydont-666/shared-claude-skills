@@ -53,14 +53,14 @@ Key differences from Claude SKILL.md:
 1. Strip YAML frontmatter, rewrite as Cursor frontmatter (description, globs, alwaysApply)
 2. Remove Claude-specific tool references (Agent tool, Bash tool, Read/Write/Edit, MCP)
 3. Inline small reference files (<200 lines) directly
-4. Large references -> separate `.mdc` companion files
+4. Large references → separate `.mdc` companion files
 5. Replace "Claude Code" with generic "AI assistant" where contextual
 6. Add attribution: `<!-- Converted from Claude Code skill: <name> -->`
 
 ### 3. Output structure
 
 ```
-output-repo/
+claude-to-cursor/
 ├── rules/                    # Converted .mdc files
 │   ├── tdd.mdc
 │   ├── tdd-tests-ref.mdc    # Large reference companion
@@ -77,13 +77,15 @@ output-repo/
 - token-miser (Claude Code subagent routing — no Cursor equivalent)
 - budi-analytics (Claude Code hook analytics — Cursor-specific)
 - skill-updater (meta-skill for Claude Code skill management)
-- inbound-sync (claude.ai sync workflow)
-- Infrastructure-specific skills (fleet-manager, etc.)
+- inbound-sync (claude.ai ↔ Claude Code sync workflow)
+- openclaw-ops (node_primary-specific deployment)
+- fleet-manager (SSH/Ansible fleet ops — not IDE-relevant)
+- ansible-hardening (infrastructure, not IDE-relevant)
 
 ## Rules
 
 - NEVER modify local Claude Code skills or configuration
-- All output goes to the output repo only
+- All output goes to the claude-to-cursor repo only
 - Keep attribution on all converted files
 - Test in Cursor before marking as ready
 - .mdc extension for rules, .md for agents

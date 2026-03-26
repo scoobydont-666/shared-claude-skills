@@ -33,16 +33,18 @@ For every skill directory:
    - Overlap with other skills
    - Missing coverage for known active projects
    - Description quality (will it trigger reliably?)
-   - References to claude.ai-only tools (`memory_user_edits`, `conversation_search`,
-     `recent_chats`) — these don't exist in Claude Code
+   - References to claude.ai-only tools (`Note in response`, `Grep/Read project memory`,
+     `Read session transcripts`) — these don't exist in Claude Code
 
 2. **Read reference files** — check for:
-   - Outdated data (prices, versions, API endpoints)
+   - Outdated data (prices, versions, API endpoints, tax law)
    - Missing reference files that should exist
 
 3. **Freshness checks** (web search only when needed):
    - **token-miser**: Compare `references/model-pricing.md` header date. If >90 days, web search.
-   - Any skill with dated reference data: check if >6 months old.
+   - **cpa-tax-specialist**: Check for major tax law changes if >12 months old.
+   - **crypto-monero-wizard**: Check monerod/P2Pool/XMRig versions if >6 months old.
+   - **ai-cluster-knowledge**: Compare documented hardware against current memory files.
 
 ### Phase 3 — Gap Analysis
 
@@ -51,6 +53,7 @@ For every skill directory:
 - **Skill overlap** — two skills covering the same ground
 - **Missing conventions** — patterns in code/commits not captured anywhere
 - **Stale CLAUDE.md entries** — rules referencing removed files or outdated versions
+- **Cross-config contradictions** — invoke config-auditor skill for hardware specs, repo counts, port assignments, collection prefixes, project phases. SSH to verify hardware before changing specs.
 
 ### Phase 4 — Report & Propose
 
@@ -61,7 +64,7 @@ Terse tables and bullet points:
 4. **What overlaps** — skills to consolidate
 5. **Proposed actions** — ranked by impact
 
-Ask the user which actions to take.
+Execute non-breaking fixes immediately. Only ask about ambiguous items.
 
 ### Phase 5 — Execute
 
@@ -69,6 +72,7 @@ Ask the user which actions to take.
 2. **New skills** — Create directory + SKILL.md in `~/.claude/skills/`
 3. **Reference updates** — Web search for current data, rewrite reference file
 4. **CLAUDE.md updates** — Edit the appropriate CLAUDE.md
+5. **Sync to repo** — Run `collect.sh` to update claude-config repo
 
 ## Frugality
 
