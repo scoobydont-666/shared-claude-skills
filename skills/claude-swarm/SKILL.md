@@ -97,12 +97,12 @@ python3 /opt/claude-swarm/src/swarm_cli.py worktrees --project /opt/target-proje
 ### View session summaries
 ```bash
 python3 /opt/claude-swarm/src/swarm_cli.py summaries
-python3 /opt/claude-swarm/src/swarm_cli.py summaries --project /opt/swarm-projects/project-a
+python3 /opt/claude-swarm/src/swarm_cli.py summaries --project /opt/projects/project-a
 ```
 
 ### Show what the last instance left for you
 ```bash
-python3 /opt/claude-swarm/src/swarm_cli.py context --project /opt/swarm-projects/project-a
+python3 /opt/claude-swarm/src/swarm_cli.py context --project /opt/projects/project-a
 ```
 
 ### Health check
@@ -166,7 +166,7 @@ Decomposition rules:
 from session import start_session, end_session
 
 # On session start:
-info = start_session(model="opus-4.6", project="/opt/swarm-projects/project-e")
+info = start_session(model="opus-4.6", project="/opt/projects/project-e")
 # → registers agent, starts heartbeat, pulls repos, reads event catchup
 
 # During work: events auto-emitted on commit/test/task completion

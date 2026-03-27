@@ -133,7 +133,7 @@ rules:
   filesystem:
     allow_read:
       - /home/claude/data/**
-      - /opt/swarm-projects/main/**
+      - /opt/projects/main/**
     allow_write:
       - /home/claude/workspace/**
     deny:
@@ -225,11 +225,11 @@ labels:
   - "traefik.http.routers.openclaw.rule=Host(`agent.yourdomain.com`)"
   - "traefik.http.routers.openclaw.tls=true"
   - "traefik.http.routers.openclaw.middlewares=agent-auth,rate-limit,security-headers"
-  - "traefik.http.middlewares.agent-auth.basicauth.users=swarm_user:$$apr1$$..."
+  - "traefik.http.middlewares.agent-auth.basicauth.users=admin_user:$$apr1$$..."
   - "traefik.http.middlewares.rate-limit.ratelimit.average=50"
   - "traefik.http.middlewares.rate-limit.ratelimit.burst=25"
   # IP whitelist from trusted subnet
-  - "traefik.http.middlewares.ip-whitelist.ipallowlist.sourcerange=192.168.200.0/23"
+  - "traefik.http.middlewares.ip-whitelist.ipallowlist.sourcerange=10.0.0.0/24"
 ```
 
 ---
@@ -310,13 +310,13 @@ Before installing ANY skill from ClawHub or SkillsMP:
 
 ### Building Your Own Skills
 
-For Josh's infrastructure, prefer custom-built skills over community skills. When building:
+For your infrastructure, prefer custom-built skills over community skills. When building:
 
 ```python
 # GOOD: Minimal permissions
 def my_skill(context):
     # Only access what's needed
-    result = context.read_file("/opt/swarm-projects/main/data/input.json")
+    result = context.read_file("/opt/projects/main/data/input.json")
     return process(result)
 
 # BAD: Overly broad access
@@ -394,7 +394,7 @@ network_policy:
 
 ```bash
 # Watch for unexpected outbound connections from agent processes
-ss -tnp | grep -v '127.0.0.1' | grep -v '192.168.200'
+ss -tnp | grep -v '127.0.0.1' | grep -v '10.0.0'
 
 # Use iptables logging on the DOCKER-USER chain
 iptables -I DOCKER-USER -j LOG --log-prefix "DOCKER-EGRESS: " --log-level 4
@@ -419,7 +419,7 @@ OpenClaw stores API keys, passwords, and tokens in plaintext in configuration fi
 
 2. **Separate credential store** — Use environment variables loaded from a restricted file rather than embedding in config:
    ```bash
-   # /etc/openclaw/credentials (chmod 600, owned by aisvc)
+   # /etc/openclaw/credentials (chmod 600, owned by service-user)
    ANTHROPIC_API_KEY=sk-ant-...
    OPENAI_API_KEY=sk-...
    

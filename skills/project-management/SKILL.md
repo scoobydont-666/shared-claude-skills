@@ -3,7 +3,7 @@ name: project-management
 description: >
   Autonomous work execution across all Swarm projects. Reads last session summary,
   picks highest-priority work, executes it, then loops to the next item. Only stops
-  when blocked on Josh or nothing remains. Trigger on: "what's the status", "project
+  when blocked on the operator or nothing remains. Trigger on: "what's the status", "project
   status", "what needs work", "prioritize", "what's next", "plan work", "coordinate",
   "which projects", "phase status", "roadmap", "backlog", "session start", "session end",
   "wrap up", "what should I work on", "keep going", "crank it out", or any request to
@@ -16,8 +16,8 @@ Work continuously across all Swarm projects. **Do not stop to ask permission.**
 Execute the highest-priority item, commit, move to the next. Only stop when:
 
 1. **Nothing left to do** — all actionable items complete
-2. **Blocked on Josh** — needs credentials, physical access, CPA review, or a decision
-3. **Josh says stop** — explicit instruction to halt
+2. **Blocked on operator** — needs credentials, physical access, review, or a decision
+3. **Operator says stop** — explicit instruction to halt
 
 ---
 
@@ -44,9 +44,9 @@ Only check repos/services mentioned in `context_for_next`. Skip everything else.
 Apply Priority Framework. Build an ordered list of actionable items.
 Separate into two lists:
 - **ACTIONABLE** — can do right now, no blockers
-- **BLOCKED** — needs Josh, hardware, credentials, etc.
+- **BLOCKED** — needs operator, hardware, credentials, etc.
 
-Start executing immediately. Don't pause to report the queue — Josh will see progress in commits and status lines.
+Start executing immediately. Don't pause to report the queue — the operator will see progress in commits and status lines.
 
 ---
 
@@ -60,13 +60,13 @@ WHILE actionable_items remain:
        a. Commit with meaningful message
        b. Run tests if applicable
        c. Update the project registry if phase changed
-       d. Brief status line to Josh (1 sentence)
+       d. Brief status line to operator (1 sentence)
     4. Re-evaluate: did this unblock anything? Add to queue.
     5. Continue to next item
 
 WHEN all actionable items done OR blocked:
     → Run Session End Protocol
-    → Report blocked items to Josh
+    → Report blocked items to operator
 ```
 
 ### Work Loop Rules
@@ -74,7 +74,7 @@ WHEN all actionable items done OR blocked:
 - **Run tests before moving on** from any project that has them.
 - **Pre-flight batch operations**: check target schema first, test on 1 record, verify full pipeline, then scale.
 - **Verify before editing specs**: SSH to the machine (`nvidia-smi`, `lscpu`, `free -h`) before changing hardware claims.
-- **If a task takes >30 min and you haven't updated Josh**, give a brief status line.
+- **If a task takes >30 min and you haven't updated the operator**, give a brief status line.
 - **If you hit an unexpected blocker**, log it and move to the next item. Don't spin.
 - **Use subagents for parallel work** when items are independent (e.g., tests on node_gpu
   while writing code on node_primary).
@@ -89,10 +89,10 @@ Execute when all work is done or all remaining items are blocked.
 
 ### 1. Uncommitted Work Check
 ```bash
-for dir in /opt/swarm-projects/project-e /opt/swarm-projects/project-f /opt/swarm-projects/project-g /opt/swarm-projects/project-h \
-           /opt/swarm-projects/project-i /opt/swarm-projects/project-j /opt/swarm-projects/main /opt/swarm-projects/project-b \
-           /opt/claude-swarm /opt/swarm-projects/project-a /opt/swarm-projects/project-c /opt/swarm-projects/project-d \
-           /opt/swarm-projects/project-k; do
+for dir in /opt/projects/project-e /opt/projects/project-f /opt/projects/project-g /opt/projects/project-h \
+           /opt/projects/project-i /opt/projects/project-j /opt/projects/main /opt/projects/project-b \
+           /opt/claude-swarm /opt/projects/project-a /opt/projects/project-c /opt/projects/project-d \
+           /opt/projects/project-k; do
   if [ -d "$dir/.git" ]; then
     changes=$(git -C "$dir" status --porcelain 2>/dev/null | wc -l)
     if [ "$changes" -gt 0 ]; then
@@ -135,7 +135,7 @@ git -C /opt/claude-configs/claude-config push || true
 This is NOT optional. Every session end must sync claude-config.
 
 ### 4. Final Report
-Tell Josh:
+Tell the operator:
 - What was completed
 - What's blocked and why
 - What the next session should pick up
@@ -187,7 +187,7 @@ Available on node_primary alone:
 
 Available on node_reserve2 (if node_gpu down):
 - Ollama inference via phi4:14b or qwen3:8b (RTX 5060 Ti)
-- ComfyUI workflows (http://192.168.200.87:8188)
+- ComfyUI workflows (http://10.0.0.2:8188)
 - ProjectE QA review (phi4 on node_reserve2 Ollama)
 
 NOT available without node_gpu:
@@ -206,9 +206,9 @@ NOT available without node_gpu:
 5. Continue to next work item — don't stop.
 ```
 
-### "New task from Josh mid-session"
+### "New task from operator mid-session"
 ```
-1. If Josh gives explicit work → do it immediately, it's highest priority.
+1. If operator gives explicit work → do it immediately, it's highest priority.
 2. After completing it, resume the work queue where you left off.
 ```
 
@@ -218,19 +218,19 @@ NOT available without node_gpu:
 
 | Head | Project | Location | Phase | Status | Host |
 |---|---|---|---|---|---|
-| #1 | ProjectA | /opt/swarm-projects/project-a | 3+ | Active, v1 production, v3 degenerate | node_gpu |
-| #2 | ProjectB | /opt/swarm-projects/project-b | Production | Hardened, public repo | node_primary |
-| #3 | ProjectC | /opt/swarm-projects/project-c | 1 | Scaffolded (58 tests) | node_gpu |
-| -- | ProjectD | /opt/swarm-projects/project-d | 2 | Form gen + PDF (204 tests) | node_gpu |
-| -- | AI Server | /opt/swarm-projects/infra | Production | Docker Swarm v6.0.3, node_reserve2 worker | node_gpu+node_reserve2 |
-| #4 | Audit Sentinel | /opt/swarm-projects/project-f | M7 | Security hardened (201 tests) | node_primary+node_gpu |
-| #5 | Hashrate Hedger | /opt/swarm-projects/project-i | H6 | Live dashboard (158 tests), needs node_miner | node_primary |
-| #6 | ClauseHound | /opt/swarm-projects/project-g | C7 | Security hardened (165 tests) | node_primary+node_gpu |
-| #7 | Prompt Forge | /opt/swarm-projects/project-h | P6 | Security hardened (163 tests) | node_primary |
-| #8 | DocuMint | /opt/swarm-projects/project-j | D6 | Cross-document validation (326 tests) | node_primary |
-| #9 | ProjectK | /opt/swarm-projects/project-k | 1 | Built (98 tests), needs Firewalla + JWT | node_primary |
-| #10 | Swarm Media | /opt/swarm-projects/project-l | M4 | ffmpeg assembly (155 tests) | node_primary |
-| -- | ProjectE | /opt/swarm-projects/project-e | E5 | 1,112 CPA questions, 6 sections (299 tests) | node_gpu |
+| #1 | ProjectA | /opt/projects/project-a | 3+ | Active, v1 production, v3 degenerate | node_gpu |
+| #2 | ProjectB | /opt/projects/project-b | Production | Hardened, public repo | node_primary |
+| #3 | ProjectC | /opt/projects/project-c | 1 | Scaffolded (58 tests) | node_gpu |
+| -- | ProjectD | /opt/projects/project-d | 2 | Form gen + PDF (204 tests) | node_gpu |
+| -- | AI Server | /opt/projects/infra | Production | Docker Swarm v6.0.3, node_reserve2 worker | node_gpu+node_reserve2 |
+| #4 | Audit Sentinel | /opt/projects/project-f | M7 | Security hardened (201 tests) | node_primary+node_gpu |
+| #5 | Hashrate Hedger | /opt/projects/project-i | H6 | Live dashboard (158 tests), needs node_miner | node_primary |
+| #6 | ClauseHound | /opt/projects/project-g | C7 | Security hardened (165 tests) | node_primary+node_gpu |
+| #7 | Prompt Forge | /opt/projects/project-h | P6 | Security hardened (163 tests) | node_primary |
+| #8 | DocuMint | /opt/projects/project-j | D6 | Cross-document validation (326 tests) | node_primary |
+| #9 | ProjectK | /opt/projects/project-k | 1 | Built (98 tests), needs Firewalla + JWT | node_primary |
+| #10 | Swarm Media | /opt/projects/project-l | M4 | ffmpeg assembly (155 tests) | node_primary |
+| -- | ProjectE | /opt/projects/project-e | E5 | 1,112 CPA questions, 6 sections (299 tests) | node_gpu |
 | -- | claude-swarm | /opt/claude-swarm | 5 | Operational maturity (627 tests) | node_primary |
 
 ## Fleet Resource Map
@@ -267,4 +267,4 @@ Plans live in `<project>/plans/` as markdown files.
 | Visibility | Repos |
 |---|---|
 | Public (3) | monero-farm, shared-claude-skills, claude-swarm-public |
-| Private (16) | swarm-project, claude-config, claude-swarm, claude-to-cursor, examforge, prompt-forge, hashrate-hedger, audit-sentinel, clausehound, documint, ai-project, christi-project, str-project, taxprep-project, solar-sentinel, swarm-media |
+| Private (16) | swarm-project, claude-config, claude-swarm, claude-to-cursor, examforge, prompt-forge, hashrate-hedger, audit-sentinel, clausehound, documint, ai-project, project-a, project-c, project-d, solar-sentinel, swarm-media |

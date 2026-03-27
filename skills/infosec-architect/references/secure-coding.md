@@ -52,7 +52,7 @@ class ChatRequest(BaseModel):
 import os
 from pathlib import Path
 
-ALLOWED_BASE = Path("/opt/swarm-projects/main/data")
+ALLOWED_BASE = Path("/opt/projects/main/data")
 
 def safe_file_read(user_path: str) -> str:
     """Read a file safely, preventing path traversal."""
@@ -243,7 +243,7 @@ async def secure_endpoint(user: str = Depends(verify_token)):
 
 ### Service-to-Service Auth (Internal)
 
-For internal services (ProjectA → ChromaDB, Tax Prep → Milvus), use shared secrets via Docker secrets:
+For internal services (ProjectA → ChromaDB, ProjectD → Milvus), use shared secrets via Docker secrets:
 
 ```python
 from fastapi import Request, HTTPException
@@ -669,7 +669,7 @@ import (
     "strings"
 )
 
-const allowedBase = "/opt/swarm-projects/main/data"
+const allowedBase = "/opt/projects/main/data"
 
 func safeReadFile(userPath string) ([]byte, error) {
     // Clean and resolve the path

@@ -178,7 +178,7 @@ Bump **down** one tier if ALL of:
 - Intent classification: Haiku | RAG scoring: Haiku | Tax reasoning: Sonnet/Opus
 - Response synthesis: Sonnet minimum | Security guardrails: Haiku
 
-### STR Manager (guest messaging pipeline)
+### ProjectC (guest messaging pipeline)
 - Webhook parsing: Haiku | Guest messages: Sonnet | Review responses: Sonnet
 
 ### ProjectD (interview pipeline)

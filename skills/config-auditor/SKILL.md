@@ -30,7 +30,7 @@ ssh -o ConnectTimeout=5 <host> "free -h | head -2"
 ```
 Cross-reference against:
 - `~/.claude/CLAUDE.md` (Cluster Infrastructure section)
-- `~/.claude/projects/*/memory/user_swarm_user.md`
+- `~/.claude/projects/*/memory/user_admin_user.md`
 - `~/.claude/skills/ai-cluster-knowledge/SKILL.md` description
 - Each host's memory file (project_node_primary_server.md, etc.)
 

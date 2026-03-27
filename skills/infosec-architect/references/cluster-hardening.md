@@ -161,7 +161,7 @@ nvidia-smi --query-gpu=driver_version --format=csv,noheader
 ```
 ┌─────────────────────────────────────────────┐
 │                 Host Network                 │
-│  192.168.200.0/23 (trusted management)       │
+│  10.0.0.0/24 (trusted management)            │
 ├─────────────────────────────────────────────┤
 │          Docker Overlay Networks             │
 │  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
@@ -187,12 +187,12 @@ ufw default deny incoming
 ufw default allow outgoing
 
 # SSH from trusted subnet only
-ufw allow from 192.168.200.0/23 to any port 22 proto tcp
+ufw allow from 10.0.0.0/24 to any port 22 proto tcp
 
 # Docker Swarm (manager-to-manager, manager-to-worker)
-ufw allow from 192.168.200.0/23 to any port 2377 proto tcp  # Swarm management
-ufw allow from 192.168.200.0/23 to any port 7946             # Node discovery (TCP+UDP)
-ufw allow from 192.168.200.0/23 to any port 4789 proto udp   # Overlay network
+ufw allow from 10.0.0.0/24 to any port 2377 proto tcp  # Swarm management
+ufw allow from 10.0.0.0/24 to any port 7946             # Node discovery (TCP+UDP)
+ufw allow from 10.0.0.0/24 to any port 4789 proto udp   # Overlay network
 
 # Traefik entrypoints (adjust to your needs)
 ufw allow 80/tcp    # HTTP (redirect to HTTPS)
@@ -212,7 +212,7 @@ ufw allow 443/tcp   # HTTPS
 # Then you must manually create DOCKER-USER chain rules
 
 # Option 2 (recommended): Use DOCKER-USER chain
-iptables -I DOCKER-USER -i eth0 ! -s 192.168.200.0/23 -j DROP
+iptables -I DOCKER-USER -i eth0 ! -s 10.0.0.0/24 -j DROP
 ```
 
 ---
@@ -240,8 +240,8 @@ LoginGraceTime 30
 ClientAliveInterval 300
 ClientAliveCountMax 2
 
-AllowUsers swarm_user
-AllowAgents swarm_user
+AllowUsers admin_user
+AllowAgents admin_user
 
 X11Forwarding no
 PermitTunnel no
