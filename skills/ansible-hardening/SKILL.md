@@ -76,7 +76,7 @@ sudoers_nopasswd_commands:
   - /usr/bin/journalctl
   - /usr/bin/apt
   - /usr/bin/apt-get
-  # ... full list from /etc/sudoers.d/swarm_user
+  # ... full list from /etc/sudoers.d/admin_user
 ```
 
 ## Implementation Pattern
@@ -97,7 +97,7 @@ Each role follows monero-farm conventions:
 
 ## Where To Build
 
-These roles belong in `/opt/swarm-projects/project-b/ansible/roles/` alongside the existing
+These roles belong in `/opt/projects/project-b/ansible/roles/` alongside the existing
 5 roles (base, monero, p2pool, xmrig, monitoring). The security roles extend
 the base role's hardening.
 

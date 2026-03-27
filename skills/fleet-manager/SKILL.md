@@ -18,7 +18,7 @@ Coordinate operations across the Swarm fleet: node_primary, node_gpu, node_miner
 |---|---|---|---|---|
 | node_primary | 10.0.0.20 | Monero fullnode + relay + monitoring | key auth | Ubuntu 24.04 |
 | node_gpu | 10.0.0.10 | GPU cluster, Docker Swarm, AI workloads | key auth | Ubuntu 24.04 |
-| node_reserve2 | 10.0.1.2 | Swarm worker, Ollama, ComfyUI | key auth | Ubuntu 24.04 |
+| node_reserve2 | 10.0.0.2 | Swarm worker, Ollama, ComfyUI | key auth | Ubuntu 24.04 |
 | node_miner | 10.0.0.30 | XMRig miner (pending Ubuntu migration) | key auth (pending) | HiveOS → Ubuntu |
 
 ## SSH Access
@@ -35,26 +35,26 @@ Coordinate operations across the Swarm fleet: node_primary, node_gpu, node_miner
 ```bash
 # node_primary → node_gpu
 rsync -avz --exclude='.env.local' --exclude='.secrets.map' \
-  /opt/claude-configs/claude-config/ swarm_user@10.0.0.10:~/claude-configs/claude-config/
-ssh swarm_user@10.0.0.10 "cd ~/claude-configs/claude-config && ./scripts/install.sh"
+  /opt/claude-configs/claude-config/ admin_user@10.0.0.10:~/claude-configs/claude-config/
+ssh admin_user@10.0.0.10 "cd ~/claude-configs/claude-config && ./scripts/install.sh"
 
 # node_gpu → node_primary (pull changes)
 rsync -avz --exclude='.env.local' --exclude='.secrets.map' \
-  swarm_user@10.0.0.10:~/claude-configs/claude-config/ /opt/claude-configs/claude-config/
+  admin_user@10.0.0.10:~/claude-configs/claude-config/ /opt/claude-configs/claude-config/
 ```
 
 ### Remote Command Execution
 ```bash
-ssh swarm_user@10.0.0.10 "command here"              # node_gpu
-ssh swarm_user@10.0.0.20 "command here"              # node_primary (from node_gpu)
-ssh swarm_user@10.0.1.2 "command here"               # node_reserve2
+ssh admin_user@10.0.0.10 "command here"              # node_gpu
+ssh admin_user@10.0.0.20 "command here"              # node_primary (from node_gpu)
+ssh admin_user@10.0.0.2 "command here"               # node_reserve2
 ```
 
 ### Fleet Health Check
 ```bash
-for host in 10.0.0.20 10.0.0.10 10.0.1.2 10.0.0.30; do
+for host in 10.0.0.20 10.0.0.10 10.0.0.2 10.0.0.30; do
     echo "=== $host ==="
-    ssh -o ConnectTimeout=3 swarm_user@$host "hostname && uptime && free -h | head -2" 2>/dev/null || echo "UNREACHABLE"
+    ssh -o ConnectTimeout=3 admin_user@$host "hostname && uptime && free -h | head -2" 2>/dev/null || echo "UNREACHABLE"
 done
 ```
 
@@ -63,7 +63,7 @@ done
 - Always use `127.0.0.1` not `localhost` on all hosts
 - node_gpu sudo requires password (not NOPASSWD like node_primary)
 - node_primary is NOT a miner — never deploy XMRig there
-- Ansible inventory for monero-farm: `/opt/swarm-projects/project-b/ansible/inventory/hosts.yml`
+- Ansible inventory for monero-farm: `/opt/projects/project-b/ansible/inventory/hosts.yml`
 - Use Tailscale for secure cross-network access (node_primary: 100.64.0.1)
 - When syncing skills/config, use claude-config repo — not raw cp
 
@@ -71,7 +71,7 @@ done
 
 | Host | sudo | Notes |
 |---|---|---|
-| node_primary | NOPASSWD (scoped to ~37 commands) | See /etc/sudoers.d/swarm_user |
+| node_primary | NOPASSWD (scoped to ~37 commands) | See /etc/sudoers.d/admin_user |
 | node_gpu | password required | Use `echo "$node_gpu_PASS" \| sudo -S` or interactive |
 | node_reserve2 | password required | Same as node_gpu |
 | node_miner | TBD | Not yet configured |

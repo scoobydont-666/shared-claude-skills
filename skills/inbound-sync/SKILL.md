@@ -48,7 +48,7 @@ Review the ENTIRE conversation from the beginning. Identify every instance of:
 For each item found, determine:
 
 1. **Project**: Which sub-project does it affect?
-   - `christi` — AI tax advisor application code
+   - `project-a` — AI tax advisor application code
    - `ai-server` — Infrastructure, Ansible, Docker, Terraform
    - `swarm` — Master umbrella, shared libraries, cross-project concerns
 
@@ -78,7 +78,7 @@ by `---`. Use today's date. Each entry MUST follow this exact format:
 YYYY-MM-DD
 
 ## Project
-[christi | ai-server | swarm]
+[project-a | ai-server | swarm]
 
 ## Type
 [decision | architecture | bugfix | roadmap | convention]
@@ -89,7 +89,7 @@ YYYY-MM-DD
 ## Details
 [Full details. Include:
 - Code snippets if functions were written or modified
-- File paths affected (e.g., christi/agents/security.py:45)
+- File paths affected (e.g., project-a/agents/security.py:45)
 - Configuration values (env vars, ports, settings)
 - Before/after descriptions for changes
 - Rationale for decisions
@@ -108,8 +108,8 @@ YYYY-MM-DD
 After the code block, tell the user exactly how to ingest it:
 
 ```
-Save this to: /opt/swarm-projects/main/claude-sync/inbound/YYYY-MM-DD-[topic].md
-Then run:     /opt/swarm-projects/main/claude-sync/sync.sh reconcile
+Save this to: /opt/projects/main/claude-sync/inbound/YYYY-MM-DD-[topic].md
+Then run:     /opt/projects/main/claude-sync/sync.sh reconcile
 ```
 
 ## Rules
@@ -128,7 +128,7 @@ Then run:     /opt/swarm-projects/main/claude-sync/sync.sh reconcile
 
 5. **Action items are critical** — Every entry MUST have at least one action item.
    This is how Claude Code knows what to update. Common actions:
-   - "Update CLAUDE.md in christi with [new known issue / pattern / fix]"
+   - "Update CLAUDE.md in project-a with [new known issue / pattern / fix]"
    - "Update roadmap-status.md with [phase X completed]"
    - "Add to debugging.md: [new error/fix pair]"
    - "Update architecture.md with [new pattern / function signature]"
@@ -153,26 +153,26 @@ When the user says "sync project details", output something like:
 2026-03-05
 
 ## Project
-christi
+project-a
 
 ## Type
 architecture
 
 ## Summary
-Wired Redis session backend into christi_api.py, replacing in-memory SessionStore for production deployments. Sessions now persist across API restarts.
+Wired Redis session backend into project_a_api.py, replacing in-memory SessionStore for production deployments. Sessions now persist across API restarts.
 
 ## Details
-- Modified `christi_api.py` to use `storage.factory.create_session_backend()` instead of in-memory `SessionStore`
+- Modified `project_a_api.py` to use `storage.factory.create_session_backend()` instead of in-memory `SessionStore`
 - Redis backend selected when `CHRISTI_CACHE_BACKEND=redis` is set
 - Fallback to memory backend when Redis unavailable
 - Session TTL and max messages still configurable via env vars
 - Tested with: `curl -H "X-Session-ID: test123" ...` across service restarts
 
 ## Action Items
-- [ ] Update CLAUDE.md in christi: add Redis session backend to architecture section
+- [ ] Update CLAUDE.md in project-a: add Redis session backend to architecture section
 - [ ] Update architecture.md: document session persistence behavior
 - [ ] Update .env.example: add CHRISTI_SESSION_BACKEND variable
-- [ ] Test: `sudo systemctl restart christi-api && curl http://127.0.0.1:8501/health`
+- [ ] Test: `sudo systemctl restart project-a-api && curl http://127.0.0.1:8501/health`
 
 ---
 
@@ -182,7 +182,7 @@ Wired Redis session backend into christi_api.py, replacing in-memory SessionStor
 2026-03-05
 
 ## Project
-christi
+project-a
 
 ## Type
 bugfix
@@ -191,15 +191,15 @@ bugfix
 Forensic agent was timing out on complex multi-step queries. Increased CHRISTI_REQUEST_TIMEOUT from 120s to 180s for forensic-routed queries.
 
 ## Details
-- Root cause: forensic agent decomposes into 3-5 sub-queries, each taking 30-40s on RTX 3060
-- Fix: conditional timeout in christi_api.py — 180s when supervisor routes to forensic, 120s otherwise
-- File: christi_api.py:287 (in the pipeline invocation block)
+- Root cause: forensic agent decomposes into 3-5 sub-queries, each taking 30-40s on RTX GPU
+- Fix: conditional timeout in project_a_api.py — 180s when supervisor routes to forensic, 120s otherwise
+- File: project_a_api.py:287 (in the pipeline invocation block)
 
 ## Action Items
-- [ ] Update CLAUDE.md in christi: add forensic timeout note to Known Issues
+- [ ] Update CLAUDE.md in project-a: add forensic timeout note to Known Issues
 - [ ] Update debugging.md: add "forensic timeout" entry
 - [ ] Update .env.example: document CHRISTI_FORENSIC_TIMEOUT variable
 ````
 
-Save this to: `/opt/swarm-projects/main/claude-sync/inbound/2026-03-05-redis-sessions-forensic-timeout.md`
-Then run: `/opt/swarm-projects/main/claude-sync/sync.sh reconcile`
+Save this to: `/opt/projects/main/claude-sync/inbound/2026-03-05-redis-sessions-forensic-timeout.md`
+Then run: `/opt/projects/main/claude-sync/sync.sh reconcile`

@@ -17,7 +17,7 @@ description: >
 | OpenClaw | v2026.3.13 | 18789 (loopback) | Tailscale Serve → HTTPS |
 | NemoClaw | v0.1.0 (alpha) | 8080 (OpenShell gateway) | Internal |
 | Sandbox | `my-assistant` | — | `nemoclaw my-assistant connect` |
-| Tailscale | Connected | 100.64.0.1 | `https://node_primary.tailf8542c.ts.net/` |
+| Tailscale | Connected | 100.64.0.1 | `https://node-primary.tail000000.ts.net/` |
 
 ## Security Posture
 
@@ -34,7 +34,7 @@ description: >
 **Recommended: CLI/TUI via Tailscale SSH (most secure)**
 ```bash
 # From any device on your tailnet
-ssh swarm_user@node_primary    # via Tailscale
+ssh admin_user@node_primary    # via Tailscale
 openclaw tui         # interactive chat
 
 # Or inside the sandbox
@@ -42,7 +42,7 @@ nemoclaw my-assistant connect
 openclaw tui
 ```
 
-**Web dashboard:** `https://node_primary.tailf8542c.ts.net/` (tailnet only)
+**Web dashboard:** `https://node-primary.tail000000.ts.net/` (tailnet only)
 
 ## Inference
 

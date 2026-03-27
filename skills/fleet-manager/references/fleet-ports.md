@@ -46,7 +46,7 @@ All ports across the Swarm fleet. Check before assigning new ports.
 | 9400 | dcgm-exporter | 0.0.0.0 | Docker container |
 | 11434 | Ollama | 0.0.0.0 | Docker container |
 
-## node_reserve2 (10.0.1.2)
+## node_reserve2 (10.0.0.2)
 
 | Port | Service | Bind | Notes |
 |---|---|---|---|
@@ -63,11 +63,11 @@ All ports across the Swarm fleet. Check before assigning new ports.
 | 8504 | ClauseHound | #6 |
 | 8505 | Prompt Forge | #7 |
 | 8506 | DocuMint | #8 |
-| 7100 | Tax Prep MCP inbound | — |
-| 7200 | Tax Prep MCP outbound | — |
+| 7100 | ProjectD MCP inbound | — |
+| 7200 | ProjectD MCP outbound | — |
 
 ## Conflict Notes
 
-- Port 8502: claimed by both ProjectD and STR Manager — needs resolution
+- Port 8502: claimed by both ProjectD and ProjectC — needs resolution
 - Port 8080: OpenWebUI on node_gpu, OpenShell on node_primary — no conflict (different hosts)
 - Port 3000: Grafana on both hosts — no conflict (different hosts)
