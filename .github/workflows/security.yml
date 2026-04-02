@@ -1,0 +1,50 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  gitleaks:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  validate-skills:
+    name: Skill Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check SKILL.md frontmatter
+        run: |
+          errors=0
+          for skill_dir in */; do
+            skill_file="${skill_dir}SKILL.md"
+            if [[ ! -f "$skill_file" ]]; then
+              echo "ERROR: $skill_dir missing SKILL.md"
+              errors=$((errors+1))
+              continue
+            fi
+            # Check for required frontmatter fields
+            if ! head -20 "$skill_file" | grep -q '^name:'; then
+              echo "ERROR: $skill_file missing 'name' in frontmatter"
+              errors=$((errors+1))
+            fi
+            if ! head -20 "$skill_file" | grep -q '^description:'; then
+              echo "ERROR: $skill_file missing 'description' in frontmatter"
+              errors=$((errors+1))
+            fi
+          done
+          if [[ $errors -gt 0 ]]; then
+            echo "Found $errors validation errors"
+            exit 1
+          fi
+          echo "All skills validated"
