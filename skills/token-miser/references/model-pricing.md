@@ -1,5 +1,5 @@
 # Anthropic Model Pricing & Benchmarks
-*Last verified: 2026-03-17 from https://platform.claude.com/docs/en/about-claude/pricing*
+*Last verified: 2026-04-13 from https://docs.anthropic.com/en/about-claude/pricing*
 
 > **FRESHNESS NOTE:** This file is a snapshot. The token-miser freshness protocol
 > in SKILL.md instructs Claude to web-search for updates before making cost-critical
@@ -7,22 +7,32 @@
 
 ## Current-Generation Models (Claude 4.5 / 4.6)
 
-| Model | API String | Input/MTok | Output/MTok | 5m Cache Write | 1h Cache Write | Cache Hit | Context |
-|-------|-----------|-----------|------------|----------------|----------------|-----------|---------|
-| Haiku 4.5 | `claude-haiku-4-5-20251001` | $1.00 | $5.00 | $1.25 | $2.00 | $0.10 | 200K |
-| Sonnet 4.6 | `claude-sonnet-4-6` | $3.00 | $15.00 | $3.75 | $6.00 | $0.30 | 200K |
-| Sonnet 4.5 | `claude-sonnet-4-5-20250514` | $3.00 | $15.00 | $3.75 | $6.00 | $0.30 | 200K |
-| Opus 4.6 | `claude-opus-4-6` | $5.00 | $25.00 | $6.25 | $10.00 | $0.50 | 200K (1M beta) |
-| Opus 4.5 | `claude-opus-4-5-20250415` | $5.00 | $25.00 | $6.25 | $10.00 | $0.50 | 200K |
+| Model | API String | Input/MTok | Output/MTok | Cache Write | Cache Hit | Context |
+|-------|-----------|-----------|------------|-------------|-----------|---------|
+| Haiku 4.5 | `claude-4.5-haiku` | $1.00 | $5.00 | $1.25 | $0.10 | 200K |
+| Sonnet 4.5 | `claude-4.5-sonnet` | $3.00 | $15.00 | $3.75 | $0.30 | 200K |
+| Sonnet 4.6 | `claude-4.6-sonnet-medium` | $3.00 | $15.00 | $3.75 | $0.30 | 1M |
+| Claude 4 Sonnet | `claude-4-sonnet` | $3.00 | $15.00 | $3.75 | $0.30 | 200K |
+| Opus 4.5 | `claude-4.5-opus-high` | $5.00 | $25.00 | $6.25 | $0.50 | 200K |
+| Opus 4.6 | `claude-4.6-opus-high` | $5.00 | $25.00 | $6.25 | $0.50 | 1M |
 
-### Fast Mode (Research Preview — Opus 4.6 only)
+### Fast / Thinking-Fast Mode (Opus 4.6 only)
 
-| Mode | Input/MTok | Output/MTok | Speedup |
-|------|-----------|------------|---------|
-| Standard | $5.00 | $25.00 | 1x |
-| Fast | $30.00 | $150.00 | ~2.5x |
+| Mode | Input/MTok | Output/MTok | Multiplier | Availability |
+|------|-----------|------------|------------|--------------|
+| Standard | $5.00 | $25.00 | 1x | All plans |
+| Thinking-Fast | $30.00 | $150.00 | 6x | MAX Mode only, research preview |
 
-Fast mode requires beta header `fast-mode-2026-02-01`. Same model, faster inference only.
+Cursor picker names: `claude-4.6-opus-high-thinking-fast`, `claude-4.6-opus-max-thinking-fast`
+
+### Cursor Suffix Multiplier Rules
+
+| Suffix | Price Effect |
+|--------|-------------|
+| `-none`/`-low`/`-medium`/`-high`/`-xhigh` | No per-token change; more tokens generated |
+| `-fast` | 2x base price |
+| `-thinking-fast` | 6x base price (MAX only) |
+| `-1m` | 2x input >200K, 1.5x output |
 
 ## Previous-Generation Models (higher cost, avoid for new work)
 
@@ -36,7 +46,7 @@ Fast mode requires beta header `fast-mode-2026-02-01`. Same model, faster infere
 ## Extended Thinking
 
 Extended thinking tokens are billed as **output tokens** at standard rates — no separate tier.
-Minimum budget: 1,024 tokens. Available on Opus 4.6, Sonnet 4.5, Haiku 4.5.
+Minimum budget: 1,024 tokens. Available on Opus 4.6, Sonnet 4.6, Sonnet 4.5, Haiku 4.5.
 
 ## Batch API
 
@@ -50,8 +60,8 @@ Minimum budget: 1,024 tokens. Available on Opus 4.6, Sonnet 4.5, Haiku 4.5.
 
 ## Long Context Pricing (>200K input tokens)
 
-For Sonnet 4.5, Haiku 4.5, and all future models: inputs exceeding 200K tokens
-are charged at **2x** standard input rates. Output rates unchanged.
+Inputs exceeding 200K tokens are charged at **2x** standard input rates.
+Output rates increase to 1.5x on some models.
 
 | Model | Standard Input | >200K Input |
 |-------|---------------|-------------|
@@ -84,11 +94,8 @@ Compare to legacy Opus 4.1: 1x : 3.75x : 18.75x — current Opus is ~3.75x cheap
 
 ## Prompt Caching ROI
 
-Two cache tiers (new with current-gen models):
-- **5-minute cache**: Write costs 1.25x base input; reads cost 10% of base input
-- **1-hour cache**: Write costs 2x base input; reads cost 10% of base input
-
-Break-even: 5m cache pays off after ~2 calls; 1h cache after ~3 calls.
+Cache write costs 1.25x base input; reads cost 10% of base input.
+Break-even: cache pays off after ~2 calls.
 Best candidates: System prompts, RAG reference docs, static instructions.
 
 ## Capability Notes
@@ -101,18 +108,19 @@ Best candidates: System prompts, RAG reference docs, static instructions.
 ### Sonnet 4.6
 - Best for: code generation, analysis, summarization, tool use, most user-facing tasks
 - The default workhorse — handles ~80% of real-world tasks well
+- 1M context window available
 - Speed: moderate
 
 ### Opus 4.6
 - Best for: complex reasoning, autonomous agents, open-ended analysis, highest-stakes outputs
-- **New in 4.6**: 1M token context (beta), 128K max output, agent teams, compaction
-- Speed: slowest (but fast mode available at 6x cost)
+- 1M token context, 128K max output, agent teams, compaction
+- Speed: slowest (but thinking-fast mode available at 6x cost)
 - **At $5/$25, now cost-effective for more tasks than legacy Opus**
 
 ## Model String Stability
 
-- `claude-haiku-4-5-20251001` — pinned version, stable
-- `claude-sonnet-4-6` — latest Sonnet 4.6, may receive minor updates
-- `claude-opus-4-6` — latest Opus 4.6, may receive minor updates
+- `claude-4.5-haiku` — latest Haiku 4.5
+- `claude-4.6-sonnet-medium` — latest Sonnet 4.6 (Cursor picker name)
+- `claude-4.6-opus-high` — latest Opus 4.6 (Cursor picker name)
 
 Use pinned strings in production pipelines when reproducibility matters.
