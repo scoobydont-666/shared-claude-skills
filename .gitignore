@@ -14,3 +14,8 @@ secrets/
 *_rsa
 *_ed25519
 *.gpg
+
+# Kin semantic VCS local repo state — not for git
+.kin/
+# Kin MCP config backups
+.mcp.json.bak.kincap-*
