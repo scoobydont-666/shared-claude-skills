@@ -1,0 +1,59 @@
+schema_version: "1.0.0"
+contract_id: scoobydont-666-shared-claude-skills
+repo: scoobydont-666/shared-claude-skills
+contract_version: "0.1.0"
+status: active
+maturity: alpha
+description: >
+  Shared Claude Code skills repo — community-mirror of claude-config skills curated for portability across users/orgs. Cherry-pick destination from claude-config via FRAMEWORK_SYNC.md.
+entities:
+  - id: dir-shared-skills
+    kind: module
+    name: skills
+    qualified_name: shared-claude-skills.skills
+    file: skills/
+    confidence: 1.0
+    description: Root directory for shared Claude skills, organized for reuse and modularity.
+    tags:
+      - shared
+      - skills
+      - claude
+    valid_from: "2026-05-17"
+    valid_until: null
+  - id: module-skill-loader
+    kind: module
+    name: loader
+    qualified_name: shared-claude-skills.loader
+    file: src/loader.py
+    confidence: 1.0
+    description: Module responsible for loading and initializing shared skills at runtime.
+    tags:
+      - loader
+      - runtime
+      - module
+    valid_from: "2026-05-17"
+    valid_until: null
+  - id: dep-claude-config
+    kind: module
+    name: claude-config
+    qualified_name: external.claude-config
+    file: external
+    confidence: 1.0
+    description: External dependency representing the upstream claude-config repository.
+    tags:
+      - external
+      - config
+      - dependency
+    valid_from: "2026-05-17"
+    valid_until: null
+relations:
+  - id: rel-skills-references-cc
+    from: dir-shared-skills
+    to: dep-claude-config
+    type: references
+    confidence: 1.0
+  - id: rel-loader-imports-skills
+    from: module-skill-loader
+    to: dir-shared-skills
+    type: imports
+    confidence: 1.0
