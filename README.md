@@ -41,7 +41,7 @@ These are **Claude Code skills** (SKILL.md files in `~/.claude/skills/`), not Cu
 ### Coordination & Workflow
 | Skill | Description |
 |-------|-------------|
-| [claude-swarm](skills/claude-swarm/) | Multi-instance Claude Code coordination via NFS + git. Task queuing, worktree isolation, session summaries, context handoff. |
+| [hydra-swarm](skills/hydra-swarm/) | Multi-instance Claude Code coordination via NFS + git. Task queuing, worktree isolation, session summaries, context handoff. |
 | [claude-to-cursor](skills/claude-to-cursor/) | Convert Claude Code skills to Cursor-compatible `.mdc` rule files. Classification logic for what converts well. |
 | [inbound-sync](skills/inbound-sync/) | Structured sync bundles for capturing decisions from claude.ai conversations and ingesting into local projects. |
 | [skill-updater](skills/skill-updater/) | Meta-skill that audits installed skills for staleness, gaps, overlaps. Cross-references CLAUDE.md and memory files for contradictions. |
