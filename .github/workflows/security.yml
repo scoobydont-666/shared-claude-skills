@@ -5,28 +5,28 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
   gitleaks:
     name: Secret Detection
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, hydra, cpu]
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run gitleaks
+        run: gitleaks detect --source . --no-banner --verbose
 
   validate-skills:
     name: Skill Validation
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, hydra, cpu]
     steps:
       - uses: actions/checkout@v4
       - name: Check SKILL.md frontmatter
         run: |
           errors=0
-          for skill_dir in */; do
+          for skill_dir in skills/*/; do
             skill_file="${skill_dir}SKILL.md"
             if [[ ! -f "$skill_file" ]]; then
               echo "ERROR: $skill_dir missing SKILL.md"
