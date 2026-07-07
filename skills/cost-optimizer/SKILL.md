@@ -9,7 +9,7 @@ triggers:
   - cheaper
   - expensive
   - budget
-  - budi stats
+  - analytics
   - token cost
   - electricity cost
   - hosting cost
@@ -50,58 +50,58 @@ See: `token-miser` skill for subagent cost controls.
 - Running full sessions on Opus when Sonnet suffices
 - Skipping effort level specification on Opus calls
 
-### Token Tracking: budi
+### Token Tracking via Analytics Tool
 
 ```bash
-# Session cost summary
-budi stats
+# Session cost summary (use your analytics tool)
+analytics-tool stats
 
 # Cost by model
-budi cost
+analytics-tool cost
 
 # Dashboard (local)
-open http://127.0.0.1:7878
+open http://127.0.0.1:<service-port>
 
 # Weekly report
-budi report --period week
+analytics-tool report --period week
 ```
 
-See: `budi-analytics` skill for full budi usage.
+See: `budi-analytics` skill for analytics implementation.
 
 ## 2. Infrastructure Costs
 
 ### Electricity
 - TOU rates apply — peak hours cost 2-3x off-peak
-- Solar offset via Enphase IQ Gateway (10.0.0.50)
+- Solar offset via Enphase IQ Gateway (<gateway-ip>)
 - Key metric: `solar_net_watts` — positive = free electricity (exporting)
 - When net_watts > 0: run full mining fleet, cost = $0 for that power
 
 ### Mining Profitability (Hashrate Hedger)
 - Inputs: XMR spot price, network difficulty, pool hashrate, electricity rate, solar_net_watts
 - Decision: run full fleet / throttle / pause based on break-even threshold
-- ProjectB hosts: node_primary (P2Pool relay), node_miner (XMRig ~10.5 KH/s), node_gpu (XMRig)
-- Never run XMRig on node_primary — it is NOT a miner
+- Infrastructure: pool relay host (P2Pool relay), dedicated miner host (~10.5 KH/s), GPU-capable hosts (GPU-accelerated mining)
+- Never run mining on relay nodes — they are NOT miners
 
 ### Service Power Draw (approximate)
-| System       | Draw    | Notes                         |
-|--------------|---------|-------------------------------|
-| node_gpu (idle)  | ~150W   | 2x RTX 5080 servers           |
-| node_gpu (mining)| ~400W+  | GPU-accelerated RandomX       |
-| node_primary     | ~35W    | i5-8500, no discrete GPU      |
-| node_miner      | ~90W    | Ryzen 9600X mining            |
+| System           | Draw    | Notes                         |
+|------------------|---------|-------------------------------|
+| GPU host (idle)  | ~150W   | Dual GPU cards              |
+| GPU host (mining)| ~400W+  | GPU-accelerated RandomX       |
+| Relay host       | ~35W    | CPU-only, no discrete GPU     |
+| Mining host      | ~90W    | High-performance CPU mining   |
 
 See: `solar-energy` skill for TOU and battery pre-positioning.
 See: `crypto-monero-wizard` skill for mining profitability formulas.
 
-## 3. Cloud Hosting — ProjectE
+## 3. Cloud Hosting — When Required
 
 Projected Year 1 costs (when deployed):
 - AWS/Azure app hosting: $40-80/mo
-- Ollama inference stays on node_gpu (self-hosted, no cloud cost)
-- PostgreSQL: RDS ~$15/mo or self-hosted on node_gpu (~$0 marginal)
+- Ollama inference stays self-hosted on GPU infrastructure (no cloud cost)
+- PostgreSQL: RDS ~$15/mo or self-hosted on GPU infrastructure (~$0 marginal)
 - CDN/storage: minimal (<$5/mo at launch volume)
 
-Strategy: maximize self-hosted workloads on node_gpu before adding cloud spend.
+Strategy: maximize self-hosted workloads on local infrastructure before adding cloud spend.
 
 ## Weekly Cost Review Checklist
 1. `budi stats` — check session token spend vs prior week
