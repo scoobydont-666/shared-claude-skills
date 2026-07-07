@@ -273,7 +273,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://yourdomain.com",
-        "http://127.0.0.1:3000",  # Local dev only
+        "http://127.0.0.1:<local-port>",  # Local dev only
     ],
     allow_credentials=True,
     allow_methods=["GET", "POST"],
@@ -391,7 +391,7 @@ import ipaddress
 from urllib.parse import urlparse
 
 BLOCKED_RANGES = [
-    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("<internal-subnet>/8"),
     ipaddress.ip_network("172.16.0.0/12"),
     ipaddress.ip_network("192.168.0.0/16"),
     ipaddress.ip_network("127.0.0.0/8"),
@@ -583,7 +583,7 @@ ENTRYPOINT ["python", "-m", "app"]
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"
+    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:<health-port>/health')"
 ```
 
 ### Docker Compose Security
@@ -633,7 +633,7 @@ import (
 )
 
 srv := &http.Server{
-    Addr:              "127.0.0.1:8080",
+    Addr:              "127.0.0.1:<service-port>",
     ReadTimeout:       10 * time.Second,
     ReadHeaderTimeout: 5 * time.Second,
     WriteTimeout:      30 * time.Second,
