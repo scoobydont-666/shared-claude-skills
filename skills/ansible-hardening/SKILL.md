@@ -93,13 +93,14 @@ Each role follows monero-farm conventions:
 - Never remove existing security controls — only add/tighten
 - Whitelist LAN subnet before enabling firewall bouncers
 - Tailscale auth is interactive — can't be fully automated
-- Test on node_primary first, then roll to fleet
+- Test on a primary host first, then roll to fleet
 
 ## Where To Build
 
-These roles belong in `/opt/projects/project-b/ansible/roles/` alongside the existing
-5 roles (base, monero, p2pool, xmrig, monitoring). The security roles extend
+These roles belong in your project's `ansible/roles/` directory alongside existing
+roles (base, application-specific, monitoring). The security roles extend
 the base role's hardening.
 
 Alternatively, create a standalone `ansible-hardening` collection at
-`/opt/ansible-hardening/` if the scope grows beyond monero-farm.
+`<your-repo-root>/ansible-hardening/` if the scope grows and needs to be reused
+across multiple projects.
