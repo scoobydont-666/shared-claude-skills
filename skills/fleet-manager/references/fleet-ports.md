@@ -1,8 +1,8 @@
 # Fleet Port Map
 
-All ports across the Swarm fleet. Check before assigning new ports.
+All ports across your fleet. Check before assigning new ports.
 
-## node_primary (10.0.0.20)
+## Primary Orchestration Host (<internal-ip-1>)
 
 | Port | Service | Bind | Notes |
 |---|---|---|---|
@@ -28,7 +28,7 @@ All ports across the Swarm fleet. Check before assigning new ports.
 | 37889 | P2Pool main P2P | 0.0.0.0 | UFW: open |
 | 37890 | P2Pool nano P2P | 0.0.0.0 | UFW: open |
 
-## node_gpu (10.0.0.10)
+## GPU Host (<internal-ip-2>)
 
 | Port | Service | Bind | Notes |
 |---|---|---|---|
@@ -39,14 +39,14 @@ All ports across the Swarm fleet. Check before assigning new ports.
 | 8080 | OpenWebUI | 0.0.0.0 | Docker Swarm |
 | 8081 | SearXNG | 0.0.0.0 | Docker Swarm |
 | 8100 | ChromaDB | 0.0.0.0 | Docker Swarm |
-| 8501 | ProjectA | 0.0.0.0 | Python (not in Swarm) |
+| 8501 | <your-project-a> | 0.0.0.0 | Custom service (not in Swarm) |
 | 8888 | Traefik dashboard | 0.0.0.0 | Docker Swarm |
 | 9090 | Prometheus | 0.0.0.0 | Docker Swarm |
 | 9100 | node-exporter | 0.0.0.0 | Docker Swarm |
 | 9400 | dcgm-exporter | 0.0.0.0 | Docker container |
 | 11434 | Ollama | 0.0.0.0 | Docker container |
 
-## node_reserve2 (10.0.0.2)
+## Worker Host (<internal-ip-3>)
 
 | Port | Service | Bind | Notes |
 |---|---|---|---|
@@ -56,18 +56,19 @@ All ports across the Swarm fleet. Check before assigning new ports.
 
 ## Reserved (new projects, not yet deployed)
 
-| Port | Service | Head |
+| Port | Service | Notes |
 |---|---|---|
-| 8502 | ProjectD | — |
-| 8503 | Audit Sentinel | #4 |
-| 8504 | ClauseHound | #6 |
-| 8505 | Prompt Forge | #7 |
-| 8506 | DocuMint | #8 |
-| 7100 | ProjectD MCP inbound | — |
-| 7200 | ProjectD MCP outbound | — |
+| 8502 | <your-project-b> | — |
+| 8503 | <internal-service-1> | Platform feature |
+| 8504 | <internal-service-2> | Platform feature |
+| 8505 | <internal-service-3> | Platform feature |
+| 8506 | <internal-service-4> | Platform feature |
+| 7100 | <your-project-b>-mcp-in | MCP server inbound |
+| 7200 | <your-project-b>-mcp-out | MCP server outbound |
 
 ## Conflict Notes
 
-- Port 8502: claimed by both ProjectD and ProjectC — needs resolution
-- Port 8080: OpenWebUI on node_gpu, OpenShell on node_primary — no conflict (different hosts)
-- Port 3000: Grafana on both hosts — no conflict (different hosts)
+- Port 8502: claimed by multiple services — needs resolution
+- Port 8080: Multiple services on different hosts — no conflict if not on same host
+- Port 3000: Multiple services on different hosts — no conflict if not on same host
+- Always verify port assignments before deploying new services
