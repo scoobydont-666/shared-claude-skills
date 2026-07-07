@@ -174,7 +174,7 @@ Bump **down** one tier if ALL of:
 
 ## Project-Specific Routing
 
-### ProjectA (LangGraph tax pipeline)
+### <your-project> (LangGraph tax pipeline)
 - Intent classification: Haiku | RAG scoring: Haiku | Tax reasoning: Sonnet/Opus
 - Response synthesis: Sonnet minimum | Security guardrails: Haiku
 

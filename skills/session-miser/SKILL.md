@@ -88,10 +88,10 @@ When coordinating work across multiple nodes:
 
 ## Cost Tracking
 
-After significant work blocks, check budi:
+After significant work blocks, check session-snitch:
 ```bash
-budi stats       # session cost so far
-budi cost        # cost breakdown by model
+session-snitch stats       # session cost so far
+session-snitch cost        # cost breakdown by model
 ```
 
 If session cost is climbing fast, suggest:

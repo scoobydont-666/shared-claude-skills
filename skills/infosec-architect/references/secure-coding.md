@@ -243,7 +243,7 @@ async def secure_endpoint(user: str = Depends(verify_token)):
 
 ### Service-to-Service Auth (Internal)
 
-For internal services (ProjectA → ChromaDB, ProjectD → Milvus), use shared secrets via Docker secrets:
+For internal services (<project-alpha> → ChromaDB, <project-delta> → Milvus), use shared secrets via Docker secrets:
 
 ```python
 from fastapi import Request, HTTPException

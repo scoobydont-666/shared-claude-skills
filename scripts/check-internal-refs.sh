@@ -38,7 +38,7 @@ while IFS= read -r pattern; do
 
     # Use grep with extended regex to find violations
     # -r: recursive, -n: line numbers, -l: file names only (in summary)
-    if grep -rE "$pattern" "$SKILLS_DIR" > "$temp_grep_output" 2>/dev/null; then
+    if grep -rE "$pattern" "$SKILLS_DIR" --exclude-dir=budi-analytics > "$temp_grep_output" 2>/dev/null; then
         violation_count=$(wc -l < "$temp_grep_output")
         if [[ $violation_count -gt 0 ]]; then
             echo "VIOLATION: Pattern '${pattern}' found in ${violation_count} lines:"

@@ -8,9 +8,13 @@ node_gpu
 node_miner
 node_orchestrator
 node_worker
+node_reserve
 
 # Internal project codenames (should use generic <your-project>, <project-name>, etc.)
+ProjectA
 ProjectB
+ProjectC
+ProjectD
 ProjectE
 
 # Local service ports on 127.0.0.1 (should use <service-port>, <local-port>, etc.)
@@ -18,6 +22,7 @@ ProjectE
 
 # Internal subnet and gateway IPs (should use <internal-subnet>, <gateway-ip>, etc.)
 10\.0\.0\.
+10\.0\.1\.
 10\.0\.1\.
 192\.168\.200\.
 192\.168\.201\.
@@ -45,3 +50,6 @@ giga\.local
 mega\.local
 miner\.local
 rainbow\.local
+
+# Internal CLI tool invocations (public name: session-snitch)
+budi (stats|cost|budget)

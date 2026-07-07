@@ -104,7 +104,7 @@ Projected Year 1 costs (when deployed):
 Strategy: maximize self-hosted workloads on local infrastructure before adding cloud spend.
 
 ## Weekly Cost Review Checklist
-1. `budi stats` — check session token spend vs prior week
+1. `session-snitch stats` — check session token spend vs prior week
 2. Grafana dashboard — GPU power draw trend
 3. Check solar production vs consumption ratio
 4. Review any cloud services added since last review

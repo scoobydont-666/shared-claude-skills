@@ -240,7 +240,7 @@ NOT available without <gpu-host>:
 | <primary-host> | i5-8500 (6c, light load) | none | Fullnode, web services, CLI tools, orchestration |
 | <gpu-host> | EPYC 7V12 (64c) | RTX 5080 16GB | LLM inference, Docker Swarm, <internal-project-2>, GPU workloads |
 | <mining-host> | Ryzen 9600X (6c) | none | XMRig mining (offline, pending Ubuntu) |
-| node_reserve1 | TBD | TBD | Future |
+| <worker-host-2> | TBD | TBD | Future |
 | <worker-host> | EPYC 7443P (24c/48t) | RTX 5060 Ti 16GB | Swarm worker, Ollama, ComfyUI, inference |
 
 ## Phase Tracking Convention
