@@ -32,7 +32,7 @@ Cross-reference against:
 - `~/.claude/CLAUDE.md` (Cluster Infrastructure section)
 - `~/.claude/projects/*/memory/user_admin_user.md`
 - `~/.claude/skills/ai-cluster-knowledge/SKILL.md` description
-- Each host's memory file (project_node_primary_server.md, etc.)
+- Each host's memory file (project_<hostname>_server.md, etc.)
 
 ### 2. Repo Inventory
 ```bash
@@ -59,8 +59,8 @@ grep -rn "port [0-9]\|:[0-9][0-9][0-9][0-9]" /opt/*/CLAUDE.md ~/.claude/CLAUDE.m
 ### 5. ChromaDB Collection Prefixes
 Cross-reference CLAUDE.md claims against actual collections:
 ```bash
-# On node_gpu:
-curl -s http://127.0.0.1:8100/api/v2/collections | python3 -c 'import json,sys; ...'
+# On GPU host:
+curl -s http://127.0.0.1:<chromadb-port>/api/v2/collections | python3 -c 'import json,sys; ...'
 ```
 
 ### 6. NVIDIA Driver Version
@@ -77,7 +77,7 @@ vs memory files.
 
 ### 8. Model Inventory
 ```bash
-curl -s http://127.0.0.1:11434/api/tags
+curl -s http://127.0.0.1:<ollama-port>/api/tags
 ```
 vs model evaluation doc, ai-cluster-knowledge skill.
 
