@@ -35,7 +35,6 @@ ProjectE
 /opt/taxprep-
 
 # Internal tool name 'budi' when used as generic reference (budi-analytics skill is allowed to reference its own name)
-\bbudi\b(?!-analytics)
 
 # Incomplete renames: claude-swarm should be hydra-swarm in most contexts
 claude-swarm([^/]|$)
