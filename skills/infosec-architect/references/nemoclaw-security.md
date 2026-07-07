@@ -144,7 +144,7 @@ rules:
     allow_egress:
       - "*.anthropic.com:443"
       - "api.openai.com:443"
-      - "127.0.0.1:11434"  # Ollama
+      - "127.0.0.1:<ollama-port>"  # Ollama
     deny_egress:
       - "*"  # Default deny all other egress
   execution:
@@ -193,14 +193,14 @@ gateway:
 
 # 2. Bind to loopback only (if not using remote access)
 gateway:
-  listen: "127.0.0.1:3000"  # NEVER 0.0.0.0
+  listen: "127.0.0.1:<gateway-port>"  # NEVER 0.0.0.0
 
 # 3. WebSocket origin validation
 gateway:
   websocket:
     validate_origin: true
     allowed_origins:
-      - "http://127.0.0.1:3000"
+      - "http://127.0.0.1:<gateway-port>"
       - "https://your-domain.com"
 
 # 4. Disable mDNS broadcast
@@ -229,7 +229,7 @@ labels:
   - "traefik.http.middlewares.rate-limit.ratelimit.average=50"
   - "traefik.http.middlewares.rate-limit.ratelimit.burst=25"
   # IP whitelist from trusted subnet
-  - "traefik.http.middlewares.ip-whitelist.ipallowlist.sourcerange=10.0.0.0/24"
+  - "traefik.http.middlewares.ip-whitelist.ipallowlist.sourcerange=<internal-subnet>/24"
 ```
 
 ---
@@ -379,14 +379,14 @@ network_policy:
       port: 443
       protocol: tcp
     - host: "127.0.0.1"
-      port: 11434  # Ollama
+      port: <ollama-port>  # Ollama
       protocol: tcp
     # Infrastructure
     - host: "127.0.0.1"
-      port: 8000  # ChromaDB
+      port: <chromadb-port>  # ChromaDB
       protocol: tcp
     - host: "127.0.0.1"
-      port: 19530  # Milvus
+      port: <milvus-port>  # Milvus
       protocol: tcp
 ```
 
@@ -394,7 +394,7 @@ network_policy:
 
 ```bash
 # Watch for unexpected outbound connections from agent processes
-ss -tnp | grep -v '127.0.0.1' | grep -v '10.0.0'
+ss -tnp | grep -v '127.0.0.1' | grep -v '<internal-subnet>'
 
 # Use iptables logging on the DOCKER-USER chain
 iptables -I DOCKER-USER -j LOG --log-prefix "DOCKER-EGRESS: " --log-level 4
@@ -466,7 +466,7 @@ Run through this before any NemoClaw/OpenClaw deployment goes active:
 
 - [ ] Running latest patched version (≥2026.2.25)
 - [ ] Gateway authentication enabled
-- [ ] Gateway bound to 127.0.0.1 (or behind authenticated reverse proxy)
+- [ ] Gateway bound to loopback only (or behind authenticated reverse proxy)
 - [ ] WebSocket origin validation enabled
 - [ ] mDNS broadcast disabled
 - [ ] Guest mode disabled
