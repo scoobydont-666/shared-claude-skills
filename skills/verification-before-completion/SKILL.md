@@ -166,7 +166,7 @@ Skip any step = lying, not verifying
 □ Rollback plan exists — know how to revert
 □ Logs accessible (docker logs, journalctl)
 □ GPU VRAM verified (nvidia-smi) if GPU workload
-□ Port registered in /opt/hydra-project/docs/port-registry.md
+□ Port registered in your project's port registry documentation
 □ README/docs updated, session summary includes deploy details
 ```
 
@@ -178,16 +178,16 @@ When reporting completion, include proof:
 
 ```
 ✅ GOOD:
-"ExamForge deployed on gpu-node-1:
+"ExamForge deployed on <gpu-host>:
   - docker ps: 3/3 healthy
-  - curl http://10.0.1.1:8010/api/health → {"status":"ok"}
-  - curl http://10.0.1.1:3100 → 93KB HTML, contains 'ExamForge'
-  - JS bundles contain http://10.0.1.1:8010 (verified grep)
-  - CORS: access-control-allow-origin: http://10.0.1.1:3100
+  - curl http://<service-ip>:<api-port>/api/health → {"status":"ok"}
+  - curl http://<service-ip>:<frontend-port> → 93KB HTML, contains 'ExamForge'
+  - JS bundles contain http://<service-ip>:<api-port> (verified grep)
+  - CORS: access-control-allow-origin: http://<service-ip>:<frontend-port>
   - API returns 7 certifications, 2399 questions"
 
 ❌ BAD:
-"ExamForge deployed on gpu-node-1. Backend returns 200, frontend returns 200.
+"ExamForge deployed on <gpu-host>. Backend returns 200, frontend returns 200.
  All systems go."
 ```
 
@@ -232,7 +232,7 @@ When reporting completion, include proof:
 | What Happened | What Should Have Happened |
 |---|---|
 | Claimed ExamForge "deployed and working" from 200 health check | Verified frontend→backend connection from browser perspective |
-| NEXT_PUBLIC_API_URL pointed to 127.0.0.1 in Docker build | Used gpu-node-1 LAN IP in build args, verified in JS bundle |
+| NEXT_PUBLIC_API_URL pointed to 127.0.0.1 in Docker build | Used deployment host LAN IP in build args, verified in JS bundle |
 | Backend bound to 127.0.0.1 only | Bound to 0.0.0.0, tested from LAN |
 | Health check used curl (not in slim Python image) | Used python3 urllib (always available) |
 | Didn't run plan's own verification steps | Execute every verification step listed in the plan |
