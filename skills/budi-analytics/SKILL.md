@@ -16,7 +16,7 @@ budi (WakaTime for Claude Code) tracks tokens, costs, and file activity per sess
 
 ```bash
 # Dashboard (web UI)
-open http://127.0.0.1:7878/dashboard
+open http://127.0.0.1:<analytics-port>/dashboard
 
 # CLI stats
 budi stats                    # summary for current repo
@@ -29,7 +29,7 @@ budi doctor                   # health check
 
 ## Architecture
 
-- Daemon: `budi-daemon` on 127.0.0.1:7878 (started automatically)
+- Daemon: `budi-daemon` on 127.0.0.1:<analytics-port> (started automatically)
 - DB: `~/.local/share/budi/repos/<repo-hash>/budi.db` (SQLite, mode 600)
 - Hooks: 5 events in `~/.claude/settings.json` (SessionStart, UserPromptSubmit, PostToolUse, SubagentStart, Stop)
 - Status line: live cost shown in Claude Code terminal
