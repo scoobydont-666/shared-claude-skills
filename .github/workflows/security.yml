@@ -48,3 +48,12 @@ jobs:
             exit 1
           fi
           echo "All skills validated"
+
+  internal-refs-scan:
+    name: Internal References Check
+    runs-on: [self-hosted, hydra, cpu]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for internal infrastructure references
+        run: |
+          bash scripts/check-internal-refs.sh
