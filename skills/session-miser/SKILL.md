@@ -77,21 +77,21 @@ Claude Code supports effort levels: opus:low, opus:medium, opus:high (and sonnet
 Recommend `/model opus:low` for simple tasks instead of switching to Sonnet entirely.
 This preserves Opus quality for unexpected complexity while saving cost.
 
-## Integration with claude-swarm
+## Integration with Multi-Instance Coordination
 
-When swarm has multiple nodes:
-- Route GPU-intensive tasks to node_gpu (create swarm task with requires: [gpu, ollama])
-- Route mechanical fleet tasks to node_primary (lower cost host)
-- When creating swarm tasks, specify the model tier in the task description:
+When coordinating work across multiple nodes:
+- Route GPU-intensive tasks to GPU hosts (create coordination task with requires: [gpu, ollama])
+- Route mechanical fleet tasks to primary/CPU hosts (lower cost hosts)
+- When creating coordination tasks, specify the model tier in the task description:
   "This is a sonnet-tier task: bulk edit config files across 5 repos"
 - This helps the claiming instance pick the right model
 
 ## Cost Tracking
 
-After significant work blocks, check budi:
+After significant work blocks, check session-snitch:
 ```bash
-budi stats       # session cost so far
-budi cost        # cost breakdown by model
+session-snitch stats       # session cost so far
+session-snitch cost        # cost breakdown by model
 ```
 
 If session cost is climbing fast, suggest:

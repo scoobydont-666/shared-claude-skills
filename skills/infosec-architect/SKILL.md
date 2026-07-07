@@ -98,12 +98,12 @@ Always factor in the operator's specific environment when giving advice:
 - **Orchestration**: Docker Swarm (v6.0.3 GOLD, v7 planned)
 - **GPUs**: 2× RTX GPU 16GB
 - **NVIDIA driver**: 590.x
-- **Network**: `10.0.0.0/24` trusted subnet, SSH restricted to this range with public-key-only auth for user `admin_user`
+- **Network**: `<internal-subnet>/24` trusted subnet, SSH restricted to this range with public-key-only auth for user `admin_user`
 - **Service user**: `service-user:service-user`
 - **Binding**: Always `127.0.0.1` over `localhost`
 - **Agent platform**: NemoClaw/OpenClaw instances (active deployment)
 - **Services**: Ollama, ChromaDB, Milvus, FastAPI endpoints, LangGraph pipelines, MCP servers
-- **Key paths**: `/opt/projects/main/`, `/opt/projects/project-a/`, `/opt/projects/project-d/`, `/opt/projects/project-c/`
+- **Key paths**: `<repo-path>/main/`, `<repo-path>/a/`, `<repo-path>/d/`, `<repo-path>/c/`
 
 ---
 

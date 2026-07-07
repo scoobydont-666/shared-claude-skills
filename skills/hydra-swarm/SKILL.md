@@ -4,8 +4,8 @@ description: "Distributed Claude Code coordination v2 — autonomous multi-insta
 triggers:
   - swarm
   - other instances
-  - node_gpu is working on
-  - send to node_primary
+  - what is each host working on
+  - send to coordinator
   - share this
   - who else is online
   - coordinate
@@ -28,91 +28,91 @@ Coordinates multiple Claude Code instances across the Swarm cluster using NFS-ba
 
 ### Check swarm status before starting work
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py status
+python3 <coordination-tool-root>/src/swarm_cli.py status
 ```
 
 ### Create a task for another instance
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks create "Task title" \
-  --desc "Description" --project /opt/target-project --priority high \
+python3 <coordination-tool-root>/src/swarm_cli.py tasks create "Task title" \
+  --desc "Description" --project <your-project-path> --priority high \
   --requires gpu --minutes 30
 ```
 
 ### Claim a task
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks claim task-001
+python3 <coordination-tool-root>/src/swarm_cli.py tasks claim task-001
 ```
 
 ### Claim with worktree isolation (conflict-free editing)
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks claim task-001 --isolate --project /opt/target-project
+python3 <coordination-tool-root>/src/swarm_cli.py tasks claim task-001 --isolate --project <your-project-path>
 ```
 
 ### Complete a task
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks complete task-001 --artifact results.md
+python3 <coordination-tool-root>/src/swarm_cli.py tasks complete task-001 --artifact results.md
 ```
 
 ### Complete + merge worktree to main
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks complete task-001 --merge --project /opt/target-project
+python3 <coordination-tool-root>/src/swarm_cli.py tasks complete task-001 --merge --project <your-project-path>
 ```
 
 ### Complete + push branch only (another instance merges)
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks complete task-001 --branch --project /opt/target-project
+python3 <coordination-tool-root>/src/swarm_cli.py tasks complete task-001 --branch --project <your-project-path>
 ```
 
 ### Task Decomposition — suggest splitting a large task
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks decompose task-001
+python3 <coordination-tool-root>/src/swarm_cli.py tasks decompose task-001
 ```
 
 ### Task Decomposition — apply the suggested split
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks decompose task-001 --apply
+python3 <coordination-tool-root>/src/swarm_cli.py tasks decompose task-001 --apply
 ```
 
 ### Send a message to another instance
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py message node_gpu "Need the ProjectA RAG results"
-python3 /opt/hydra-swarm/src/swarm_cli.py message --broadcast "Deploying v2 in 5 min"
+python3 <coordination-tool-root>/src/swarm_cli.py message <gpu-host> "Need the RAG results from <your-project>"
+python3 <coordination-tool-root>/src/swarm_cli.py message --broadcast "Deploying v2 in 5 min"
 ```
 
 ### Check inbox
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py inbox
+python3 <coordination-tool-root>/src/swarm_cli.py inbox
 ```
 
 ### Share an artifact
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py artifacts share /path/to/results.md
+python3 <coordination-tool-root>/src/swarm_cli.py artifacts share /path/to/results.md
 ```
 
 ### List active worktrees across fleet
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py worktrees --project /opt/target-project
+python3 <coordination-tool-root>/src/swarm_cli.py worktrees --project <your-project-path>
 ```
 
 ### View session summaries
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py summaries
-python3 /opt/hydra-swarm/src/swarm_cli.py summaries --project /opt/projects/project-a
+python3 <coordination-tool-root>/src/swarm_cli.py summaries
+python3 <coordination-tool-root>/src/swarm_cli.py summaries --project <repo-path>/a
 ```
 
 ### Show what the last instance left for you
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py context --project /opt/projects/project-a
+python3 <coordination-tool-root>/src/swarm_cli.py context --project <repo-path>/a
 ```
 
 ### Health check
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py health
+python3 <coordination-tool-root>/src/swarm_cli.py health
 ```
 
 ### Force git sync
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py sync
+python3 <coordination-tool-root>/src/swarm_cli.py sync
 ```
 
 ## Task Decomposition Workflow
@@ -151,7 +151,7 @@ Decomposition rules:
 - Conflict detection: warn if two agents editing same project
 - **This is NOT advisory** — agents act autonomously within the priority framework
 
-## v2 Modules (in /opt/hydra-swarm/src/)
+## v2 Modules (in <coordination-tool-root>/src/)
 | Module | Purpose |
 |--------|---------|
 | `registry.py` | Agent presence, heartbeat, capability detection |
@@ -166,7 +166,7 @@ Decomposition rules:
 from session import start_session, end_session
 
 # On session start:
-info = start_session(model="opus-4.6", project="/opt/projects/project-e")
+info = start_session(model="opus-4.6", project="<repo-path>")
 # → registers agent, starts heartbeat, pulls repos, reads event catchup
 
 # During work: events auto-emitted on commit/test/task completion
@@ -179,10 +179,10 @@ result = end_session()
 ## Node Map
 | Host | IP | Role | Capabilities |
 |------|-----|------|-------------|
-| node_gpu | 10.0.0.10 | NFS primary | docker, gpu, ollama, tailscale |
-| node_primary | 10.0.0.20 | NFS replica | docker, tailscale |
-| node_reserve1 | TBD | client | TBD |
-| node_reserve2 | TBD | client | TBD |
+| gpu-host | <internal-ip-1> | NFS primary | docker, gpu, ollama, vpn |
+| primary-host | <internal-ip-2> | NFS replica | docker, vpn |
+| worker-host-1 | <internal-ip-3> | client | custom |
+| worker-host-2 | <internal-ip-4> | client | custom |
 
 ## Task States
 - `pending` — available for claiming
@@ -197,7 +197,7 @@ result = end_session()
 - `busy` — active but do not interrupt
 
 ## File Locations
-- Project: `/opt/hydra-swarm/`
-- NFS share: `/opt/swarm/` (mounted from node_gpu or node_primary replica)
-- Config: `/opt/hydra-swarm/config/swarm.yaml`
-- CLI: `/opt/hydra-swarm/src/swarm_cli.py`
+- Project: `<coordination-tool-root>/`
+- NFS share: `<shared-coordination-root>/` (mounted from primary or replica host)
+- Config: `<coordination-tool-root>/config/swarm.yaml`
+- CLI: `<coordination-tool-root>/src/swarm_cli.py`

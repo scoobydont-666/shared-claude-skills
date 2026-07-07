@@ -1,0 +1,54 @@
+# Internal infrastructure reference deny list
+# These patterns leak internal topology and should never appear in public documentation
+# Update this list if new internal patterns are discovered
+
+# Fleet hostname aliases (should use generic <gpu-host>, <cpu-host>, etc.)
+node_primary
+node_gpu
+node_miner
+node_orchestrator
+node_worker
+node_reserve
+
+# Internal project codenames (should use generic <your-project>, <project-name>, etc.)
+ProjectA
+ProjectB
+ProjectC
+ProjectD
+ProjectE
+
+# Local service ports on 127.0.0.1 (should use <service-port>, <local-port>, etc.)
+127\.0\.0\.1:[0-9]+
+
+# Internal subnet and gateway IPs (should use <internal-subnet>, <gateway-ip>, etc.)
+10\.0\.0\.
+10\.0\.1\.
+10\.0\.1\.
+192\.168\.200\.
+192\.168\.201\.
+
+# Internal project paths (should use <repo-path>, <config-dir>, <project-root>, etc.)
+/opt/claude-swarm
+/opt/hydra-
+/opt/monero-farm
+/opt/christi-
+/opt/taxprep-
+
+# Internal tool name 'budi' when used as generic reference (budi-analytics skill is allowed to reference its own name)
+
+# Incomplete renames: claude-swarm should be hydra-swarm in most contexts
+claude-swarm([^/]|$)
+
+# Internal hostnames
+gpu-node-1
+gpu-node-2
+gpu-node-3
+orchestrator\.internal
+mecha\.local
+giga\.local
+mega\.local
+miner\.local
+rainbow\.local
+
+# Internal CLI tool invocations (public name: session-snitch)
+budi (stats|cost|budget)

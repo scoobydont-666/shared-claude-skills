@@ -174,17 +174,17 @@ Bump **down** one tier if ALL of:
 
 ## Project-Specific Routing
 
-### ProjectA (LangGraph tax pipeline)
+### <your-project> (LangGraph tax pipeline)
 - Intent classification: Haiku | RAG scoring: Haiku | Tax reasoning: Sonnet/Opus
 - Response synthesis: Sonnet minimum | Security guardrails: Haiku
 
-### ProjectC (guest messaging pipeline)
+### <internal-project-3> (guest messaging pipeline)
 - Webhook parsing: Haiku | Guest messages: Sonnet | Review responses: Sonnet
 
-### ProjectD (interview pipeline)
+### <internal-project-4> (interview pipeline)
 - Form extraction: Haiku | State transitions: Haiku | Tax calculation: Sonnet
 
-### ProjectB / Infrastructure
+### <internal-project-1> / Infrastructure
 - No API calls — token-miser applies only to subagent routing during Claude Code sessions
 
 ---
