@@ -78,7 +78,7 @@ claude-to-cursor/
 - budi-analytics (Claude Code hook analytics — Cursor-specific)
 - skill-updater (meta-skill for Claude Code skill management)
 - inbound-sync (claude.ai ↔ Claude Code sync workflow)
-- openclaw-ops (node_primary-specific deployment)
+- openclaw-ops (primary-host-specific deployment)
 - fleet-manager (SSH/Ansible fleet ops — not IDE-relevant)
 - ansible-hardening (infrastructure, not IDE-relevant)
 
