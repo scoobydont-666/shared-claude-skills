@@ -28,91 +28,91 @@ Coordinates multiple Claude Code instances across the Swarm cluster using NFS-ba
 
 ### Check swarm status before starting work
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py status
+python3 <coordination-tool-root>/src/swarm_cli.py status
 ```
 
 ### Create a task for another instance
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks create "Task title" \
+python3 <coordination-tool-root>/src/swarm_cli.py tasks create "Task title" \
   --desc "Description" --project <your-project-path> --priority high \
   --requires gpu --minutes 30
 ```
 
 ### Claim a task
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks claim task-001
+python3 <coordination-tool-root>/src/swarm_cli.py tasks claim task-001
 ```
 
 ### Claim with worktree isolation (conflict-free editing)
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks claim task-001 --isolate --project <your-project-path>
+python3 <coordination-tool-root>/src/swarm_cli.py tasks claim task-001 --isolate --project <your-project-path>
 ```
 
 ### Complete a task
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks complete task-001 --artifact results.md
+python3 <coordination-tool-root>/src/swarm_cli.py tasks complete task-001 --artifact results.md
 ```
 
 ### Complete + merge worktree to main
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks complete task-001 --merge --project <your-project-path>
+python3 <coordination-tool-root>/src/swarm_cli.py tasks complete task-001 --merge --project <your-project-path>
 ```
 
 ### Complete + push branch only (another instance merges)
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks complete task-001 --branch --project <your-project-path>
+python3 <coordination-tool-root>/src/swarm_cli.py tasks complete task-001 --branch --project <your-project-path>
 ```
 
 ### Task Decomposition — suggest splitting a large task
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks decompose task-001
+python3 <coordination-tool-root>/src/swarm_cli.py tasks decompose task-001
 ```
 
 ### Task Decomposition — apply the suggested split
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py tasks decompose task-001 --apply
+python3 <coordination-tool-root>/src/swarm_cli.py tasks decompose task-001 --apply
 ```
 
 ### Send a message to another instance
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py message <gpu-host> "Need the RAG results from <your-project>"
-python3 /opt/hydra-swarm/src/swarm_cli.py message --broadcast "Deploying v2 in 5 min"
+python3 <coordination-tool-root>/src/swarm_cli.py message <gpu-host> "Need the RAG results from <your-project>"
+python3 <coordination-tool-root>/src/swarm_cli.py message --broadcast "Deploying v2 in 5 min"
 ```
 
 ### Check inbox
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py inbox
+python3 <coordination-tool-root>/src/swarm_cli.py inbox
 ```
 
 ### Share an artifact
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py artifacts share /path/to/results.md
+python3 <coordination-tool-root>/src/swarm_cli.py artifacts share /path/to/results.md
 ```
 
 ### List active worktrees across fleet
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py worktrees --project <your-project-path>
+python3 <coordination-tool-root>/src/swarm_cli.py worktrees --project <your-project-path>
 ```
 
 ### View session summaries
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py summaries
-python3 /opt/hydra-swarm/src/swarm_cli.py summaries --project <repo-path>/a
+python3 <coordination-tool-root>/src/swarm_cli.py summaries
+python3 <coordination-tool-root>/src/swarm_cli.py summaries --project <repo-path>/a
 ```
 
 ### Show what the last instance left for you
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py context --project <repo-path>/a
+python3 <coordination-tool-root>/src/swarm_cli.py context --project <repo-path>/a
 ```
 
 ### Health check
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py health
+python3 <coordination-tool-root>/src/swarm_cli.py health
 ```
 
 ### Force git sync
 ```bash
-python3 /opt/hydra-swarm/src/swarm_cli.py sync
+python3 <coordination-tool-root>/src/swarm_cli.py sync
 ```
 
 ## Task Decomposition Workflow
@@ -151,7 +151,7 @@ Decomposition rules:
 - Conflict detection: warn if two agents editing same project
 - **This is NOT advisory** — agents act autonomously within the priority framework
 
-## v2 Modules (in /opt/hydra-swarm/src/)
+## v2 Modules (in <coordination-tool-root>/src/)
 | Module | Purpose |
 |--------|---------|
 | `registry.py` | Agent presence, heartbeat, capability detection |

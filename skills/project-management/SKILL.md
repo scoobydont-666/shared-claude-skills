@@ -91,7 +91,7 @@ Execute when all work is done or all remaining items are blocked.
 ```bash
 for dir in <repo-path>/e <repo-path>/f <repo-path>/g <repo-path>/h \
            <repo-path>/i <repo-path>/j /opt/projects/main <repo-path>/b \
-           /opt/hydra-swarm <repo-path>/a <repo-path>/c <repo-path>/d \
+           <coordination-tool-root> <repo-path>/a <repo-path>/c <repo-path>/d \
            <repo-path>/k; do
   if [ -d "$dir/.git" ]; then
     changes=$(git -C "$dir" status --porcelain 2>/dev/null | wc -l)
@@ -231,7 +231,7 @@ NOT available without <gpu-host>:
 | #9 | ProjectK | <repo-path>/k | 1 | Built (98 tests), needs Firewalla + JWT | <primary-host> |
 | #10 | Swarm Media | <repo-path>/l | M4 | ffmpeg assembly (155 tests) | <primary-host> |
 | -- | <your-project> | <repo-path>/e | E5 | 1,112 CPA questions, 6 sections (299 tests) | <gpu-host> |
-| -- | hydra-swarm | /opt/hydra-swarm | 5 | Operational maturity (627 tests) | <primary-host> |
+| -- | hydra-swarm | <coordination-tool-root> | 5 | Operational maturity (627 tests) | <primary-host> |
 
 ## Fleet Resource Map
 
