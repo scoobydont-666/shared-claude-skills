@@ -172,7 +172,7 @@ Wired Redis session backend into project_a_api.py, replacing in-memory SessionSt
 - [ ] Update CLAUDE.md in project-a: add Redis session backend to architecture section
 - [ ] Update architecture.md: document session persistence behavior
 - [ ] Update .env.example: add CHRISTI_SESSION_BACKEND variable
-- [ ] Test: `sudo systemctl restart project-a-api && curl http://127.0.0.1:8501/health`
+- [ ] Test: `sudo systemctl restart <service-name> && curl http://127.0.0.1:<service-port>/health`
 
 ---
 
