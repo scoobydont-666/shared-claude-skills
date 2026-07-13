@@ -161,5 +161,4 @@ When reviewing an existing schema:
 ## Integration
 
 - **tdd:** Write schema tests first (can I insert valid data? rejected invalid data?)
-- **repo-hardening-workflow:** Schema review is part of the data governance phase
 - **code-quality:** N+1 queries and missing indexes are performance findings

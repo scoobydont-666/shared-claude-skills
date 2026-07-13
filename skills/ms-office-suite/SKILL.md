@@ -1,23 +1,12 @@
 ---
 name: ms-office-suite
-description: Generate professional documents — Excel workbooks, Word docs, PowerPoint decks, PDFs. CPA-grade financial reports, cost analyses, executive summaries. Uses python-docx, openpyxl, python-pptx, reportlab, weasyprint.
-triggers:
-  - generate report
-  - cost report
-  - cloud cost
-  - ROI analysis
-  - financial projection
-  - create spreadsheet
-  - make PDF
-  - pitch deck
-  - ms-office
-  - excel
-  - word doc
-  - powerpoint
-  - write report
-  - executive summary
-  - budget report
-  - break-even
+description: >
+  Generate professional Excel workbooks, Word documents, PowerPoint decks, and PDFs,
+  including CPA-grade financial reports, cost analyses, ROI projections, executive
+  summaries, budgets, and break-even reports. Uses python-docx, openpyxl, python-pptx,
+  reportlab, weasyprint, and Markdown. Use when asked to generate a report, spreadsheet,
+  PDF, pitch deck, presentation, financial projection, cloud-cost analysis, or other
+  Microsoft Office-style deliverable.
 ---
 
 # MS Office Suite — Document Generation Skill
@@ -37,10 +26,11 @@ reports = [
     "reportlab>=4.0",
     "weasyprint>=62.0",
     "matplotlib>=3.8.0",
+    "markdown>=3.6",
 ]
 ```
 
-Standalone install: `uv pip install python-docx openpyxl python-pptx reportlab weasyprint matplotlib`
+Standalone install: `uv pip install python-docx openpyxl python-pptx reportlab weasyprint matplotlib markdown`
 
 ## Output Conventions
 
@@ -63,7 +53,7 @@ def create_cost_workbook(project_name: str, data: dict) -> str:
     """Generate a multi-sheet cost comparison workbook.
 
     Args:
-        project_name: e.g. "examforge"
+        project_name: e.g. "sample-app"
         data: {
             "tiers": ["Starter", "Growth", "Scale"],
             "providers": ["AWS", "Azure", "GCP", "OCI", "Hetzner"],
@@ -369,6 +359,31 @@ def create_deck(title: str, slides_data: list[dict]) -> str:
                 slide_data["chart_image"],
                 Inches(1), Inches(1.5), Inches(11), Inches(5.5)
             )
+
+        if slide_data["layout"] == "table":
+            table_data = slide_data.get("table")
+            if not table_data or not table_data[0]:
+                raise ValueError("table slides require a non-empty 'table' matrix")
+
+            column_count = len(table_data[0])
+            if any(len(row) != column_count for row in table_data):
+                raise ValueError("table slides require rows with equal column counts")
+
+            table = slide.shapes.add_table(
+                len(table_data),
+                column_count,
+                Inches(0.75),
+                Inches(1.5),
+                Inches(11.8),
+                Inches(5.25),
+            ).table
+            for row_index, row_data in enumerate(table_data):
+                for column_index, value in enumerate(row_data):
+                    cell = table.cell(row_index, column_index)
+                    cell.text = str(value)
+                    if row_index == 0:
+                        for run in cell.text_frame.paragraphs[0].runs:
+                            run.font.bold = True
 
         if "bullets" in slide_data:
             tf = slide.placeholders[1].text_frame
