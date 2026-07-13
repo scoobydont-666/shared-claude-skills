@@ -4,7 +4,7 @@ A collection of original [Claude Code](https://docs.anthropic.com/en/docs/claude
 
 These are **Claude Code skills** (SKILL.md files in `~/.claude/skills/`), not Cursor rules. If you want Cursor-compatible `.mdc` files, see the [claude-to-cursor](#claude-to-cursor) skill included here for conversion guidance.
 
-## Skills (23)
+## Skills (31)
 
 ### Code Quality & Review
 | Skill | Description |
@@ -47,6 +47,16 @@ These are **Claude Code skills** (SKILL.md files in `~/.claude/skills/`), not Cu
 | [skill-updater](skills/skill-updater/) | Meta-skill that audits installed skills for staleness, gaps, overlaps. Cross-references CLAUDE.md and memory files for contradictions. |
 | [project-management](skills/project-management/) | Autonomous work execution loop. Priority framework, session protocol, work queue management, fleet resource routing. |
 | [config-auditor](skills/config-auditor/) | Cross-reference config files for contradictions, stale data, and inconsistencies across projects. |
+
+### Planning, Product & Documents
+| Skill | Description |
+|-------|-------------|
+| [write-a-prd](skills/write-a-prd/) | Create a PRD through user interview, codebase exploration, and module design. |
+| [prd-to-plan](skills/prd-to-plan/) | Turn a PRD into a multi-phase implementation plan using tracer-bullet vertical slices. |
+| [grill-me](skills/grill-me/) | Structured interrogation to stress-test plans/designs across requirements, edge cases, failure modes, security, tradeoffs. |
+| [database-design](skills/database-design/) | Relational + NoSQL schema design guidance — normalization, indexing, access patterns, trade-offs. |
+| [model-evaluation](skills/model-evaluation/) | Framework for evaluating LLM/model outputs — rubrics, held-out sets, judge design, regression tracking. |
+| [ms-office-suite](skills/ms-office-suite/) | Generate professional Excel/Word/PowerPoint/PDF documents (python-docx, openpyxl, python-pptx, reportlab). |
 
 ### Domain-Specific
 | Skill | Description |
