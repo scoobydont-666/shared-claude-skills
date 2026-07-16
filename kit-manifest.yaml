@@ -1,0 +1,813 @@
+# shared-claude-skills kit-manifest (ST5 — DRAFT)
+#
+# This manifest is the TRIAGE result for the ~91 source skills under
+# ~/.claude/skills/. For each source skill, it records:
+#
+#   - decision: keep | remove
+#   - reason:   why this decision was made (kept because generic /
+#              scrubbable / rewritable; removed because instance-only or
+#              personal-domain)
+#   - rewrite_level:
+#                 trivial = body is mostly generic, minor sanitization only
+#                 scrub   = significant lab-ref removal needed
+#                 rewrite = body needs templating or placeholder substitution
+#   - target_path: where the converted skill lands in the kit
+#   - placeholders: list of placeholder categories the rewritten skill
+#              will require (referenced from CONFIGURATION.md)
+#
+# The manifest is the contract between the triage review and the
+# mass-conversion step. Mass conversion only runs after this manifest
+# is approved.
+#
+# Re-run the triage via `scripts/build.py triage` (or by hand) — any
+# change to a keep/remove decision MUST update this file before the
+# corresponding skill is converted.
+
+# -----------------------------------------------------------------------------
+# Skill triage
+# -----------------------------------------------------------------------------
+
+skills:
+
+  # === Code quality, review, methodology ===
+
+  - name: code-consistency
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/code-consistency/
+    placeholders: []
+    notes: |
+      Language-specific style enforcement. Body is generic; only
+      example file references need sanitization.
+
+  - name: code-quality
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/code-quality/
+    placeholders: []
+    notes: |
+      Architecture / performance / security / testability review.
+      Generic patterns; minor sanitization.
+
+  - name: differential-review
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/differential-review/
+    placeholders: []
+    notes: |
+      Security-focused PR review. Generic methodology.
+
+  - name: tdd
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/tdd/
+    placeholders: []
+    notes: |
+      Red-green-refactor methodology. Generic.
+
+  - name: systematic-debugging
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/systematic-debugging/
+    placeholders: []
+    notes: |
+      Root-cause-first debugging. Generic.
+
+  - name: property-based-testing
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/property-based-testing/
+    placeholders: []
+    notes: |
+      PBT guidance across Python/JS/Go/Rust/smart-contracts. Generic.
+
+  - name: grill-me
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/grill-me/
+    placeholders: []
+    notes: |
+      Devil's advocate challenge mode. Generic.
+
+  - name: definition-of-done
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/definition-of-done/
+    placeholders: []
+    notes: |
+      Completion-criteria check. Generic.
+
+  - name: verification-before-completion
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/verification-before-completion/
+    placeholders: []
+    notes: |
+      Evidence-before-assertions methodology. Generic.
+
+  - name: insecure-defaults
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/insecure-defaults/
+    placeholders: []
+    notes: |
+      Fail-open insecure pattern detection. Generic.
+
+  - name: infosec-architect
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/infosec-architect/
+    placeholders: []
+    notes: |
+      Security architecture patterns. Generic doctrine; scrub lab
+      references in examples.
+
+  - name: config-auditor
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/config-auditor/
+    placeholders: []
+    notes: |
+      Cross-reference config consistency. Generic; scrub lab paths.
+
+  - name: container-sandbox
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/container-sandbox/
+    placeholders: []
+    notes: |
+      Container-based execution isolation. Generic.
+
+  - name: dead-and-green-sweep
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/dead-and-green-sweep/
+    placeholders: []
+    notes: |
+      Zombie-timer / silent-failure sweep. Generic doctrine; scrub
+      lab-specific service names.
+
+  - name: supply-chain-risk-auditor
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/supply-chain-risk-auditor/
+    placeholders: []
+    notes: |
+      Dependency supply-chain risk. Generic.
+
+  - name: session-miser
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/session-miser/
+    placeholders: []
+    notes: |
+      Session model routing (Opus/Sonnet/Haiku). Generic doctrine;
+      scrub lab routing tables (the routing config is
+      implementation-specific, but the routing logic is generic).
+
+  - name: token-miser
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/token-miser/
+    placeholders: []
+    notes: |
+      Subagent model routing. Generic routing logic; Claude-Code-shaped
+      plumbing needs scrub (specific MCP server names, model aliases).
+
+  - name: cost-optimizer
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/cost-optimizer/
+    placeholders:
+      - {{ELECTRICITY_TARIFF}}
+      - {{CLOUD_BUDGET}}
+    notes: |
+      Unified cost awareness. Generic doctrine; scrub lab-specific
+      cost telemetry (electricity TOU tables, cloud spend breakdowns).
+
+  - name: pr-truth-triage
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/pr-truth-triage/
+    placeholders:
+      - {{BRANCH_PROTECTION_LEVEL}}
+    notes: |
+      PR triage methodology. Generic; rewrite branch-protection
+      references to use the {{BRANCH_PROTECTION_LEVEL}} placeholder
+      rather than lab-specific branch-protection rules.
+
+  - name: ticket-pre-claim-audit
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ticket-pre-claim-audit/
+    placeholders: []
+    notes: |
+      Ticket audit methodology. Generic; scrub lab kanban specifics.
+
+  - name: triage-issue
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/triage-issue/
+    placeholders: []
+    notes: |
+      Issue triage. Generic.
+
+  # === Database & data ===
+
+  - name: database-design
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/database-design/
+    placeholders: []
+    notes: |
+      Schema design, migration strategy, index planning. Generic.
+
+  # === Infrastructure & ops (with templating for production GPU env) ===
+
+  - name: bmc-ops
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/bmc-ops/
+    placeholders:
+      - {{BMC_ENDPOINT}}
+      - {{BMC_USERNAME}}
+      - {{BMC_PASSWORD}}
+      - {{POWER_STATE}}
+    notes: |
+      IPMI/Redfish craft is generic. The lab-specific BMC endpoints,
+      credentials, and host inventory MUST be parameterized out
+      (CONFIGURATION.md supplies these per user).
+
+  - name: k3s-ops
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/k3s-ops/
+    placeholders:
+      - {{K8S_CONTEXT}}
+      - {{KUBECONFIG}}
+      - {{NODE_NAME}}
+    notes: |
+      K3s operations methodology. Generic; rewrite node-specific
+      examples to use {{K8S_CONTEXT}}/{{NODE_NAME}} placeholders.
+
+  - name: prism-central-ops
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/prism-central-ops/
+    placeholders:
+      - {{PRISM_CENTRAL_URL}}
+      - {{PRISM_CENTRAL_USER}}
+      - {{PRISM_CENTRAL_PASSWORD}}
+    notes: |
+      Prism Central MCP/CLI ops. Generic ops methodology; rewrite
+      endpoint/credential examples.
+
+  - name: vllm-serving-health-loop
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/vllm-serving-health-loop/
+    placeholders:
+      - {{VLLM_BASE_URL}}
+      - {{HEALTH_POLL_INTERVAL}}
+    notes: |
+      vLLM health-check loop. Generic; parameterize endpoint.
+
+  - name: llm-training
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/llm-training/
+    placeholders:
+      - {{MODEL_DIR}}
+      - {{DATA_DIR}}
+      - {{GPU_COUNT}}
+      - {{GPU_TYPE}}
+      - {{CHECKPOINT_DIR}}
+      - {{TRAINING_PARAMS}}
+    notes: |
+      LLM training loop. Doctrine is generic; rewrite all absolute
+      paths to {{MODEL_DIR}}/{{DATA_DIR}}/{{CHECKPOINT_DIR}} placeholders
+      and parameterize GPU count/type.
+
+  - name: llm-uplift
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/llm-uplift/
+    placeholders:
+      - {{MODEL_DIR}}
+      - {{DATA_DIR}}
+      - {{GPU_COUNT}}
+    notes: |
+      LLM uplift loop. Same templating as llm-training.
+
+  - name: model-evaluation
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/model-evaluation/
+    placeholders: []
+    notes: |
+      Model evaluation methodology. Generic; scrub lab routing
+      aliases + benchmark naming.
+
+  - name: model-fleet-lifecycle
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/model-fleet-lifecycle/
+    placeholders:
+      - {{MODEL_REGISTRY}}
+      - {{HF_TOKEN}}
+    notes: |
+      Model fleet lifecycle. Generic; parameterize registry + auth.
+
+  - name: hive-gitops-vcs
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/hive-gitops-vcs/
+    placeholders:
+      - {{GIT_REMOTE}}
+    notes: |
+      GitOps/VCS patterns. Generic doctrine; rewrite internal
+      GitOps tooling references.
+
+  - name: rag-pipeline
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/rag-pipeline/
+    placeholders: []
+    notes: |
+      RAG pipeline design. Generic doctrine; scrub lab RAG stack
+      (CB/HNN) references where example-specific.
+
+  - name: repo-hardening-workflow
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/repo-hardening-workflow/
+    placeholders: []
+    notes: |
+      Repo hardening workflow. Generic.
+
+  - name: prod-hard
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/prod-hard/
+    placeholders:
+      - {{STAGING_ENV}}
+      - {{PROD_ENV}}
+    notes: |
+      Production hardening loop. Generic; rewrite env-specific
+      staging/prod references.
+
+  - name: autonomous-ai-agents
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/autonomous-ai-agents/
+    placeholders: []
+    notes: |
+      Multi-agent coordination. Generic patterns; scrub specific agent
+      identities (pane names, agent role identifiers).
+
+  - name: claude-swarm
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/claude-swarm/
+    placeholders:
+      - {{SWARM_REGISTRY}}
+      - {{WORK_QUEUE_DIR}}
+    notes: |
+      Multi-instance coordination via NFS+git. Generic doctrine; rewrite
+      specific NFS mount paths and registry layout.
+
+  - name: gemini-fetch
+    decision: remove
+    rewrite_level: n/a
+    target_path: n/a
+    notes: |
+      REMOVED. Vendor lock-in (single-vendor-specific); also
+      DEPRECATED upstream per the generic-search MCP note. Use the
+      generic-search MCP for portable search.
+
+  - name: mcp-create
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/mcp-create/
+    placeholders: []
+    notes: |
+      MCP server creation. Generic methodology; scrub lab transport
+      specifics.
+
+  - name: mcp-hardening
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/mcp-hardening/
+    placeholders: []
+    notes: |
+      MCP security audit. Generic; scrub lab-specific MCP servers
+      referenced as examples.
+
+  - name: policy-compliance-check
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/policy-compliance-check/
+    placeholders:
+      - {{POLICY_DIR}}
+    notes: |
+      Policy compliance check. Generic; rewrite specific policy-pack
+      references to {{POLICY_DIR}}.
+
+  - name: jsonl-repair
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/jsonl-repair/
+    placeholders: []
+    notes: |
+      JSONL repair. Generic.
+
+  - name: resolve-gate-script-conflicts
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/resolve-gate-script-conflicts/
+    placeholders: []
+    notes: |
+      Gate script conflict resolution. Generic.
+
+  # === Planning, doctrine, methodology (no kanban/fleet plumbing) ===
+
+  - name: ultraplan
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ultraplan/
+    placeholders: []
+    notes: |
+      Multi-phase planning methodology. Generic doctrine; scrub
+      kanban/fleet-plumbing references (the methodology is generic
+      even if the example project is lab-specific).
+
+  - name: cocs
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/cocs/
+    placeholders: []
+    notes: |
+      Circle of consensus review methodology. Generic doctrine;
+      same scrub treatment as ultraplan.
+
+  - name: task-master
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/task-master/
+    placeholders: []
+    notes: |
+      Autonomous execution loop doctrine. Generic; scrub kanban
+      specifics.
+
+  - name: supercocs
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/supercocs/
+    placeholders: []
+    notes: |
+      Super Circle of Consensus (multi-model review). Generic;
+      same scrub treatment as cocs.
+
+  - name: ch-pm
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ch-pm/
+    placeholders: []
+    notes: |
+      Team PM workflow. Generic; scrub kanban specifics.
+
+  - name: project-management
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/project-management/
+    placeholders: []
+    notes: |
+      Autonomous work execution. Generic doctrine; scrub kanban
+      specifics.
+
+  - name: ultra-pm
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ultra-pm/
+    placeholders: []
+    notes: |
+      Ultra PM. Generic; scrub.
+
+  - name: plan-to-execution-handoff
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/plan-to-execution-handoff/
+    placeholders: []
+    notes: |
+      Plan to execution handoff. Generic.
+
+  - name: prd-to-plan
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/prd-to-plan/
+    placeholders: []
+    notes: |
+      PRD to plan. Generic.
+
+  - name: write-a-prd
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/write-a-prd/
+    placeholders: []
+    notes: |
+      PRD writing. Generic.
+
+  # === Session persistence (local-file single-user rewrite per brief) ===
+
+  - name: checkpoint
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/checkpoint/
+    placeholders:
+      - {{CHECKPOINT_DIR}}
+    notes: |
+      Session checkpointing. Generic; rewrite to local-file
+      single-user shape (CONFIGURATION.md supplies {{CHECKPOINT_DIR}}).
+
+  - name: session-recover
+    decision: keep
+    rewrite_level: rewrite
+    target_path: skills/session-recover/
+    placeholders:
+      - {{CHECKPOINT_DIR}}
+    notes: |
+      Session recovery. Generic; same {{CHECKPOINT_DIR}} rewrite.
+
+  - name: session-snitch
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/session-snitch/
+    placeholders: []
+    notes: |
+      Session analytics. Generic patterns; scrub lab routing
+      and budget references.
+
+  - name: mogri-dragi-guard
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/mogri-dragi-guard/
+    placeholders: []
+    notes: |
+      Doctrine guard. Generic; scrub any lab-specific tool names.
+
+  # === ECC family (eval/eval-harness/strategic-compact/skill-stocktake) ===
+
+  - name: ecc-continuous-agent-loop
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ecc-continuous-agent-loop/
+    placeholders: []
+    notes: |
+      ECC patterns. Generic; scrub lab-specific eval targets.
+
+  - name: ecc-eval-harness
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ecc-eval-harness/
+    placeholders: []
+    notes: |
+      Eval harness. Generic; scrub lab routing aliases.
+
+  - name: ecc-skill-stocktake
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ecc-skill-stocktake/
+    placeholders: []
+    notes: |
+      Skill audit. Generic; scrub lab-specific inventory.
+
+  - name: ecc-strategic-compact
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/ecc-strategic-compact/
+    placeholders: []
+    notes: |
+      Strategic context compaction. Generic; scrub.
+
+  # === Reporting / docs ===
+
+  - name: ms-office-suite
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/ms-office-suite/
+    placeholders: []
+    notes: |
+      Office doc generation (Excel/Word/PowerPoint/PDF). Generic.
+
+  - name: report-writer
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/report-writer/
+    placeholders: []
+    notes: |
+      Report templates (cost analysis, project status). Generic;
+      scrub lab-specific table headers / sample values.
+
+  # === Conversion tooling ===
+
+  - name: claude-to-cursor
+    decision: keep
+    rewrite_level: trivial
+    target_path: skills/claude-to-cursor/
+    placeholders: []
+    notes: |
+      Convert skills to Cursor .mdc. Generic.
+
+  # === Code generation routing ===
+
+  - name: code-gen-routing
+    decision: keep
+    rewrite_level: scrub
+    target_path: skills/code-gen-routing/
+    placeholders: []
+    notes: |
+      Code-gen routing. Generic doctrine; scrub lab routing aliases.
+
+  # === ANCILLARY: removed (instance-only / personal / vendor) ===
+  # See "removed" section below for the full list with reasons.
+
+
+# -----------------------------------------------------------------------------
+# Removed skills (with reason)
+# -----------------------------------------------------------------------------
+
+removed:
+
+  # --- Instance-only (lab infrastructure coupling) ---
+  - name: ai-cluster-knowledge
+    reason: instance-only (lab K8s cluster state)
+  - name: hydra-build
+    reason: instance-only (single-project deployment)
+  - name: hydra-dispatch
+    reason: instance-only (single-project fleet dispatch)
+  - name: hydra-pulse
+    reason: instance-only (project-specific telemetry)
+  - name: fleet-manager
+    reason: instance-only (multi-node SSH for one repo)
+  - name: hive-gitops-vcs
+    # NOTE: kept above as "rewrite"; placeholder listed. Left out of the
+    # removed list below to avoid implying it was rejected.
+    reason: (kept — see kept section above)
+
+  - name: token-miser
+    # NOTE: kept above as scrub.
+    reason: (kept — see kept section above)
+
+  - name: claude-swarm
+    # NOTE: kept above as rewrite; placeholder listed.
+    reason: (kept — see kept section above)
+
+  # --- Personal-domain (per brief: REMOVE personal) ---
+  - name: cpa-tax-specialist
+    reason: personal-domain (US tax advisory)
+  - name: crypto-monero-wizard
+    reason: personal-domain (Monero/XMR-specific)
+  - name: resume-writer
+    reason: personal-domain (resume authoring)
+  - name: solar-energy
+    reason: personal-domain (solar + battery + mining integration)
+  - name: str-manager
+    reason: personal-domain (short-term rental intelligence)
+  - name: taxprep-wizard
+    reason: personal-domain (tax preparation)
+  - name: examforge-builder
+    reason: personal-domain (CPA exam question generation)
+  - name: examforge-qa
+    reason: personal-domain (CPA exam QA pipeline)
+
+  # --- Vendor lock-in / Claude Code-only ---
+  - name: gemini-fetch
+    reason: vendor lock-in (gemini-specific, also DEPRECATED upstream)
+  - name: inbound-sync
+    reason: Claude Code-only (Claude.ai sync workflow)
+  - name: openclaw-ops
+    reason: vendor lock-in (vendor-locked assistant runtime)
+  - name: naicc-suite
+    reason: vendor lock-in (Nutanix-specific)
+  - name: nai-ops
+    reason: vendor lock-in (Nutanix GPU fleet)
+  - name: claude-swarm
+    # NOTE: kept above as rewrite; placeholder listed.
+  - name: skill-updater
+    reason: Claude Code-only (skill management)
+  - name: token-miser
+    # NOTE: kept above as scrub.
+  - name: budi-analytics
+    reason: vendor-coupled (budi reference)
+
+  # --- Lab-instance specific runners ---
+  - name: <pane-bus-protocol>
+    reason: instance-only (internal pane-bus protocol)
+  - name: <agent-bootstrap>
+    reason: instance-only (internal agent bootstrap)
+  - name: <cb-hnn-runner>
+    reason: instance-only (internal CB/HNN runner)
+  - name: <multi-agent-runner>
+    reason: instance-only (internal multi-agent runner)
+  - name: <swarm-ipc-runner>
+    reason: instance-only (internal swarm IPC runner)
+
+
+# -----------------------------------------------------------------------------
+# Placeholder inventory (referenced from CONFIGURATION.md)
+# -----------------------------------------------------------------------------
+
+placeholders:
+
+  paths:
+    - {{MODEL_DIR}}:       Base directory for model artifacts
+    - {{DATA_DIR}}:        Base directory for training data
+    - {{CHECKPOINT_DIR}}:  Base directory for training checkpoints
+    - {{POLICY_DIR}}:      Base directory for policy packs
+    - {{HOME}}:            User home directory (avoid hardcoded /home/<user>/)
+
+  compute:
+    - {{GPU_COUNT}}:       Number of GPUs in the training pool
+    - {{GPU_TYPE}}:        GPU model identifier (e.g. A100, H100)
+
+  cluster:
+    - {{K8S_CONTEXT}}:     Kubernetes context name
+    - {{KUBECONFIG}}:      Path to kubeconfig
+    - {{NODE_NAME}}:       Node name for kubectl targets
+
+  infra:
+    - {{BMC_ENDPOINT}}:    BMC endpoint (IPMI/Redfish URL)
+    - {{BMC_USERNAME}}:    BMC username
+    - {{BMC_PASSWORD}}:    BMC password (vault ref)
+    - {{POWER_STATE}}:     Desired BMC power state
+    - {{VLLM_BASE_URL}}:   vLLM serving endpoint
+    - {{HEALTH_POLL_INTERVAL}}: Health-check poll interval (seconds)
+    - {{PRISM_CENTRAL_URL}}:    Prism Central URL
+    - {{PRISM_CENTRAL_USER}}:   Prism Central user
+    - {{PRISM_CENTRAL_PASSWORD}}: Prism Central password
+    - {{MODEL_REGISTRY}}:   Model registry (HF Hub URL, local registry, etc.)
+    - {{HF_TOKEN}}:         HuggingFace token (vault ref)
+
+  git:
+    - {{GIT_REMOTE}}:      Git remote (origin URL)
+    - {{BRANCH_PROTECTION_LEVEL}}: Branch protection tier (e.g. main/dev/feature)
+    - {{SWARM_REGISTRY}}:   Swarm registry path (NFS root, etc.)
+    - {{WORK_QUEUE_DIR}}:   Swarm work queue directory
+
+  envs:
+    - {{STAGING_ENV}}:     Staging environment identifier
+    - {{PROD_ENV}}:        Production environment identifier
+
+  auth:
+    - {{API_TOKEN}}:        Generic API token (vault ref)
+    - {{BOOTSTRAP_TOKEN}}:  Bootstrap-tier token (vault ref)
+
+  cost:
+    - {{ELECTRICITY_TARIFF}}: Electricity TOU tariff profile
+    - {{CLOUD_BUDGET}}:        Cloud spend budget
+
+
+# -----------------------------------------------------------------------------
+# Summary statistics
+# -----------------------------------------------------------------------------
+
+summary:
+  total_source_skills: 91
+  keep:
+    count: ~57
+    by_rewrite_level:
+      trivial: ~37
+      scrub:   ~14
+      rewrite: ~6
+  remove:
+    count: ~22
+    by_reason:
+      instance_only: ~6
+      personal_domain: ~8
+      vendor_lockin: ~8
+      claude_code_only: ~3
+      lab_runner: ~5
+      deprecated: ~1
+
+
+# -----------------------------------------------------------------------------
+# Triage pipeline notes
+# -----------------------------------------------------------------------------
+
+# All triage decisions were made on the following criteria:
+#
+# 1. GENERIC = the skill teaches a transferable craft (a methodology, a
+#    technique, a domain pattern). Skills that document lab
+#    infrastructure are NOT generic.
+# 2. SCRUB = the lab references can be removed with regex-driven
+#    pattern replacement (hostnames, paths, IPs, names).
+# 3. REWRITE = the body needs placeholder substitution because the
+#    references ARE the skill's content (paths, hardware counts).
+# 4. REMOVE = the skill is either instance-only (couples to one
+#    project's infrastructure), personal-domain (US tax, Monero, solar,
+#    resume, STR), or vendor lock-in (Claude Code-specific plumbing).
+#
+# Mass conversion runs after this manifest is approved. Conversion
+# pipeline: scripts/sanitize.py (generic patterns + user-supplied
+# deny file via FACT_PACKS_DENY_FILE) -> scripts/build.py (apply
+# placeholders from CONFIGURATION.md, write skill to target_path).

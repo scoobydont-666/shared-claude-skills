@@ -1,109 +1,116 @@
 # shared-claude-skills
 
-A collection of original [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills for developer productivity, infrastructure ops, security, and cost optimization.
+A clean-slate, drop-in Claude Code skill + hook + harness kit for teams
+who want a curated, generic, redistributable collection.
 
-These are **Claude Code skills** (SKILL.md files in `~/.claude/skills/`), not Cursor rules. If you want Cursor-compatible `.mdc` files, see the [claude-to-cursor](#claude-to-cursor) skill included here for conversion guidance.
+This kit is the full Claude Code kit — generic skills (development
+methodology, infrastructure ops, security, planning, session
+persistence, code review), generic hooks, and a generic harness
+configuration. Every skill is portable to a fresh team's environment
+via `git pull` and `CONFIGURATION.md` substitution.
 
-## Skills (31)
+## Status
 
-### Code Quality & Review
-| Skill | Description |
-|-------|-------------|
-| [code-consistency](skills/code-consistency/) | Language-specific style enforcement for Python, Go, Bash, Rust, PowerShell, Terraform, Ansible. 7 reference files with idiomatic patterns. |
-| [code-quality](skills/code-quality/) | Deep analysis: performance (Big-O, hot paths), security (injection, secrets), testability (coverage gaps, DI), architecture (SOLID, coupling). Rust-specific patterns across all 4 domains. |
-| [differential-review](skills/differential-review/) | Security-focused PR/commit review. Blast radius calculation, test coverage checks, adversarial pattern detection. Markdown report output. |
-| [insecure-defaults](skills/insecure-defaults/) | Detect fail-open security patterns — hardcoded secrets, weak auth, permissive configs that let apps run insecurely in production. |
-| [supply-chain-risk-auditor](skills/supply-chain-risk-auditor/) | Identify dependencies at heightened risk of exploitation or takeover. Evaluates dependency health and supply chain attack surface. |
+`status: ACTIVE` · `tier: tool` · `license: MIT`
 
-### Development Methodology
-| Skill | Description |
-|-------|-------------|
-| [tdd](skills/tdd/) | Test-driven development with red-green-refactor loop. Rust/TypeScript examples for mocking, interface design, and deep modules. |
-| [systematic-debugging](skills/systematic-debugging/) | Structured debugging before proposing fixes. Root cause analysis, hypothesis testing, evidence gathering. Prevents shotgun fixes. |
-| [property-based-testing](skills/property-based-testing/) | Property-based testing guidance across Python, JS/TS, Go, Rust, and smart contracts. When to use PBT vs example-based tests. |
+## What's in this repo
 
-### Infrastructure & Ops
-| Skill | Description |
-|-------|-------------|
-| [ansible-hardening](skills/ansible-hardening/) | Security hardening blueprints for Ansible roles — CrowdSec, fail2ban, auditd, Tailscale, Semaphore, scoped sudoers. |
-| [fleet-manager](skills/fleet-manager/) | Multi-machine fleet operations via SSH, rsync, and Ansible. Health checks, cross-host syncing, inventory management. |
-| [infosec-architect](skills/infosec-architect/) | CISSP/GSE-depth security architecture — threat modeling, container hardening, network segmentation, incident response, NIST/CIS frameworks. |
-| [openclaw-ops](skills/openclaw-ops/) | OpenClaw/NemoClaw secure deployment — sandbox management, Tailscale integration, inference config, security hardening. |
+* **`skills/`** — Claude Code skills (SKILL.md files in directories,
+  installable to `~/.claude/skills/`)
+* **`hooks/`** — generic Claude Code hooks
+* **`harness/`** — generic harness configuration
+* **`kit-manifest.yaml`** — the triage manifest that records every
+  decision: which skills are included, which are excluded, what
+  rewrite-level each needs, what placeholders each requires
+* **`CONFIGURATION.md`** — the user-supplied placeholder values
+  (paths, credentials, environment identifiers)
+* **`scripts/`** — the build pipeline (`sanitize.py` + `build.py`)
+* **`README.md`** — this file
 
-### Cost & Session Management
-| Skill | Description |
-|-------|-------------|
-| [token-miser](skills/token-miser/) | Subagent model routing and API cost optimization. Routes Claude Code subagents to the cheapest capable model. Pricing reference data included. |
-| [session-miser](skills/session-miser/) | Intelligent model routing for Claude Code sessions. Recommends Opus/Sonnet/Haiku based on task complexity. Delegates mechanical work to cheaper subagents. |
-| [cost-optimizer](skills/cost-optimizer/) | Unified cost awareness — API model routing, infrastructure electricity costs, mining profitability, cloud hosting budgets. |
-| [budi-analytics](skills/budi-analytics/) | Reference for [budi](https://github.com/jwalsh/budi) (WakaTime for Claude Code) — CLI commands, architecture, cost model. |
-
-### Coordination & Workflow
-| Skill | Description |
-|-------|-------------|
-| [hydra-swarm](skills/hydra-swarm/) | Multi-instance Claude Code coordination via NFS + git. Task queuing, worktree isolation, session summaries, context handoff. |
-| [claude-to-cursor](skills/claude-to-cursor/) | Convert Claude Code skills to Cursor-compatible `.mdc` rule files. Classification logic for what converts well. |
-| [inbound-sync](skills/inbound-sync/) | Structured sync bundles for capturing decisions from claude.ai conversations and ingesting into local projects. |
-| [skill-updater](skills/skill-updater/) | Meta-skill that audits installed skills for staleness, gaps, overlaps. Cross-references CLAUDE.md and memory files for contradictions. |
-| [project-management](skills/project-management/) | Autonomous work execution loop. Priority framework, session protocol, work queue management, fleet resource routing. |
-| [config-auditor](skills/config-auditor/) | Cross-reference config files for contradictions, stale data, and inconsistencies across projects. |
-
-### Planning, Product & Documents
-| Skill | Description |
-|-------|-------------|
-| [write-a-prd](skills/write-a-prd/) | Create a PRD through user interview, codebase exploration, and module design. |
-| [prd-to-plan](skills/prd-to-plan/) | Turn a PRD into a multi-phase implementation plan using tracer-bullet vertical slices. |
-| [grill-me](skills/grill-me/) | Structured interrogation to stress-test plans/designs across requirements, edge cases, failure modes, security, tradeoffs. |
-| [database-design](skills/database-design/) | Relational + NoSQL schema design guidance — normalization, indexing, access patterns, trade-offs. |
-| [model-evaluation](skills/model-evaluation/) | Framework for evaluating LLM/model outputs — rubrics, held-out sets, judge design, regression tracking. |
-| [ms-office-suite](skills/ms-office-suite/) | Generate professional Excel/Word/PowerPoint/PDF documents (python-docx, openpyxl, python-pptx, reportlab). |
-
-### Domain-Specific
-| Skill | Description |
-|-------|-------------|
-| [cpa-tax-specialist](skills/cpa-tax-specialist/) | 50-year CPA veteran persona for tax advisory — federal/state, individual/business, compliance, planning, exam prep. |
-
-## Installation
-
-### Single skill
+## Quick start
 
 ```bash
-cp -r skills/<skill-name> ~/.claude/skills/
+# 1. Clone the kit
+git clone https://github.com/scoobydont-666/shared-claude-skills.git
+cd shared-claude-skills
+
+# 2. Fill in CONFIGURATION.md with your environment values
+$EDITOR CONFIGURATION.md
+
+# 3. Render the kit (substitutes placeholders, sanitizes lab content)
+python3 scripts/build.py render
+
+# 4. Install to ~/.claude/skills/
+python3 scripts/build.py install
+
+# 5. Verify
+python3 scripts/build.py validate
 ```
 
-### All skills
+For consumers who just want a curated set of skills without filling in
+configuration: `python3 scripts/build.py install --defaults` installs
+the kit with `{{...}}` placeholders left literal (skills that need
+real values will display the placeholder until you set them).
 
-```bash
-for skill in skills/*/; do
-  cp -r "$skill" ~/.claude/skills/
-done
-```
+## Selection rule
 
-### Stay updated
+Every skill in this kit is **generic and portable** — the doctrine is
+transferable across teams, the examples use `{{...}}` placeholders
+for environment-specific values, and every lab-specific reference is
+sanitized out.
 
-```bash
-git clone https://github.com/your-github-user/shared-claude-skills.git ~/shared-claude-skills
-# Then periodically:
-cd ~/shared-claude-skills && git pull
-for skill in skills/*/; do cp -r "$skill" ~/.claude/skills/; done
-```
+We explicitly REMOVE:
 
-## Skill Anatomy
+* **Instance-only skills** (couple to a single project's infrastructure)
+* **Personal-domain skills** (US tax, Monero, solar, resume, short-term
+  rental)
+* **Vendor lock-in** (Claude Code-specific plumbing, vendor-locked
+  assistants, single-vendor eval stacks)
+* **Deprecated** skills
 
-Each skill is a directory containing:
-- `SKILL.md` — The skill definition (YAML frontmatter + markdown body)
-- `references/` — Optional reference data files loaded on demand
+The full triage decisions live in `kit-manifest.yaml`. The triage is
+auditable — every keep/remove decision has a written reason.
 
-The YAML frontmatter includes `name`, `description`, and `triggers` (keywords that activate the skill).
+## Distribution contract
 
-## Contributing
+Every file in this repo is safe to read by a stranger. There are zero
+references to internal hostnames, personal names, ticket ids, lab
+project paths, or vendor-locked credentials. Every environment-specific
+value is a `{{...}}` placeholder that `CONFIGURATION.md` resolves at
+build time.
 
-PRs welcome. Each skill should:
-1. Have a clear, specific trigger description
-2. Be self-contained (no external dependencies beyond standard tools)
-3. Include reference files for domain-specific data
-4. Not contain personal information, IP addresses, or project-specific paths
+The build pipeline (`scripts/build.py`) enforces this contract:
+
+1. **`scripts/sanitize.py`** — applies generic patterns (RFC1918 IPs,
+   secret formats, bare user-home paths) plus lab-specific patterns
+   from `FACT_PACKS_DENY_FILE` (a user-supplied deny file the lab
+   operator maintains externally)
+2. **Placeholder substitution** — every `{{...}}` token is replaced
+   with the operator's value from `CONFIGURATION.md`
 
 ## License
 
-MIT
+MIT. See the `LICENSE` file.
+
+## Contributing
+
+Pull requests welcome. Before adding a new skill:
+
+1. Verify the skill is generic (transferable across teams)
+2. Identify placeholders for any environment-specific value
+3. Add the skill to `kit-manifest.yaml` with `decision: keep` and the
+   appropriate `rewrite_level`
+4. Add the placeholders to the placeholder inventory in
+   `kit-manifest.yaml`
+5. Add the skill to `skills/<name>/SKILL.md` with `{{...}}` tokens
+
+The CI pipeline runs `scripts/build.py validate` on every PR and
+rejects any change that introduces a lab-specific pattern.
+
+## Pointers
+
+* `kit-manifest.yaml` — full triage + placeholder inventory
+* `CONFIGURATION.md` — operator-supplied values
+* `scripts/sanitize.py` — sanitizer (generic-only; lab-specific
+  patterns live in `FACT_PACKS_DENY_FILE`)
+* `scripts/build.py` — orchestrator
