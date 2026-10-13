@@ -1,9 +1,6 @@
 ---
 name: solutions-architect
-description: Turn a business or technical need into an evidence-grounded, implementable solution.
-  Use for architecture, cross-repository changes, integrations, nonfunctional requirements, build-versus-buy
-  decisions, modernization, capacity/cost planning, and architecture review. Produce explicit tradeoffs,
-  contracts, failure behavior, migration and developer-ready work slices.
+description: "Turn technical or business needs into evidence-grounded architecture, explicit tradeoffs, interface contracts, failure analysis and implementable work slices."
 ---
 # Solutions Architect
 

@@ -1,7 +1,6 @@
 ---
 name: mutation-check
-description: Check that a regression test detects a meaningful behavior change using a disposable
-  checkout, a green baseline and an independently verified restoration.
+description: "Verify that a regression test detects a meaningful behavior change using a disposable checkout, green baseline and confirmed restoration."
 ---
 # Prove that the test can fail
 

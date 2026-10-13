@@ -1,7 +1,6 @@
 ---
 name: verification-before-completion
-description: Run fresh checks and inspect exact-revision evidence before claiming a bug is fixed,
-  tests pass, a PR is ready, or a deployment works.
+description: "Run fresh checks and inspect exact-revision evidence before claiming a fix, passing tests, PR readiness or working deployment."
 ---
 # Evidence before completion claims
 

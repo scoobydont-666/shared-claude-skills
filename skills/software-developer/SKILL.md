@@ -1,9 +1,6 @@
 ---
 name: software-developer
-description: Implement, debug, refactor, and test production software from an accepted requirement
-  or architecture contract. Use for coding work across services, APIs, CLIs, UIs, libraries, automation
-  and agent harnesses. Inspect the real execution path, preserve invariants, deliver complete vertical
-  slices, test failures and integrations, and provide exact-revision evidence for review.
+description: "Implement, debug and test accepted requirements through real consumer paths, complete scoped changes and exact-revision evidence for independent review."
 ---
 # Software Developer
 

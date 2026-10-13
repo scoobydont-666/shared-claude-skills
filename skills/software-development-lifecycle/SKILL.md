@@ -1,9 +1,6 @@
 ---
 name: software-development-lifecycle
-description: Plan, implement, test, independently review, integrate, and release software. Use for
-  features, bug fixes, refactors, dependency changes, pull requests, release readiness, and teaching
-  humans or AI agents how to ship code. Establish acceptance criteria, use isolated work, prove behavior,
-  preserve two independent reviews, and hand an identifiable release to CI/CD.
+description: "Guide work from requirements through implementation, testing, two independent reviews, integration and an identifiable release handoff."
 ---
 # Software Development Lifecycle: Ship the Right Change
 

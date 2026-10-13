@@ -1,8 +1,6 @@
 ---
 name: cpa-tax-specialist
-description: Evidence-first tax preparation, document reconciliation, jurisdiction-specific research,
-  and human-reviewed filing workpapers. Does not confer professional credentials or authorize financial
-  actions.
+description: "Prepare and reconcile tax records, research year-specific rules, and produce human-reviewed filing workpapers without claiming credentials or financial authority."
 ---
 # Evidence-first tax preparation
 

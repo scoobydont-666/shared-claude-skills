@@ -1,7 +1,6 @@
 ---
 name: container-sandbox
-description: Prepare isolated disposable environments for testing scripts, migrations and risky changes;
-  inspect mounts, credentials, network access and cleanup before execution.
+description: "Prepare disposable test environments and inspect mounts, credentials, network access, isolation limits and cleanup before running risky code."
 ---
 # Disposable execution environments
 

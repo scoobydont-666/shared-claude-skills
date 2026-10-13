@@ -1,42 +1,102 @@
 # Public export review and provenance
 
-Source inventory: revision `6d18ef344325de74887df91821af33b2d2a4e529`, canonical `skills/user/` and `claude-code/hooks/` trees. Public baseline: `25bc5959708e54cebb4abece14aecedd5e4b6283`. Source snapshots are inputs for curation, not automatic publication or deployment evidence.
+Reviewed source inventory: revision `6d18ef344325de74887df91821af33b2d2a4e529`,
+canonical `skills/user/`, `claude-code/hooks/` and `claude-code/agents/` trees.
+The initial portable export was integrated at
+`05092cf040553a167811a081389ec9789c5a2d08`; that is the base for the persona
+and documentation update. `catalog.json` retains the original pre-curation
+`public_baseline` for provenance. Source snapshots are curation inputs, not
+deployment evidence.
 
-## Selection and changes
+## Current package and selection
 
-The explicit allowlist is [catalog.json](../catalog.json). Canonical source skills were compared with the existing public catalog. Generated/exported duplicates, third-party vendored packs and archived workflows were excluded. The current public tax skill is retained because it contains newer evidence and reconciliation controls.
+The [catalog](../catalog.json) explicitly lists 41 skills, eight personas and
+five advisory hook bindings. Generated/exported duplicates, personal-biography
+and project-specific personas, vendored third-party packs, private fleet tools
+and retired workflows are excluded. The public tax preparation skill preserves
+its evidence and reconciliation controls.
 
-Private services, identifiers, contacts, machine paths, incident narratives and model-price assumptions were removed. Reusable source concepts that depended on missing local executors were recast as documented procedures. No unverified execution helper is advertised as installed.
+Private services, identifiers, contacts, machine paths, incident narratives,
+local dispatch contracts and fixed model-price assumptions were removed.
+Reusable concepts with missing private executors were recast as procedures.
+No execution helper is advertised as installed merely because a prompt names it.
 
-Corrections made during curation include unsafe sandbox credential mounts, broad sudo examples, filesystem string-prefix containment advice, scanner failure masking, fictitious model-quality formulas, and branch-triage guidance that equated nonempty diffs with shippability. These are public adaptations, not fixes applied to the private source repository.
+The eight persona filenames preserve the reusable source role names. Their
+public instructions are self-contained, with explicit built-in tool allowlists,
+inherited model selection, default permission requests and bounded turns.
+Architecture/research/design/audit roles return text artifacts without shell or
+file-write tools. Implementation and operations roles explain the limits of
+shell access. Persona identity does not confer credentials, permission or
+independent-review status. See the [installation and capability guide](../personas/README.md).
 
-The five exported advisories derive from the stash, PR-size, inline-Python, pre-edit conventions and shell-safety hooks. Their public forms have no private state/logging dependency, bounded inputs, explicit event wiring and no authorization effect. Private enforcement gates with pending fixes/dependencies were excluded.
+Descriptions were refreshed across the complete skill catalog, removing long
+trigger lists and claims of automatic protection. README skill/persona tables
+are generated from the installed metadata and checked for drift. Names and
+bundled skill paths remain stable; catalog schema 2 adds persona membership.
 
-## Verification scope
+## Corrections during adaptation
 
-Canonical commands are in the README and GitHub workflow. They validate metadata, local references, catalog membership, hook wiring, public runner selection, content patterns, installed-command fixtures, hook behavior and the receipt ledger. Secret scanning covers the candidate files and available Git history. Negative controls verify that missing or out-of-skill resources, detectable private content, altered hook matchers/events and private runners in additional workflows are rejected.
+Initial skill/hook curation corrected unsafe sandbox credential mounts, broad
+sudo examples, filesystem string-prefix containment, scanner failure masking,
+unsupported model-quality formulas and misleading branch-readiness shortcuts.
+These public adaptations did not modify the private source repository.
 
-Tests use disposable directories and repositories. Actual interactive Claude Code activation remains a consumer installation check; fixture success is not a claim that hooks are enabled on anyone's machine. Heuristic content scans are not exhaustive privacy or security audits.
+Persona adaptation removes fictional career/credential claims, private-service
+fallback probes, internal approval annotations, blanket severity assignments
+based on code style, and assertions that all data changes have a one-command
+rollback. Severity depends on evidence and reachability; recovery limits remain
+explicit. Publication does not activate personas or hooks on a user's machine.
 
-## Recorded local evidence
+## Verification and evidence
 
-On 2026-10-13, the package tests passed (15), the receipt-ledger tests passed (20),
-and catalog/reference validation and public-content scanning passed. Gitleaks
-8.30.1 found no secrets in the candidate and the full fetched public history
-(the scanner reported 18 scanned commits; the baseline has 20 reachable commits). This is a scoped scan result, not a claim that historical public content
-has been erased. Suppressed Bash debug logging was checked under strict error
-handling after correcting its unintended failure exit.
+The README and GitHub workflow contain the canonical commands. They check:
 
-Two independent reviewers inspected skill guidance and executable packaging.
-Their findings drove corrections to stale Python examples, unsafe C/security
-recipes, private resume examples, missing resource dependencies, hook error
-handling and validation coverage. Five instruction-following scenarios exercised
-exact-head review, branch deletions, hostile-code isolation, MCP path containment
-and fully blocked plan handoff; these were reasoning tests, not live deployments.
-Final source identity and hosted CI results belong in the PR's evidence record.
+- Skill and persona membership, metadata and local dependency closure.
+- Standalone persona files, read-only role tool limits and permission defaults.
+- README description/count synchronization and local documentation links.
+- Hook event wiring, bounded-input behavior and installed-command fixtures.
+- Public runner selection, heuristic public-content patterns and receipt ledger behavior.
+
+Negative controls reject missing resources, unreviewed personas, private tools,
+permission escalation, mutation tools in read-only roles, stale descriptions,
+broken documentation links and private runners. Tests run in disposable paths.
+Gitleaks scans available history and candidate files in CI. Its results and the
+independent reviews must be tied to the final PR head, not copied from an older
+candidate. See [pull requests](https://github.com/scoobydont-666/shared-claude-skills/pulls)
+and [workflow runs](https://github.com/scoobydont-666/shared-claude-skills/actions)
+for revision-specific evidence.
+
+The environment used for this update does not have an interactive Claude Code
+client. Metadata, installation examples and role behavior can be checked here;
+actual discovery, model selection and permission enforcement remain consumer
+installation checks. Prompt guidance and heuristic scans are not enforcement
+or a guarantee that every private detail is absent.
+
+## Historical secret and privacy audit
+
+On 2026-10-13, a separate audit of base revision
+`05092cf040553a167811a081389ec9789c5a2d08` fetched both published branches and
+five PR refs: 50 reachable commits and 269 unique Git file objects. Gitleaks
+8.30.1 and TruffleHog 3.99.2 reported no credential candidates across extracted
+content and available GitHub surfaces. Positive controls confirmed token-pattern
+detection; candidate credentials were not sent to external services for validation.
+
+The privacy review found expected author attribution and older personal/internal
+context in history, an older branch and PR discussions. Six available CI logs
+were scanned; 34 older logs were unavailable. These are scoped historical
+findings, not results for later commits. Current-file sanitization does not erase
+old public refs, metadata, discussions, external clones or caches. No history
+rewrite is part of this package update.
 
 ## Maintenance and recovery
 
-Public CI runs on GitHub-hosted runners with read-only repository permissions and no persisted checkout credential. Private repositories use private runners under their own isolation policy. No private repository workflow is changed by this export.
+Public CI uses GitHub-hosted runners with read-only repository permissions and
+no persisted checkout credential. Private repositories use private runners under
+their own isolation policy. This update changes no private workflow.
 
-Review future imports individually and preserve bundled licensing and attribution. Do not copy source settings, logs, private topology or vendored packages wholesale. Revert the public change through an ordinary reviewed Git revert if needed; migrate local installations using their backups. No public history rewrite is part of this change.
+Review imports individually and preserve any bundled licensing/attribution.
+Repository-owned adaptations use the existing MIT license; third-party content
+requires a provenance review before import. Do not copy settings, logs, private
+topology or vendored packs wholesale. Revert a public change through an ordinary
+reviewed Git revert. Recover local installations from their backups, preserving
+unrelated skills, agents, hooks and settings.

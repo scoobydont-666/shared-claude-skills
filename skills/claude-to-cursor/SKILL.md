@@ -1,6 +1,6 @@
 ---
 name: claude-to-cursor
-description: Convert selected Claude Code skills into scoped Cursor project rules when asked to port skills, export Cursor rules, or produce .mdc files. Preserve reference dependencies and verify target-client behavior.
+description: "Convert selected Claude Code skills into scoped Cursor project rules, preserving bundled references and verifying target-client behavior."
 ---
 # Claude to Cursor
 

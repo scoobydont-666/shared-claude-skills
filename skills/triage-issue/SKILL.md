@@ -1,8 +1,6 @@
 ---
 name: triage-issue
-description: Triage a bug or issue by exploring the codebase to find root cause, then draft or publish an
-  issue with a TDD-based fix plan within the authorized scope. Use when user reports a bug, wants to file an issue, mentions
-  "triage", or wants to investigate and plan a fix for a problem.
+description: "Investigate a reported bug, identify evidence and likely root cause, then draft or publish a scoped issue with a testable repair plan."
 ---
 # Triage Issue
 

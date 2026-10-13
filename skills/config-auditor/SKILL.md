@@ -1,7 +1,6 @@
 ---
 name: config-auditor
-description: Audit configuration, project instructions, registries and skill references for contradictions,
-  stale claims and missing dependencies.
+description: "Audit configuration, project instructions, registries and skill references for contradictions, stale claims and missing dependencies."
 ---
 # Configuration coherence audit
 

@@ -97,6 +97,72 @@ class ContentTests(unittest.TestCase):
             self.assertTrue(any('escapes installed skill' in error for error in validator.validate(target)))
 
 
+class PersonaAndDocsTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name) / 'repo'
+        shutil.copytree(ROOT, self.root, ignore=shutil.ignore_patterns('.git', '.venv', '__pycache__'))
+
+    def test_missing_and_unreviewed_personas_fail(self):
+        folder = self.root / 'personas'
+        (folder / 'mr-fancy.md').rename(folder / 'unreviewed.md')
+        errors = validator.validate(self.root)
+        self.assertTrue(any('persona files differ' in error for error in errors))
+        self.assertTrue(any('invalid persona name' in error for error in errors))
+
+    def test_private_tools_permissions_and_preloads_fail(self):
+        path = self.root / 'personas/mr-smith.md'
+        original = path.read_text()
+        changes = [
+            ('tools: Read,', 'tools: PrivateService,', 'unsupported persona tools'),
+            ('permissionMode: default', 'permissionMode: bypassPermissions', 'default permissions'),
+            ('model: inherit', 'model: hardcoded-model', 'inherit model'),
+            ('maxTurns: 80', 'maxTurns: 0', 'turn bound'),
+            ('maxTurns: 80', 'maxTurns: true', 'turn bound'),
+            ('maxTurns: 80', 'maxTurns: 80\nskills: [unavailable-skill]', 'unsupported persona metadata'),
+        ]
+        for before, after, expected in changes:
+            with self.subTest(expected=expected):
+                path.write_text(original.replace(before, after))
+                self.assertTrue(any(expected in error for error in validator.validate(self.root)))
+
+    def test_read_only_personas_cannot_gain_shell_or_write_tools(self):
+        for name in validator.READ_ONLY_PERSONAS:
+            path = self.root / 'personas' / f'{name}.md'
+            original = path.read_text()
+            for tool in ['Bash', 'Write', 'Edit']:
+                with self.subTest(name=name, tool=tool):
+                    path.write_text(original.replace('tools: Read,', f'tools: {tool}, Read,'))
+                    self.assertTrue(any('mutation-capable' in error for error in validator.validate(self.root)))
+            path.write_text(original)
+
+    def test_standalone_persona_cannot_depend_on_repository_files(self):
+        path = self.root / 'personas/mr-fancy.md'
+        path.write_text(path.read_text() + '\n[required context](../README.md)\n')
+        self.assertTrue(any('standalone persona has local dependency' in error for error in validator.validate(self.root)))
+
+    def test_stale_descriptions_fail_and_regeneration_is_idempotent(self):
+        path = self.root / 'personas/mr-fancy.md'
+        path.write_text(path.read_text().replace('UX/UI design critic:', 'Product design reviewer:'))
+        self.assertTrue(any('README personas catalog is stale' in error for error in validator.validate(self.root)))
+        validator.update_catalog_docs(self.root)
+        self.assertEqual(validator.validate(self.root), [])
+        readme = (self.root / 'README.md').read_bytes()
+        validator.update_catalog_docs(self.root)
+        self.assertEqual((self.root / 'README.md').read_bytes(), readme)
+
+    def test_stale_skill_description_fails(self):
+        path = self.root / 'skills/cavetech/SKILL.md'
+        path.write_text(path.read_text().replace('Compress technical', 'Condense technical'))
+        self.assertTrue(any('README skills catalog is stale' in error for error in validator.validate(self.root)))
+
+    def test_broken_documentation_link_fails(self):
+        path = self.root / 'docs/migration-2026-10.md'
+        path.write_text(path.read_text() + '\n[missing guide](missing-guide.md)\n')
+        self.assertTrue(any('document link' in error for error in validator.validate(self.root)))
+
+
 class HookTests(unittest.TestCase):
     def run_hook(self, filename, data, *args):
         result = subprocess.run([sys.executable, str(ROOT / 'hooks' / filename), *args],

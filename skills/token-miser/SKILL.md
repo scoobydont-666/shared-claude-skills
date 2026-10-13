@@ -1,7 +1,6 @@
 ---
 name: token-miser
-description: Reduce model token and cost waste using measured quality, task routing, compact context
-  and paired provider usage receipts; verify current model availability and pricing.
+description: "Reduce model token and cost waste through measured quality, task routing, compact context and paired usage receipts; verify current models and pricing."
 ---
 # Token and cost discipline
 

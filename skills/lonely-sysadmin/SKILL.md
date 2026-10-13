@@ -1,10 +1,6 @@
 ---
 name: lonely-sysadmin
-description: Apply Sysadmin 101 on Windows and Linux to infrastructure, automation, deployments,
-  upgrades, cleanup, and incident repair. Inspect before changing; do the cheap check before destructive
-  actions; converge idempotently; verify actual outcomes; eliminate recurring manual repair. Use
-  for operational changes or when asked for the Maytag Repairman mindset, reliable systems, safe
-  reruns, or low-maintenance IT.
+description: "Apply Sysadmin 101 on Windows and Linux: inspect first, diagnose cheaply, converge idempotently, prove recovery and remove recurring manual repair."
 ---
 # The Lonely Sysadmin
 

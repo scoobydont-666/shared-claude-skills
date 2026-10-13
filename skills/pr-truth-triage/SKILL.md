@@ -1,7 +1,6 @@
 ---
 name: pr-truth-triage
-description: Classify stale branches by their actual candidate integration diff, conflicts and current
-  requirements; preserve branches and distinguish remaining content from shippability.
+description: "Classify stale branches by their actual integration diff, conflicts and current requirements; preserve work and separate remaining content from readiness."
 ---
 # Branch truth triage
 

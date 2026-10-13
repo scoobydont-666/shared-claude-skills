@@ -1,9 +1,6 @@
 ---
 name: grill-me
-description: Structured interrogation methodology for stress-testing plans, designs, and decisions.
-  Resolves decision tree branches through systematic questioning across 8 categories (requirements,
-  constraints, edge cases, failure modes, scalability, security, tradeoffs, integration, maintenance).
-  Invoked by write-a-prd and prd-to-plan during design validation.
+description: "Stress-test requirements, designs and plans through structured questions about constraints, failure cases, security, tradeoffs and maintenance."
 ---
 # Grill-Me: Comprehensive Design Interrogation
 

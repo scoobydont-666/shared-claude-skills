@@ -1,14 +1,6 @@
 ---
 name: code-consistency
-description: 'Enforce, review, and generate consistent code across registered languages: Python,
-  Golang, Bash/Shell, Rust, C, PowerShell, Terraform, Ansible. Auto-expands when new languages are
-  encountered. Includes inline quality triage (performance, security, testability, architecture smells).
-  Trigger on: "consistency", "style", "conventions", "review my code", "refactor", "clean up", "idiomatic",
-  "linting", "best practices", "code review", "code smell", or when code is present and a consistency/quality
-  task is implied. Also trigger when generating code alongside existing snippets. Do not wait to
-  be asked explicitly — if code is present, use this skill.
-
-  '
+description: "Review, generate and refactor code to match repository conventions in Python, Go, Bash, Rust, C, PowerShell, Terraform and Ansible; flag material quality issues."
 ---
 # Code Consistency Skill
 

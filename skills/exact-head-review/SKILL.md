@@ -1,7 +1,6 @@
 ---
 name: exact-head-review
-description: Resolve the full live pull-request head and verify an isolated review checkout before
-  reviewing or reporting a verdict.
+description: "Resolve the live PR head and verify an isolated checkout before reviewing or recording an exact-revision verdict."
 ---
 # Review the actual pull-request head
 

@@ -1,6 +1,6 @@
-# Shared Claude skills and hooks
+# Shared Claude skills, personas and hooks
 
-Portable skills for engineering, security, planning, documents and operations, plus five optional Claude Code advisories. No private cluster, coordination service or local model gateway is required. Skills are guidance; they do not grant permissions or install enforcement.
+41 portable skills, eight standalone personas and five optional Claude Code advisories for engineering, security, research, planning, documents and operations. No private cluster, coordination service or local model gateway is required. Skills and personas are guidance; they do not grant permissions or install enforcement.
 
 ## Install a skill
 
@@ -11,60 +11,83 @@ git clone https://github.com/scoobydont-666/shared-claude-skills.git
 cd shared-claude-skills
 mkdir -p "$HOME/.claude/skills"
 # Example: only if this destination does not already exist
-test ! -e "$HOME/.claude/skills/cavetech" && cp -R skills/cavetech "$HOME/.claude/skills/"
+test ! -e "$HOME/.claude/skills/cavetech" && \
+  test ! -L "$HOME/.claude/skills/cavetech" && \
+  cp -R skills/cavetech "$HOME/.claude/skills/"
 ```
 
 The same directory format can be adapted to other agents; inspect their supported metadata/tool semantics. Tool names in instructions denote capabilities, not promises that integrations are installed. Follow project conventions and current official documentation for version-dependent examples.
 
+## Install a persona
+
+See the [persona guide](personas/README.md) to choose a role, install its standalone agent file, and understand its tool access. Design, security review, research and architecture roles use read/search tools; implementation and operations roles also have shell and file-write access. Personas are optional and require no private services or mandatory skill preloads.
+
 ## Optional hooks
 
-See [hook installation and limits](hooks/README.md). The five advisories cover temporary stashes, PR size, inline Python quoting, language conventions and shell error handling. They are opt-in, read-only and nonblocking. Installing skills alone does not enable them.
+See [hook installation and limits](hooks/README.md). The five advisories cover temporary stashes, PR size, inline Python quoting, language conventions and shell error handling. They are opt-in, read-only and nonblocking. Installing skills or personas does not enable hooks.
 
+<!-- catalog:skills:start -->
 ## Skill catalog (41)
 
 | Skill | Purpose |
 |---|---|
-| [ansible-hardening](skills/ansible-hardening/SKILL.md) | Build and review idempotent Ansible security roles for host hardening, audit logging, firewall policy, service isolation and scoped privilege. |
-| [cavetech](skills/cavetech/SKILL.md) | Emit dense technical shorthand for AI consumption. Use when asked for cavetech, AI-to-AI shorthand, machine-dense output, terse agent handoffs, or technical context compression. Covers plans, reviews, findings, status, and tool-result summaries. Apply to the requested scope only. |
-| [ci-cd](skills/ci-cd/SKILL.md) | Design, operate, or repair continuous integration and continuous delivery. Use for pipeline changes, failing CI, runner selection, release artifacts, GitOps promotion, deployments, migrations, rollback, and teaching a team how to deploy shipped code. Select risk-based checks, isolate build authority, promote immutable artifacts, verify runtime behavior, and preserve recovery. |
-| [claude-to-cursor](skills/claude-to-cursor/SKILL.md) | Convert selected Claude Code skills into scoped Cursor project rules when asked to port skills, export Cursor rules, or produce .mdc files. Preserve reference dependencies and verify target-client behavior. |
-| [code-consistency](skills/code-consistency/SKILL.md) | Enforce, review, and generate consistent code across registered languages: Python, Golang, Bash/Shell, Rust, C, PowerShell, Terraform, Ansible. Auto-expands when new languages are encountered. Includes inline quality triage (performance, security, testability, architecture smells). Trigger on: "consistency", "style", "conventions", "review my code", "refactor", "clean up", "idiomatic", "linting", "best practices", "code review", "code smell", or when code is present and a consistency/quality task is implied. Also trigger when generating code alongside existing snippets. Do not wait to be asked explicitly — if code is present, use this skill. |
-| [code-quality](skills/code-quality/SKILL.md) | Deep code quality analysis: performance (Big-O, hot paths, resource management), security (injection, secrets, auth, input validation), testability (coverage gaps, untestable design, DI), architecture (SOLID, coupling, abstraction leaks, layering). Language-agnostic with language-specific patterns from references. Trigger on: "code quality", "performance audit", "security review", "OWASP", "SOLID", "coupling", "testability", "technical debt", "code smell", "architecture review", "Big-O", "complexity analysis", "hot path", "memory leak", "injection", "vulnerability", "dependency injection", "clean architecture", "is this code good", or "can this be better". Also triggers on escalation from code-consistency quality triage. |
+| [ansible-hardening](skills/ansible-hardening/SKILL.md) | Build and review idempotent Ansible hardening roles for hosts, audit logging, firewalls, service isolation and scoped privilege. |
+| [cavetech](skills/cavetech/SKILL.md) | Compress technical plans, findings and handoffs into dense AI-oriented shorthand when explicitly requested; preserve constraints, evidence and uncertainty. |
+| [ci-cd](skills/ci-cd/SKILL.md) | Design or repair CI/CD pipelines, runner selection, release artifacts, promotion, deployment verification and rollback with checks matched to risk. |
+| [claude-to-cursor](skills/claude-to-cursor/SKILL.md) | Convert selected Claude Code skills into scoped Cursor project rules, preserving bundled references and verifying target-client behavior. |
+| [code-consistency](skills/code-consistency/SKILL.md) | Review, generate and refactor code to match repository conventions in Python, Go, Bash, Rust, C, PowerShell, Terraform and Ansible; flag material quality issues. |
+| [code-quality](skills/code-quality/SKILL.md) | Analyze code performance, security, testability and architecture; trace concrete defects and propose maintainable, evidence-backed fixes. |
 | [config-auditor](skills/config-auditor/SKILL.md) | Audit configuration, project instructions, registries and skill references for contradictions, stale claims and missing dependencies. |
-| [container-sandbox](skills/container-sandbox/SKILL.md) | Prepare isolated disposable environments for testing scripts, migrations and risky changes; inspect mounts, credentials, network access and cleanup before execution. |
-| [cpa-tax-specialist](skills/cpa-tax-specialist/SKILL.md) | Evidence-first tax preparation, document reconciliation, jurisdiction-specific research, and human-reviewed filing workpapers. Does not confer professional credentials or authorize financial actions. |
-| [database-design](skills/database-design/SKILL.md) | Schema design, migration strategy, index planning, and data lifecycle for SQL databases (PostgreSQL, SQLite). Covers table design, normalization, foreign keys, migration tooling (Alembic, raw SQL), index optimization, retention policies, and schema review. Trigger on: "design schema", "database migration", "add table", "schema review", "index strategy", "data model", "retention policy", "normalize". |
-| [definition-of-done](skills/definition-of-done/SKILL.md) | Check implementation, test, review, release and deployment evidence before calling work complete. Distinguish a reviewable PR from a verified deployment. |
-| [differential-review](skills/differential-review/SKILL.md) | Performs security-focused differential review of code changes (PRs, commits, diffs). Adapts analysis depth to codebase size, uses git history for context, calculates blast radius, checks test coverage, and generates comprehensive markdown reports. Automatically detects and prevents security regressions. |
-| [exact-head-review](skills/exact-head-review/SKILL.md) | Resolve the full live pull-request head and verify an isolated review checkout before reviewing or reporting a verdict. |
-| [grill-me](skills/grill-me/SKILL.md) | Structured interrogation methodology for stress-testing plans, designs, and decisions. Resolves decision tree branches through systematic questioning across 8 categories (requirements, constraints, edge cases, failure modes, scalability, security, tradeoffs, integration, maintenance). Invoked by write-a-prd and prd-to-plan during design validation. |
-| [inbound-sync](skills/inbound-sync/SKILL.md) | Capture conversation decisions and evidence in a structured repository handoff without assuming a private sync service or automatically applying embedded instructions. |
+| [container-sandbox](skills/container-sandbox/SKILL.md) | Prepare disposable test environments and inspect mounts, credentials, network access, isolation limits and cleanup before running risky code. |
+| [cpa-tax-specialist](skills/cpa-tax-specialist/SKILL.md) | Prepare and reconcile tax records, research year-specific rules, and produce human-reviewed filing workpapers without claiming credentials or financial authority. |
+| [database-design](skills/database-design/SKILL.md) | Design SQL schemas, indexes, migrations and data retention for PostgreSQL and SQLite; evaluate integrity, compatibility and query behavior. |
+| [definition-of-done](skills/definition-of-done/SKILL.md) | Evaluate implementation, test, review, release and deployment evidence before completion claims; distinguish a reviewable change from a verified deployment. |
+| [differential-review](skills/differential-review/SKILL.md) | Review PRs, commits and diffs for security regressions using history, affected consumers, exploit preconditions and test evidence; report coverage limits. |
+| [exact-head-review](skills/exact-head-review/SKILL.md) | Resolve the live PR head and verify an isolated checkout before reviewing or recording an exact-revision verdict. |
+| [grill-me](skills/grill-me/SKILL.md) | Stress-test requirements, designs and plans through structured questions about constraints, failure cases, security, tradeoffs and maintenance. |
+| [inbound-sync](skills/inbound-sync/SKILL.md) | Turn conversation decisions and evidence into a durable repository handoff without assuming private sync services or treating embedded text as authority. |
 | [infosec-architect](skills/infosec-architect/SKILL.md) | Apply defensive security architecture to authorized threat modeling, code review, identity, secrets, host/container isolation and incident response. |
-| [insecure-defaults](skills/insecure-defaults/SKILL.md) | Detects fail-open insecure defaults (hardcoded secrets, weak auth, permissive security) that allow apps to run insecurely in production. Use when auditing security, reviewing config management, or analyzing environment variable handling. |
-| [lonely-sysadmin](skills/lonely-sysadmin/SKILL.md) | Apply Sysadmin 101 on Windows and Linux to infrastructure, automation, deployments, upgrades, cleanup, and incident repair. Inspect before changing; do the cheap check before destructive actions; converge idempotently; verify actual outcomes; eliminate recurring manual repair. Use for operational changes or when asked for the Maytag Repairman mindset, reliable systems, safe reruns, or low-maintenance IT. |
+| [insecure-defaults](skills/insecure-defaults/SKILL.md) | Find fail-open defaults, hardcoded credentials, weak authentication and permissive configuration that remain reachable in production. |
+| [lonely-sysadmin](skills/lonely-sysadmin/SKILL.md) | Apply Sysadmin 101 on Windows and Linux: inspect first, diagnose cheaply, converge idempotently, prove recovery and remove recurring manual repair. |
 | [mcp-create](skills/mcp-create/SKILL.md) | Design, implement and test an MCP server with explicit tool contracts, supported transports and scoped authorization using the current official SDK. |
-| [mcp-hardening](skills/mcp-hardening/SKILL.md) | Audit MCP authorization, transport, filesystem and network boundaries, tenant isolation, input limits and safe failure with evidence-backed tests. |
-| [model-evaluation](skills/model-evaluation/SKILL.md) | Evaluate model quality, latency, reliability and cost with held-out tasks, controlled comparisons, verified scoring and regression criteria. |
-| [modern-python](skills/modern-python/SKILL.md) | Configure Python projects with uv, Ruff, pytest and a supported type checker; create packages or dependency-aware scripts and migrate existing tooling when requested. |
-| [ms-office-suite](skills/ms-office-suite/SKILL.md) | Generate professional documents — Excel workbooks, Word docs, PowerPoint decks, PDFs. CPA-grade financial reports, cost analyses, executive summaries. Uses python-docx, openpyxl, python-pptx, reportlab, weasyprint. |
-| [mutation-check](skills/mutation-check/SKILL.md) | Check that a regression test detects a meaningful behavior change using a disposable checkout, a green baseline and an independently verified restoration. |
-| [plan-to-execution-handoff](skills/plan-to-execution-handoff/SKILL.md) | Convert an approved plan into scoped work items, dependency edges, acceptance checks and a durable handoff for the available execution workflow. |
-| [pr-truth-triage](skills/pr-truth-triage/SKILL.md) | Classify stale branches by their actual candidate integration diff, conflicts and current requirements; preserve branches and distinguish remaining content from shippability. |
-| [prd-to-plan](skills/prd-to-plan/SKILL.md) | Turn a PRD into a multi-phase implementation plan using tracer-bullet vertical slices, saved as a local Markdown file in ./plans/. Use when user wants to break down a PRD, create an implementation plan, plan phases from a PRD, or mentions "tracer bullets". |
-| [property-based-testing](skills/property-based-testing/SKILL.md) | Provides guidance for property-based testing across multiple languages and smart contracts. Use when writing tests, reviewing code with serialization/validation/parsing patterns, designing features, or when property-based testing would provide stronger coverage than example-based tests. |
-| [repo-hardening-workflow](skills/repo-hardening-workflow/SKILL.md) | Repeatable security hardening workflow for any repository. Chains config scan, auth review, secret scan, dependency audit, compose/Docker review, CI check, and maturity gate assessment into a structured report. Trigger on "harden this repo", "security audit", "production readiness review", "repo audit". |
-| [resume-writer](skills/resume-writer/SKILL.md) | Write, rewrite, and ruthlessly tighten modern, snappy, ATS- and AI-parser-friendly resumes (and the matching cover letter / LinkedIn About). Encodes the best of current resume craft: impact-first accomplishment bullets (XYZ / CAR formulas), quantification, JD keyword mirroring, single-column ATS-safe structure, seniority calibration, a de-AI-cliché authenticity pass, and a weighted scoring rubric with a hard pass bar. Trigger on: "resume", "CV", "curriculum vitae", "rewrite my resume", "tailor my resume", "resume bullet", "make this snappier", "ATS", "applicant tracking system", "cover letter", "LinkedIn About/summary", "job application", "career summary", "professional summary", "tighten my experience section", or any request to create, improve, score, or tailor a resume / CV / job-application document. |
-| [skill-updater](skills/skill-updater/SKILL.md) | Audit and update installed skills for staleness, duplication, broken references, missing dependencies and unsafe instructions with reproducible validation. |
-| [software-developer](skills/software-developer/SKILL.md) | Implement, debug, refactor, and test production software from an accepted requirement or architecture contract. Use for coding work across services, APIs, CLIs, UIs, libraries, automation and agent harnesses. Inspect the real execution path, preserve invariants, deliver complete vertical slices, test failures and integrations, and provide exact-revision evidence for review. |
-| [software-development-lifecycle](skills/software-development-lifecycle/SKILL.md) | Plan, implement, test, independently review, integrate, and release software. Use for features, bug fixes, refactors, dependency changes, pull requests, release readiness, and teaching humans or AI agents how to ship code. Establish acceptance criteria, use isolated work, prove behavior, preserve two independent reviews, and hand an identifiable release to CI/CD. |
-| [solutions-architect](skills/solutions-architect/SKILL.md) | Turn a business or technical need into an evidence-grounded, implementable solution. Use for architecture, cross-repository changes, integrations, nonfunctional requirements, build-versus-buy decisions, modernization, capacity/cost planning, and architecture review. Produce explicit tradeoffs, contracts, failure behavior, migration and developer-ready work slices. |
-| [supply-chain-risk-auditor](skills/supply-chain-risk-auditor/SKILL.md) | Audit dependency provenance, maintenance, release trust and exposure to known compromises using current authoritative evidence and exact installed versions. |
-| [systematic-debugging](skills/systematic-debugging/SKILL.md) | Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes |
-| [tdd](skills/tdd/SKILL.md) | Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development. |
-| [token-miser](skills/token-miser/SKILL.md) | Reduce model token and cost waste using measured quality, task routing, compact context and paired provider usage receipts; verify current model availability and pricing. |
-| [triage-issue](skills/triage-issue/SKILL.md) | Triage a bug or issue by exploring the codebase to find root cause, then draft or publish an issue with a TDD-based fix plan within the authorized scope. Use when user reports a bug, wants to file an issue, mentions "triage", or wants to investigate and plan a fix for a problem. |
-| [verification-before-completion](skills/verification-before-completion/SKILL.md) | Run fresh checks and inspect exact-revision evidence before claiming a bug is fixed, tests pass, a PR is ready, or a deployment works. |
-| [write-a-prd](skills/write-a-prd/SKILL.md) | Create a PRD through user interview, codebase exploration, and module design, then deliver a draft or publish to the already authorized destination. Use when user wants to write a PRD, create a product requirements document, or plan a new feature. |
+| [mcp-hardening](skills/mcp-hardening/SKILL.md) | Audit MCP authorization, transport, filesystem/network boundaries, tenant isolation, input limits and safe failure with evidence-backed checks. |
+| [model-evaluation](skills/model-evaluation/SKILL.md) | Compare model quality, latency, reliability and cost using held-out tasks, controlled conditions, verified scoring and regression criteria. |
+| [modern-python](skills/modern-python/SKILL.md) | Configure or migrate Python projects using uv, Ruff, pytest and a supported type checker; maintain packaging, dependency and script conventions. |
+| [ms-office-suite](skills/ms-office-suite/SKILL.md) | Create Excel workbooks, Word documents, presentations and PDFs with reconciled figures, clear assumptions and appropriate document-generation libraries. |
+| [mutation-check](skills/mutation-check/SKILL.md) | Verify that a regression test detects a meaningful behavior change using a disposable checkout, green baseline and confirmed restoration. |
+| [plan-to-execution-handoff](skills/plan-to-execution-handoff/SKILL.md) | Convert an approved plan into scoped work items, dependencies, acceptance checks and a durable handoff for the available execution workflow. |
+| [pr-truth-triage](skills/pr-truth-triage/SKILL.md) | Classify stale branches by their actual integration diff, conflicts and current requirements; preserve work and separate remaining content from readiness. |
+| [prd-to-plan](skills/prd-to-plan/SKILL.md) | Convert a PRD into a phased implementation plan with useful vertical slices, dependencies and acceptance checks saved under plans/. |
+| [property-based-testing](skills/property-based-testing/SKILL.md) | Design and interpret property-based tests for invariants, parsing, serialization, validation and stateful behavior across supported languages. |
+| [repo-hardening-workflow](skills/repo-hardening-workflow/SKILL.md) | Audit repository configuration, authentication, secrets, dependencies, containers and CI; document evidence, remediation and readiness limits. |
+| [resume-writer](skills/resume-writer/SKILL.md) | Write and tailor resumes, cover letters and LinkedIn summaries using verified achievements, clear impact, job-relevant language and parser-friendly structure. |
+| [skill-updater](skills/skill-updater/SKILL.md) | Review and update skills for staleness, duplication, unsafe instructions, broken references and missing dependencies with reproducible validation. |
+| [software-developer](skills/software-developer/SKILL.md) | Implement, debug and test accepted requirements through real consumer paths, complete scoped changes and exact-revision evidence for independent review. |
+| [software-development-lifecycle](skills/software-development-lifecycle/SKILL.md) | Guide work from requirements through implementation, testing, two independent reviews, integration and an identifiable release handoff. |
+| [solutions-architect](skills/solutions-architect/SKILL.md) | Turn technical or business needs into evidence-grounded architecture, explicit tradeoffs, interface contracts, failure analysis and implementable work slices. |
+| [supply-chain-risk-auditor](skills/supply-chain-risk-auditor/SKILL.md) | Assess dependency provenance, maintenance, release trust and exposure to known compromises using authoritative evidence and exact installed versions. |
+| [systematic-debugging](skills/systematic-debugging/SKILL.md) | Investigate bugs, test failures and unexpected behavior by reproducing the issue, tracing causes and verifying a targeted repair. |
+| [tdd](skills/tdd/SKILL.md) | Use red-green-refactor to build features or repair bugs through behavior-focused tests, small changes and verified regression coverage. |
+| [token-miser](skills/token-miser/SKILL.md) | Reduce model token and cost waste through measured quality, task routing, compact context and paired usage receipts; verify current models and pricing. |
+| [triage-issue](skills/triage-issue/SKILL.md) | Investigate a reported bug, identify evidence and likely root cause, then draft or publish a scoped issue with a testable repair plan. |
+| [verification-before-completion](skills/verification-before-completion/SKILL.md) | Run fresh checks and inspect exact-revision evidence before claiming a fix, passing tests, PR readiness or working deployment. |
+| [write-a-prd](skills/write-a-prd/SKILL.md) | Develop a product requirements document through focused questions and codebase evidence, then deliver it to the authorized destination. |
+<!-- catalog:skills:end -->
+
+<!-- catalog:personas:start -->
+## Persona catalog (8)
+
+| Persona | Purpose |
+|---|---|
+| [mr-fancy](personas/mr-fancy.md) | UX/UI design critic: review user flows, visual hierarchy, accessibility, interface states and implementation-ready redesigns. |
+| [mr-hardass](personas/mr-hardass.md) | Evidence-led security auditor for authorized code, dependencies, CI/CD, infrastructure, privacy and trust boundaries. |
+| [mr-smartass](personas/mr-smartass.md) | Pragmatic debugging and repair: challenge symptom fixes, trace root causes, and prove a small maintainable change. |
+| [mr-smith](personas/mr-smith.md) | Pragmatic delivery and GitOps: small reviewable changes, useful CI, maintainable policy and explicit release evidence. |
+| [ms-research](personas/ms-research.md) | Source-grounded research and fact checking: current primary evidence, conflicting claims, explicit uncertainty and concise conclusions. |
+| [software-developer](personas/software-developer.md) | Accountable implementation: inspect real consumers, build a complete scoped slice, verify behavior, and hand off for independent review. |
+| [solutions-architect](personas/solutions-architect.md) | Evidence-led architecture: requirements, alternatives, interfaces, failure analysis, migration and developer-ready work slices. |
+| [sre-bot](personas/sre-bot.md) | Practical SRE operations: incident diagnosis, safe repeatable changes, canaries, observability, recovery and toil reduction. |
+<!-- catalog:personas:end -->
 
 ## Validate and contribute
 
@@ -81,6 +104,10 @@ python3 -m venv .venv
 
 CI uses GitHub-hosted runners because this repository is public. Private repositories use private runners; their isolation must match the trust level of the code. Secret scanning is separate from the heuristic public-content check. A clean scan does not prove the absence of every secret or private detail.
 
-Keep changes self-contained. Update the explicit [catalog](catalog.json), include referenced resources, preserve source attribution, test executable helpers, and document dependencies. Do not import generated export trees, private settings or live incident records wholesale.
+Keep changes self-contained. Update the explicit [catalog](catalog.json), skill/persona descriptions and bundled resources, preserve source attribution, test executable helpers, and document dependencies. After changing names or descriptions, regenerate both README tables with `.venv/bin/python scripts/validate_catalog.py --write-catalogs`; CI rejects stale tables, unsafe persona metadata and broken local documentation links. Do not import generated export trees, private settings or live incident records wholesale.
+
+The descriptions above come from each installed file's frontmatter. No installer changes your settings automatically. Consumer activation and live tool permissions require a check in your actual client.
+
+The package description in `catalog.json` is also the intended GitHub About text. Keep repository metadata aligned when publishing; it is managed separately from the files in Git.
 
 See [migration notes](docs/migration-2026-10.md) and [review/provenance notes](docs/public-export-review.md). MIT for repository-owned material; preserve any third-party notices and verify provenance before importing further external content.

@@ -1,7 +1,6 @@
 ---
 name: mcp-create
-description: Design, implement and test an MCP server with explicit tool contracts, supported transports
-  and scoped authorization using the current official SDK.
+description: "Design, implement and test an MCP server with explicit tool contracts, supported transports and scoped authorization using the current official SDK."
 ---
 # Build an MCP server
 

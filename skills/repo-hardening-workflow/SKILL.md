@@ -1,9 +1,6 @@
 ---
 name: repo-hardening-workflow
-description: Repeatable security hardening workflow for any repository. Chains config scan, auth
-  review, secret scan, dependency audit, compose/Docker review, CI check, and maturity gate assessment
-  into a structured report. Trigger on "harden this repo", "security audit", "production readiness
-  review", "repo audit".
+description: "Audit repository configuration, authentication, secrets, dependencies, containers and CI; document evidence, remediation and readiness limits."
 ---
 # repo-hardening-workflow
 

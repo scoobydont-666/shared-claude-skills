@@ -1,12 +1,6 @@
 ---
 name: database-design
-description: 'Schema design, migration strategy, index planning, and data lifecycle for SQL databases
-  (PostgreSQL, SQLite). Covers table design, normalization, foreign keys, migration tooling (Alembic,
-  raw SQL), index optimization, retention policies, and schema review. Trigger on: "design schema",
-  "database migration", "add table", "schema review", "index strategy", "data model", "retention
-  policy", "normalize".
-
-  '
+description: "Design SQL schemas, indexes, migrations and data retention for PostgreSQL and SQLite; evaluate integrity, compatibility and query behavior."
 ---
 # Database Design & Schema Management
 
