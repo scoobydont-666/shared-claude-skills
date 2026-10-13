@@ -1,18 +1,12 @@
 ---
 name: differential-review
-description: >
-  Performs security-focused differential review of code changes (PRs, commits, diffs).
-  Adapts analysis depth to codebase size, uses git history for context, calculates
-  blast radius, checks test coverage, and generates comprehensive markdown reports.
-  Automatically detects and prevents security regressions.
-allowed-tools:
-  - Read
-  - Write
-  - Grep
-  - Glob
-  - Bash
----
+description: 'Performs security-focused differential review of code changes (PRs, commits, diffs).
+  Adapts analysis depth to codebase size, uses git history for context, calculates blast radius,
+  checks test coverage, and generates comprehensive markdown reports. Automatically detects and prevents
+  security regressions.
 
+  '
+---
 # Differential Security Review
 
 Security-focused code review for PRs, commits, and diffs.
@@ -114,13 +108,10 @@ Before delivering:
 
 ## Integration
 
-**audit-context-building skill:**
-- Pre-Analysis: Build baseline context
-- Phase 4: Deep context on HIGH RISK changes
-
-**issue-writer skill:**
-- Transform findings into formal audit reports
-- Command: `issue-writer --input DIFFERENTIAL_REVIEW_REPORT.md --format audit-report`
+Build baseline context through source inspection and call tracing. If an additional
+context-building skill is installed, inspect its actual contract before using it.
+The bundled reporting reference provides a standalone report format; no external
+reporting CLI is required. Publish findings only within the authorized destination.
 
 ---
 
@@ -151,8 +142,8 @@ Time: ~3-4 hours
 ### Deep Audit (Large, Critical Change)
 ```
 Input: 450 files, auth system rewrite
-Strategy: SURGICAL + audit-context-building
-1. Baseline context with audit-context-building
+Strategy: SURGICAL + baseline source inspection
+1. Build baseline context from the source and available tests
 2. Deep analysis on auth changes only
 3. Blast radius analysis
 4. Adversarial modeling
@@ -208,13 +199,13 @@ These patterns require adversarial analysis even in quick triage.
 
 ## Supporting Documentation
 
-- **[methodology.md](methodology.md)** - Detailed phase-by-phase workflow (Phases 0-4)
-- **[adversarial.md](adversarial.md)** - Attacker modeling and exploit scenarios (Phase 5)
-- **[reporting.md](reporting.md)** - Report structure and formatting (Phase 6)
-- **[patterns.md](patterns.md)** - Common vulnerability patterns reference
+- **[methodology.md](references/methodology.md)** - Detailed phase-by-phase workflow (Phases 0-4)
+- **[adversarial.md](references/adversarial.md)** - Attacker modeling and exploit scenarios (Phase 5)
+- **[reporting.md](references/reporting.md)** - Report structure and formatting (Phase 6)
+- **[patterns.md](references/patterns.md)** - Common vulnerability patterns reference
 
 ---
 
-**For first-time users:** Start with [methodology.md](methodology.md) to understand the complete workflow.
+**For first-time users:** Start with [methodology.md](references/methodology.md) to understand the complete workflow.
 
 **For experienced users:** Use this page's Quick Reference and Decision Tree to navigate directly to needed content.

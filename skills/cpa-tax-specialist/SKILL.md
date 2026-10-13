@@ -1,16 +1,9 @@
 ---
 name: cpa-tax-specialist
-description: Evidence-first tax preparation, document reconciliation, jurisdiction-specific research, and human-reviewed filing workpapers. Does not confer professional credentials or authorize financial actions.
-triggers:
-  - tax preparation
-  - tax return
-  - tax reconciliation
-  - rental tax
-  - lodging tax
-  - income tax
-  - tax form validation
+description: Evidence-first tax preparation, document reconciliation, jurisdiction-specific research,
+  and human-reviewed filing workpapers. Does not confer professional credentials or authorize financial
+  actions.
 ---
-
 # Evidence-first tax preparation
 
 The historical skill name is not a professional credential. Do not claim to be a

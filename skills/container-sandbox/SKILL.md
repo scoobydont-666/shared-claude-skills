@@ -1,95 +1,37 @@
 ---
 name: container-sandbox
-description: Run risky or destructive operations inside ephemeral Docker containers for isolation. Use when executing untrusted scripts, destructive Ansible playbooks, or operations that could damage the host.
-triggers:
-  - sandbox
-  - container isolate
-  - risky operation
-  - destructive
-  - isolated environment
-  - safe container
+description: Prepare isolated disposable environments for testing scripts, migrations and risky changes;
+  inspect mounts, credentials, network access and cleanup before execution.
 ---
+# Disposable execution environments
 
-# Container Sandbox — Isolated Execution Environment
+A container shares its host kernel. It is not a sufficient boundary for arbitrary hostile code. Use an approved disposable VM or stronger isolation for untrusted workloads. Choose isolation based on the actual trust boundary.
 
-Run potentially dangerous operations inside ephemeral Docker containers. The host filesystem is protected — containers get read-only project mounts with a writable overlay.
+## Prepare
 
-## When to Use
+- Inspect the script and expected writes. Use a disposable copy containing no secrets, credentials or private data that the workload is not allowed to read.
+- Use an approved image pinned by digest. Resolve the image before disabling networking.
+- Run non-root, drop capabilities, enable no-new-privileges, use a read-only root filesystem, bound memory/processes, and disable networking unless explicitly needed.
+- Do not mount SSH keys, cloud credentials, the container socket, host root, or host networking. Read-only secret mounts still disclose secrets.
+- Use a unique output directory owned by the operator. Never reuse a shared fixed `/tmp` directory.
 
-- Destructive Ansible playbooks (`--force`, `--limit` testing)
-- Untrusted scripts from external sources
-- Operations that modify system state (`rm -rf`, package installs)
-- Testing migrations or schema changes before applying to production
-- Running code from unknown repos
+## Example structure
 
-## Quick Start
+Set `SANDBOX_IMAGE` to a reviewed `name@sha256:...` image and `SANDBOX_INPUT` to a disposable sanitized input directory. Verify both before running:
 
-### Basic sandbox (Ubuntu + project files):
 ```bash
-docker run --rm -it \
-  -v "$(pwd):/project:ro" \
-  -v /tmp/sandbox-work:/work \
-  -w /work \
-  ubuntu:24.04 \
-  bash -c "cp -r /project/* /work/ && bash"
+: "${SANDBOX_IMAGE:?Set a reviewed digest-pinned image}"
+: "${SANDBOX_INPUT:?Set a sanitized absolute input directory}"
+SANDBOX_OUTPUT=$(mktemp -d)
+docker run --rm --network none --read-only \
+  --user "$(id -u):$(id -g)" --cap-drop ALL \
+  --security-opt no-new-privileges --pids-limit 128 --memory 1g \
+  --tmpfs /tmp:rw,nosuid,nodev,size=128m \
+  --mount "type=bind,src=$SANDBOX_INPUT,dst=/input,readonly" \
+  --mount "type=bind,src=$SANDBOX_OUTPUT,dst=/output" \
+  "$SANDBOX_IMAGE" /bin/sh -c 'cp -R /input/. /output/ && cd /output && ./test.sh'
 ```
 
-### Python sandbox (with project deps):
-```bash
-docker run --rm -it \
-  -v "$(pwd):/project:ro" \
-  -v /tmp/sandbox-work:/work \
-  -w /work \
-  python:3.12-slim \
-  bash -c "cp -r /project/* /work/ && pip install -r requirements.txt 2>/dev/null; bash"
-```
+The image must contain the chosen shell and dependencies; do not silently fetch packages during the test. This example is a template, not proof of containment on a particular host. Device/GPU passthrough expands the boundary and needs separate review.
 
-### GPU sandbox (for CUDA operations):
-```bash
-docker run --rm -it --gpus all \
-  -v "$(pwd):/project:ro" \
-  -v /tmp/sandbox-work:/work \
-  -w /work \
-  nvidia/cuda:13.1-devel-ubuntu24.04 \
-  bash
-```
-
-### Ansible dry-run sandbox:
-```bash
-docker run --rm -it \
-  -v /opt/ai-project:/project:ro \
-  -v ~/.ssh:/root/.ssh:ro \
-  -w /work \
-  --network host \
-  willhallonline/ansible:latest \
-  bash -c "cp -r /project/* /work/ && ansible-playbook -i inventory playbook.yml --check --diff"
-```
-
-## Extracting Results
-
-After running operations in the sandbox:
-```bash
-# Copy results out of the sandbox work directory
-docker cp <container_id>:/work/results/ ./sandbox-results/
-
-# Or use the /tmp/sandbox-work mount (persists after --rm if pre-created)
-ls /tmp/sandbox-work/
-```
-
-## Safety Rules
-
-1. **Always mount project directories as `:ro`** (read-only)
-2. **Use `/tmp/sandbox-work` or `/work`** for writable operations
-3. **Use `--rm`** to auto-cleanup containers after exit
-4. **Use `--network none`** for maximum isolation (no internet access)
-5. **Never mount `/` or `/home` as writable** into a sandbox
-6. **GPU sandboxes** (`--gpus all`) still share the host GPU — use for testing, not isolation
-
-## Integration with Claude Code
-
-When Claude needs to run something risky, instruct it to:
-1. Build the Docker command with appropriate mounts
-2. Execute the command via Bash tool
-3. Capture stdout/stderr from the container
-4. Extract any produced files from the work directory
-5. Clean up: `rm -rf /tmp/sandbox-work`
+Inspect results before use. Keep failed-run evidence and output until no longer needed. Remove only the verified directory created by this run under the user's cleanup policy. Ansible check mode can still contact real hosts; use disposable inventory and targets, never production credentials as a sandbox shortcut.

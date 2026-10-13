@@ -130,7 +130,7 @@ environments/
 - 🔴 Pin provider versions: `version = "~> 5.0"` not `>= 5.0`
 - 🔴 Pin terraform version: `required_version = ">= 1.5, < 2.0"`
 - 🔴 Remote state backend: never local state in team/production use
-- 🔴 State locking: enable DynamoDB (AWS) or equivalent
+- 🔴 State locking: enable the backend’s supported locking mechanism. For current S3 backends, use `use_lockfile = true` with the required object permissions; DynamoDB-based locking is deprecated. Check the installed Terraform version before migrating.
 - 🟡 Use `terraform-docs` for auto-generated module README
 - 🟡 Limit module depth to 2 levels — deep nesting is a maintenance trap
 - 🟡 Outputs from child modules should be re-exported by root if consumed externally

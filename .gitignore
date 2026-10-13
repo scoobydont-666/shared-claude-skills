@@ -1,4 +1,4 @@
-# === Security: secrets & credentials (fleet standard) ===
+# Secrets and credentials
 .env
 .env.*
 !.env.example
@@ -15,7 +15,7 @@ secrets/
 *_ed25519
 *.gpg
 
-# Kin semantic VCS local repo state — not for git
-.kin/
-# Kin MCP config backups
-.mcp.json.bak.kincap-*
+# Local verification environments and Python caches
+.venv/
+__pycache__/
+*.py[cod]

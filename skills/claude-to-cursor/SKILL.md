@@ -1,91 +1,43 @@
 ---
 name: claude-to-cursor
-description: >
-  Convert Claude Code skills to Cursor-compatible rules (.mdc/.md files) for sharing
-  or use in Cursor workspaces. Does NOT modify local Claude Code setup — outputs go
-  to a separate repo. Trigger on: "convert to cursor", "cursor rules", "port to cursor",
-  ".mdc", "cursor format", or any request to export skills for Cursor users.
+description: Convert selected Claude Code skills into scoped Cursor project rules when asked to port skills, export Cursor rules, or produce .mdc files. Preserve reference dependencies and verify target-client behavior.
 ---
+# Claude to Cursor
 
-# Claude to Cursor Converter
+Inspect the selected skill, bundled resources and destination's existing rules.
+Use the requested output repository or directory; preserve source configuration
+and unrelated destination content. Review private paths, contacts and tool
+assumptions before sharing a rule.
 
-Export Claude Code skills as Cursor-compatible rule files for sharing. All output
-goes to a dedicated repo — never modifies local Claude Code configuration.
+## Conversion
 
-## Cursor Rule Format (.mdc)
+1. Retain portable instructions and replace tool-specific calls with capabilities
+   actually available in the target client. Do not discard general workflows just
+   because their source used Claude tools. Token budgeting and evidence-based
+   review, for example, remain portable.
+2. Write focused `.mdc` project rules in `.cursor/rules/`. Use a description for
+   agent-selected relevance, globs for file-specific rules, or `alwaysApply: true`
+   only when the user intends the rule to apply to every conversation.
+3. Keep essential instructions in the rule body. Preserve supporting documents or
+   scripts at explicit destination paths, update references, and verify they can
+   be read after installation. A file reference does not automatically inline it.
+4. Preserve licensing and attribution. Treat hooks and executable integrations
+   separately: copying their prose does not install or activate them in Cursor.
+5. Inspect the rule in the installed Cursor client and exercise a representative
+   request. Report any unsupported capability and whether client activation was
+   actually checked.
 
-Cursor uses `.mdc` files (Markdown with frontmatter) in `.cursor/rules/`:
+Example rule:
 
 ```markdown
 ---
-description: One-line description (used for rule matching)
-globs:
-  - "**/*.py"          # optional: file patterns this rule applies to
-alwaysApply: false      # true = always loaded, false = matched by description
+description: Python conventions for this repository
+globs: "**/*.py"
+alwaysApply: false
 ---
 
-# Rule Title
-
-Rule content here. Markdown format.
+Follow this repository's configured formatter and test conventions.
 ```
 
-Key differences from Claude SKILL.md:
-- Extension: `.mdc` (not `.md` — Cursor's convention for rules)
-- No `name:` field — filename is the identifier
-- `globs:` for file-pattern matching (Claude uses description triggers)
-- `alwaysApply:` replaces Claude's always-loaded behavior
-- No `references/` subdirectory convention — inline or split into companion rules
-
-## Conversion Process
-
-### 1. Classify the skill
-
-| Type | Converts? | Notes |
-|---|---|---|
-| Persona (infosec-architect, cpa-tax-specialist) | Yes | Direct conversion, strong match |
-| Workflow (tdd, write-a-prd, prd-to-plan) | Yes | Direct conversion |
-| Code quality (code-consistency, code-quality) | Yes | Use globs for language-specific rules |
-| Tool-specific (token-miser, budi-analytics) | No | Claude Code-only features |
-| Infrastructure (fleet-manager, openclaw-ops) | Partial | Remove Claude-specific tool refs |
-
-### 2. Transform content
-
-1. Strip YAML frontmatter, rewrite as Cursor frontmatter (description, globs, alwaysApply)
-2. Remove Claude-specific tool references (Agent tool, Bash tool, Read/Write/Edit, MCP)
-3. Inline small reference files (<200 lines) directly
-4. Large references → separate `.mdc` companion files
-5. Replace "Claude Code" with generic "AI assistant" where contextual
-6. Add attribution: `<!-- Converted from Claude Code skill: <name> -->`
-
-### 3. Output structure
-
-```
-claude-to-cursor/
-├── rules/                    # Converted .mdc files
-│   ├── tdd.mdc
-│   ├── tdd-tests-ref.mdc    # Large reference companion
-│   ├── code-quality.mdc
-│   └── ...
-├── agents/                   # Converted agent files
-│   └── ...
-└── scripts/
-    └── convert.sh            # Batch conversion script
-```
-
-### 4. What to skip
-
-- token-miser (Claude Code subagent routing — no Cursor equivalent)
-- budi-analytics (Claude Code hook analytics — Cursor-specific)
-- skill-updater (meta-skill for Claude Code skill management)
-- inbound-sync (claude.ai ↔ Claude Code sync workflow)
-- openclaw-ops (primary-host-specific deployment)
-- fleet-manager (SSH/Ansible fleet ops — not IDE-relevant)
-- ansible-hardening (infrastructure, not IDE-relevant)
-
-## Rules
-
-- NEVER modify local Claude Code skills or configuration
-- All output goes to the claude-to-cursor repo only
-- Keep attribution on all converted files
-- Test in Cursor before marking as ready
-- .mdc extension for rules, .md for agents
+Current format reference: https://cursor.com/docs/rules (checked 2026-10-13).
+This skill is a conversion procedure; it does not bundle an automatic converter.

@@ -7,53 +7,57 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: public-validation-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  validate:
+    name: Validate public catalog and hooks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install validation dependency
+        run: |
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements-dev.txt
+      - name: Validate metadata, references and runner policy
+        run: .venv/bin/python scripts/validate_catalog.py
+      - name: Scan public content
+        run: .venv/bin/python scripts/check_public_content.py
+      - name: Test hooks and validation guards
+        run: .venv/bin/python -m unittest discover -s tests -v
+      - name: Test receipt ledger
+        run: .venv/bin/python -m unittest discover -s skills/token-miser/tests -v
+
   gitleaks:
     name: Secret Detection
-    runs-on: [self-hosted, hydra, cpu]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 0
-      - name: Run gitleaks
-        run: gitleaks detect --source . --no-banner --verbose
-
-  validate-skills:
-    name: Skill Validation
-    runs-on: [self-hosted, hydra, cpu]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check SKILL.md frontmatter
+          persist-credentials: false
+      - name: Install verified scanner
+        shell: bash
         run: |
-          errors=0
-          for skill_dir in skills/*/; do
-            skill_file="${skill_dir}SKILL.md"
-            if [[ ! -f "$skill_file" ]]; then
-              echo "ERROR: $skill_dir missing SKILL.md"
-              errors=$((errors+1))
-              continue
-            fi
-            # Check for required frontmatter fields
-            if ! head -20 "$skill_file" | grep -q '^name:'; then
-              echo "ERROR: $skill_file missing 'name' in frontmatter"
-              errors=$((errors+1))
-            fi
-            if ! head -20 "$skill_file" | grep -q '^description:'; then
-              echo "ERROR: $skill_file missing 'description' in frontmatter"
-              errors=$((errors+1))
-            fi
-          done
-          if [[ $errors -gt 0 ]]; then
-            echo "Found $errors validation errors"
-            exit 1
-          fi
-          echo "All skills validated"
-
-  internal-refs-scan:
-    name: Internal References Check
-    runs-on: [self-hosted, hydra, cpu]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check for internal infrastructure references
+          set -euo pipefail
+          archive="$RUNNER_TEMP/gitleaks.tar.gz"
+          curl --fail --silent --show-error --location --retry 2 \
+            https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz \
+            --output "$archive"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $archive" | sha256sum --check --strict
+          tar -xzf "$archive" -C "$RUNNER_TEMP" gitleaks
+      - name: Scan history and candidate files
+        shell: bash
         run: |
-          bash scripts/check-internal-refs.sh
+          set -euo pipefail
+          "$RUNNER_TEMP/gitleaks" git . --redact --no-banner
+          "$RUNNER_TEMP/gitleaks" dir . --redact --no-banner

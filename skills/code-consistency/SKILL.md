@@ -1,16 +1,15 @@
 ---
 name: code-consistency
-description: >
-  Enforce, review, and generate consistent code across registered languages: Python,
-  Golang, Bash/Shell, Rust, PowerShell, Terraform, Ansible. Auto-expands when new
-  languages are encountered. Includes inline quality triage (performance, security,
-  testability, architecture smells). Trigger on: "consistency", "style", "conventions",
-  "review my code", "refactor", "clean up", "idiomatic", "linting", "best practices",
-  "code review", "code smell", or when code is present and a consistency/quality task
-  is implied. Also trigger when generating code alongside existing snippets. Do not
-  wait to be asked explicitly — if code is present, use this skill.
----
+description: 'Enforce, review, and generate consistent code across registered languages: Python,
+  Golang, Bash/Shell, Rust, C, PowerShell, Terraform, Ansible. Auto-expands when new languages are
+  encountered. Includes inline quality triage (performance, security, testability, architecture smells).
+  Trigger on: "consistency", "style", "conventions", "review my code", "refactor", "clean up", "idiomatic",
+  "linting", "best practices", "code review", "code smell", or when code is present and a consistency/quality
+  task is implied. Also trigger when generating code alongside existing snippets. Do not wait to
+  be asked explicitly — if code is present, use this skill.
 
+  '
+---
 # Code Consistency Skill
 
 Enforces, detects, reviews, and generates consistent code across all registered
@@ -30,6 +29,7 @@ create `references/<lang>.md` following the four-section template (see below).
 | Golang | `references/golang.md` | ✅ Active |
 | Bash/Shell | `references/bash.md` | ✅ Active |
 | Rust | `references/rust.md` | ✅ Active |
+| C | `references/c.md` | ✅ Active |
 | PowerShell | `references/powershell.md` | ✅ Active |
 | Terraform (HCL) | `references/terraform.md` | ✅ Active |
 | Ansible (YAML) | `references/ansible.md` | ✅ Active |
@@ -162,6 +162,7 @@ Read before working on language-specific tasks:
 - **`references/golang.md`** — Effective Go + Uber naming, error handling, module layout, logging, OpenTelemetry
 - **`references/bash.md`** — Shell naming, error handling (set -euo, traps), script structure, logging
 - **`references/rust.md`** — RFC 430 naming, Result/Error handling, Cargo layout, tracing crate
+- **`references/c.md`** — Linux kernel style naming, return-code error handling, Makefile/CMake layout, syslog + custom macros
 - **`references/powershell.md`** — Verb-Noun naming, error handling, module structure, logging
 - **`references/terraform.md`** — HCL naming, error handling, module layout, state management
 - **`references/ansible.md`** — YAML conventions, error handling, role structure, logging/verbosity

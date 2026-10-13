@@ -1,8 +1,8 @@
 ---
 name: systematic-debugging
-description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+description: Use when encountering any bug, test failure, or unexpected behavior, before proposing
+  fixes
 ---
-
 # Systematic Debugging
 
 ## Overview
@@ -76,8 +76,8 @@ You MUST complete each phase before proceeding to the next.
    **BEFORE proposing fixes, add diagnostic instrumentation:**
    ```
    For EACH component boundary:
-     - Log what data enters component
-     - Log what data exits component
+     - Record redacted metadata about inputs; never log secret values
+     - Record redacted metadata about outputs
      - Verify environment/config propagation
      - Check state at each layer
 
@@ -90,11 +90,11 @@ You MUST complete each phase before proceeding to the next.
    ```bash
    # Layer 1: Workflow
    echo "=== Secrets available in workflow: ==="
-   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+   if [[ -n "${IDENTITY:-}" ]]; then echo "IDENTITY: SET"; else echo "IDENTITY: UNSET"; fi
 
    # Layer 2: Build script
    echo "=== Env vars in build script: ==="
-   env | grep IDENTITY || echo "IDENTITY not in environment"
+   if [[ -n "${IDENTITY:-}" ]]; then echo "IDENTITY: SET"; else echo "IDENTITY: UNSET"; fi
 
    # Layer 3: Signing script
    echo "=== Keychain state: ==="
@@ -111,7 +111,7 @@ You MUST complete each phase before proceeding to the next.
 
    **WHEN error is deep in call stack:**
 
-   See `root-cause-tracing.md` in this directory for the complete backward tracing technique.
+   Trace backward using the steps below; no separate tracing helper is bundled.
 
    **Quick version:**
    - Where does bad value originate?
@@ -176,7 +176,7 @@ You MUST complete each phase before proceeding to the next.
    - Automated test if possible
    - One-off test script if no framework
    - MUST have before fixing
-   - Use the `superpowers:test-driven-development` skill for writing proper failing tests
+   - Use the `tdd` skill for writing proper failing tests
 
 2. **Implement Single Fix**
    - Address the root cause identified
@@ -273,24 +273,10 @@ If systematic investigation reveals issue is truly environmental, timing-depende
 3. Implement appropriate handling (retry, timeout, error message)
 4. Add monitoring/logging for future investigation
 
-**But:** 95% of "no root cause" cases are incomplete investigation.
+A missing root cause may reflect incomplete evidence; state what remains unknown.
 
-## Supporting Techniques
+## Supporting techniques
 
-These techniques are part of systematic debugging and available in this directory:
+Trace from the failing boundary back to the first incorrect input or missing invariant. Add validation at each relevant trust boundary; test the actual consumer. Replace arbitrary sleeps with bounded condition polling where timing is the issue.
 
-- **`root-cause-tracing.md`** - Trace bugs backward through call stack to find original trigger
-- **`defense-in-depth.md`** - Add validation at multiple layers after finding root cause
-- **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling
-
-**Related skills:**
-- **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
-- **superpowers:verification-before-completion** - Verify fix worked before claiming success
-
-## Real-World Impact
-
-From debugging sessions:
-- Systematic approach: 15-30 minutes to fix
-- Random fixes approach: 2-3 hours of thrashing
-- First-time fix rate: 95% vs 40%
-- New bugs introduced: Near zero vs common
+Related skills: `tdd` for regression tests; `verification-before-completion` for evidence before claims. Do not invent measured success rates or guaranteed debugging durations.

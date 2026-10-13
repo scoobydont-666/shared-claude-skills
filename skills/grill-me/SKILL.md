@@ -1,8 +1,10 @@
 ---
 name: grill-me
-description: Structured interrogation methodology for stress-testing plans, designs, and decisions. Resolves decision tree branches through systematic questioning across 8 categories (requirements, constraints, edge cases, failure modes, scalability, security, tradeoffs, integration, maintenance). Invoked by write-a-prd and prd-to-plan during design validation.
+description: Structured interrogation methodology for stress-testing plans, designs, and decisions.
+  Resolves decision tree branches through systematic questioning across 8 categories (requirements,
+  constraints, edge cases, failure modes, scalability, security, tradeoffs, integration, maintenance).
+  Invoked by write-a-prd and prd-to-plan during design validation.
 ---
-
 # Grill-Me: Comprehensive Design Interrogation
 
 ## Purpose
@@ -223,7 +225,13 @@ During PRD creation, after gathering initial requirements:
 Before transforming a PRD into an implementation plan:
 - Run deep grill to validate the plan is technically feasible
 - Identify blockers before assigning work
-- Save grill output as reference for implementation phases
+- Feed grill output into execution handoffs
+
+### Execution uses grill output
+Checkpoints reference grill deferred items and track completion:
+- Are deferred decisions made?
+- Are blockers unblocked?
+- Have risks materialized?
 
 ---
 

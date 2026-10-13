@@ -1,40 +1,9 @@
-# Known Supply Chain Compromises — Evaluated 2026-03-21
+# Verify incident applicability
 
-Reference data for supply-chain-risk-auditor skill. Updated when new incidents are discovered.
+This package does not ship a live compromise or safe-version database. Historical advisories expire as guidance; consult the publisher's current security advisory, registry release record and relevant upstream response.
 
-## Active Compromises (DO NOT INSTALL)
+For each incident capture primary URL, publication/update dates, affected ecosystem/package/version range, malicious artifact digest or signature if provided, fixed/replacement release evidence and confidence. Verify dates and names rather than copying a news headline.
 
-### aquasecurity/trivy — COMPROMISED
-- **Date:** 2026-02-28 (first), 2026-03-19 (second)
-- **What:** AI agent "hackerbot-claw" exploited `pull_request_target` GitHub Actions, stole secrets. Second compromise by "TeamPCP" using stolen PAT. Malicious v0.69.4 published. 75/76 release tags force-pushed in trivy-action.
-- **Impact:** Malicious binaries phoned home to C2 domain
-- **Safe version:** v0.69.3 (2026-03-03) — but trust is broken
-- **Alternative:** [anchore/grype](https://github.com/anchore/grype)
-- **Re-evaluate:** April 2026 at earliest
+Compare against the project's lockfile and installed artifact. A lockfile match does not establish execution; inspect build/install/runtime records and reachable privileges. Conversely, an updated lockfile does not prove an older malicious artifact never ran. Record what historical evidence is unavailable.
 
-### BerriAI/litellm — CHRONIC VULNERABILITY
-- **CVE count:** 15+ (3 Critical, multiple High)
-- **Critical:** CVE-2024-4264, CVE-2024-5751 (RCE via unsafe `eval()`), CVE-2024-2952 (SSTI)
-- **High:** RCE via callbacks, SSRF leaking API keys, SQL injection, API key leakage in logs
-- **No SECURITY.md** in repo
-- **Status:** New CVEs continue to appear regularly
-- **Alternative:** Direct provider SDKs, or self-built proxy with strict input validation
-
-## Patched But Watch-Listed
-
-### openclaw/openclaw — HIGH ADVISORY VOLUME
-- **CVE-2026-25253** (CVSS 8.8): WebSocket auth token theft. Patched >= 2026.1.29
-- **29 pages of GitHub Security Advisories**
-- **Ongoing:** New advisories monthly across 30+ messaging integrations
-- **Our posture:** Deployed with NemoClaw sandbox, all channels disabled, Tailscale-only access
-
-## Evaluation Criteria
-
-When assessing a new dependency, check:
-1. **GitHub Security Advisories:** `gh api repos/OWNER/REPO/security-advisories --jq '.[].summary'`
-2. **CVE databases:** Search NVD for the package name
-3. **Maintainer count:** Single-maintainer projects are higher risk
-4. **Commit frequency:** Stale repos (>6 months no commits) are unmaintained
-5. **Security policy:** Does the repo have SECURITY.md?
-6. **Disclosure process:** Responsible disclosure or public issues?
-7. **Dependency tree:** Heavy dependency trees amplify supply chain risk
+Do not assign a current 'compromised' verdict from old CVE counts, missing policy files or ownership assumptions. Verify release integrity and the actual vulnerability/compromise mechanism. Escalate credible findings through the authorized incident process.
