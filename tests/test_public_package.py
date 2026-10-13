@@ -26,7 +26,7 @@ class ContentTests(unittest.TestCase):
     def test_public_patterns_reject_private_values(self):
         samples = ['https://' + '192.168.' + '55.22/path', 'user' + '@gmail.com',
                    '/opt/' + 'private-cluster/settings', 'cb_' + 'peek',
-                   'gh' + 'p_' + 'A' * 36]
+                   'gh' + 'p_' + 'A' * 36, 'exam' + 'forge']
         for sample in samples:
             with self.subTest(sample=sample[:8]):
                 self.assertTrue(scanner.scan(sample))

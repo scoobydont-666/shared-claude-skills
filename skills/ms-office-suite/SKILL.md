@@ -54,7 +54,7 @@ def create_cost_workbook(project_name: str, data: dict) -> str:
     """Generate a multi-sheet cost comparison workbook.
 
     Args:
-        project_name: e.g. "examforge"
+        project_name: e.g. "example-project"
         data: {
             "tiers": ["Starter", "Growth", "Scale"],
             "providers": ["AWS", "Azure", "GCP", "OCI", "Hetzner"],

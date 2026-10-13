@@ -168,7 +168,9 @@ uv python pin 3.12               # writes .python-version
 __pycache__/
 *.pyc
 .python-version      # commit if you want to pin for the whole team
-# uv.lock            # DO commit uv.lock for applications, ignore for libraries
+# Keep uv.lock tracked for reproducible project environments.
 ```
 
-Commit `uv.lock` for deployable services and applications. Libraries can omit it.
+Commit `uv.lock` for uv project development, including libraries. A library's
+lockfile makes its development environment reproducible; it does not pin the
+dependencies selected by downstream package installers.

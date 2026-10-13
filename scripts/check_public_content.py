@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 RULES = {
     'private-project-path': r'/(?:opt|home)/[^\s`"\']*(?:swarm|cluster|claude-config|hydra|chimi)',
     'private-service': r'\b(?:mcp__[h]ydra|cb_[p]eek|hnn_[a-z_]+|agent-ipc-[n]ats|CHIMI_[A-Z_]+)\b',
+    'private-project-example': r'\b[Ee]xam[Ff]orge\b',
     'personal-email': r'\b[\w.+-]+@(?:gmail|hotmail|yahoo|outlook)\.com\b',
     'private-host-address': r'\b(?:10\.\d+\.\d+\.[1-9]\d*|192\.168\.\d+\.[1-9]\d*|172\.(?:1[6-9]|2\d|3[01])\.\d+\.[1-9]\d*)\b',
     'credential': r'(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[A-Z0-9]{16}|sk-[A-Za-z0-9]{32,})',
