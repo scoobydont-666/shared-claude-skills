@@ -1,9 +1,6 @@
 ---
 name: ci-cd
-description: Design, operate, or repair continuous integration and continuous delivery. Use for pipeline
-  changes, failing CI, runner selection, release artifacts, GitOps promotion, deployments, migrations,
-  rollback, and teaching a team how to deploy shipped code. Select risk-based checks, isolate build
-  authority, promote immutable artifacts, verify runtime behavior, and preserve recovery.
+description: "Design or repair CI/CD pipelines, runner selection, release artifacts, promotion, deployment verification and rollback with checks matched to risk."
 ---
 # CI/CD: Prove, Package, Promote, Deploy, Verify
 

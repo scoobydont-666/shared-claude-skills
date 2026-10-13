@@ -1,7 +1,6 @@
 ---
 name: mcp-hardening
-description: Audit MCP authorization, transport, filesystem and network boundaries, tenant isolation,
-  input limits and safe failure with evidence-backed tests.
+description: "Audit MCP authorization, transport, filesystem/network boundaries, tenant isolation, input limits and safe failure with evidence-backed checks."
 ---
 # MCP security review
 

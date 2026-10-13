@@ -1,6 +1,6 @@
 ---
 name: modern-python
-description: Configure Python projects with uv, Ruff, pytest and a supported type checker; create packages or dependency-aware scripts and migrate existing tooling when requested.
+description: "Configure or migrate Python projects using uv, Ruff, pytest and a supported type checker; maintain packaging, dependency and script conventions."
 ---
 # Modern Python
 

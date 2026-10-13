@@ -1,6 +1,6 @@
 ---
 name: supply-chain-risk-auditor
-description: Audit dependency provenance, maintenance, release trust and exposure to known compromises using current authoritative evidence and exact installed versions.
+description: "Assess dependency provenance, maintenance, release trust and exposure to known compromises using authoritative evidence and exact installed versions."
 ---
 # Supply-chain risk audit
 

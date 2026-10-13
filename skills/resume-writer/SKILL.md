@@ -1,16 +1,6 @@
 ---
 name: resume-writer
-description: 'Write, rewrite, and ruthlessly tighten modern, snappy, ATS- and AI-parser-friendly
-  resumes (and the matching cover letter / LinkedIn About). Encodes the best of current resume craft:
-  impact-first accomplishment bullets (XYZ / CAR formulas), quantification, JD keyword mirroring,
-  single-column ATS-safe structure, seniority calibration, a de-AI-cliché authenticity pass, and
-  a weighted scoring rubric with a hard pass bar. Trigger on: "resume", "CV", "curriculum vitae",
-  "rewrite my resume", "tailor my resume", "resume bullet", "make this snappier", "ATS", "applicant
-  tracking system", "cover letter", "LinkedIn About/summary", "job application", "career summary",
-  "professional summary", "tighten my experience section", or any request to create, improve, score,
-  or tailor a resume / CV / job-application document.
-
-  '
+description: "Write and tailor resumes, cover letters and LinkedIn summaries using verified achievements, clear impact, job-relevant language and parser-friendly structure."
 ---
 # Resume Writer — modern, snappy, AI-friendly
 

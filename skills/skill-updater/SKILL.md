@@ -1,7 +1,6 @@
 ---
 name: skill-updater
-description: Audit and update installed skills for staleness, duplication, broken references, missing
-  dependencies and unsafe instructions with reproducible validation.
+description: "Review and update skills for staleness, duplication, unsafe instructions, broken references and missing dependencies with reproducible validation."
 ---
 # Skill maintenance
 

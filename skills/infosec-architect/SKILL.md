@@ -1,7 +1,6 @@
 ---
 name: infosec-architect
-description: Apply defensive security architecture to authorized threat modeling, code review, identity,
-  secrets, host/container isolation and incident response.
+description: "Apply defensive security architecture to authorized threat modeling, code review, identity, secrets, host/container isolation and incident response."
 ---
 # Defensive security architect
 

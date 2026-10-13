@@ -1,8 +1,6 @@
 ---
 name: cavetech
-description: Emit dense technical shorthand for AI consumption. Use when asked for cavetech, AI-to-AI
-  shorthand, machine-dense output, terse agent handoffs, or technical context compression. Covers
-  plans, reviews, findings, status, and tool-result summaries. Apply to the requested scope only.
+description: "Compress technical plans, findings and handoffs into dense AI-oriented shorthand when explicitly requested; preserve constraints, evidence and uncertainty."
 ---
 # cavetech v1
 

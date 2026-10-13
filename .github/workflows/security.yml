@@ -1,4 +1,4 @@
-name: Security Scan
+name: Public Package Validation
 
 on:
   push:
@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Validate public catalog and hooks
+    name: Validate skills, personas, docs and hooks
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -31,7 +31,7 @@ jobs:
         run: .venv/bin/python scripts/validate_catalog.py
       - name: Scan public content
         run: .venv/bin/python scripts/check_public_content.py
-      - name: Test hooks and validation guards
+      - name: Test hooks, personas and documentation guards
         run: .venv/bin/python -m unittest discover -s tests -v
       - name: Test receipt ledger
         run: .venv/bin/python -m unittest discover -s skills/token-miser/tests -v

@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "source_revision": "6d18ef344325de74887df91821af33b2d2a4e529",
   "public_baseline": "25bc5959708e54cebb4abece14aecedd5e4b6283",
   "skills": [
@@ -61,5 +61,16 @@
     "project-management": "private execution workflow; portable development process is in software-development-lifecycle",
     "session-miser": "consolidated into token-miser",
     "cost-optimizer": "private operational economics; model usage guidance consolidated into token-miser"
-  }
+  },
+  "description": "Portable Claude Code skills, personas and optional advisory hooks for engineering, security, research and operations.",
+  "personas": [
+    "mr-fancy",
+    "mr-hardass",
+    "mr-smartass",
+    "mr-smith",
+    "ms-research",
+    "software-developer",
+    "solutions-architect",
+    "sre-bot"
+  ]
 }

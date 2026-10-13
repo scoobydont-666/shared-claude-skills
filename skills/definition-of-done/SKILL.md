@@ -1,7 +1,6 @@
 ---
 name: definition-of-done
-description: Check implementation, test, review, release and deployment evidence before calling work
-  complete. Distinguish a reviewable PR from a verified deployment.
+description: "Evaluate implementation, test, review, release and deployment evidence before completion claims; distinguish a reviewable change from a verified deployment."
 ---
 # Definition of done
 

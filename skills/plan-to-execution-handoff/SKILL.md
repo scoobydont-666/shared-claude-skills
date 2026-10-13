@@ -1,7 +1,6 @@
 ---
 name: plan-to-execution-handoff
-description: Convert an approved plan into scoped work items, dependency edges, acceptance checks
-  and a durable handoff for the available execution workflow.
+description: "Convert an approved plan into scoped work items, dependencies, acceptance checks and a durable handoff for the available execution workflow."
 ---
 # Approved plan to execution handoff
 

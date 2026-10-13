@@ -1,7 +1,6 @@
 ---
 name: ansible-hardening
-description: Build and review idempotent Ansible security roles for host hardening, audit logging,
-  firewall policy, service isolation and scoped privilege.
+description: "Build and review idempotent Ansible hardening roles for hosts, audit logging, firewalls, service isolation and scoped privilege."
 ---
 # Ansible hardening
 

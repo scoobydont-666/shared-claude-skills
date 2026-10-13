@@ -1,8 +1,6 @@
 ---
 name: ms-office-suite
-description: Generate professional documents — Excel workbooks, Word docs, PowerPoint decks, PDFs.
-  CPA-grade financial reports, cost analyses, executive summaries. Uses python-docx, openpyxl, python-pptx,
-  reportlab, weasyprint.
+description: "Create Excel workbooks, Word documents, presentations and PDFs with reconciled figures, clear assumptions and appropriate document-generation libraries."
 ---
 Examples require the libraries they import, including `markdown` for Markdown-to-PDF.
 They are recipes to adapt and test, not a preinstalled document service. Use a

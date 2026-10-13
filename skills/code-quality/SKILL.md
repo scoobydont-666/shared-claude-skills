@@ -1,15 +1,6 @@
 ---
 name: code-quality
-description: 'Deep code quality analysis: performance (Big-O, hot paths, resource management), security
-  (injection, secrets, auth, input validation), testability (coverage gaps, untestable design, DI),
-  architecture (SOLID, coupling, abstraction leaks, layering). Language-agnostic with language-specific
-  patterns from references. Trigger on: "code quality", "performance audit", "security review", "OWASP",
-  "SOLID", "coupling", "testability", "technical debt", "code smell", "architecture review", "Big-O",
-  "complexity analysis", "hot path", "memory leak", "injection", "vulnerability", "dependency injection",
-  "clean architecture", "is this code good", or "can this be better". Also triggers on escalation
-  from code-consistency quality triage.
-
-  '
+description: "Analyze code performance, security, testability and architecture; trace concrete defects and propose maintainable, evidence-backed fixes."
 ---
 # Code Quality Skill
 

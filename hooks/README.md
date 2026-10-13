@@ -10,6 +10,8 @@ These five advisories require Python 3.10+. PR-size also requires Git 2.45+ (sup
 | `advisories.py code-consistency` | Write, Edit, NotebookEdit | Points supported language edits at repository conventions and the optional installed language reference. |
 | `advisories.py shell-safety` | Write | Prompts review of error handling for new shell files. Does not misread a partial Edit as a complete script. |
 
+Installing [skills or personas](../README.md) does not enable these advisories. The public package has no persona-routing or automatic dispatch hook.
+
 ## Installation
 
 Review [settings.example.json](settings.example.json) and the scripts before opting in. From the repository root, copy into a **new** hook directory:
@@ -17,6 +19,7 @@ Review [settings.example.json](settings.example.json) and the scripts before opt
 ```bash
 mkdir -p "$HOME/.claude/hooks"
 test ! -e "$HOME/.claude/hooks/shared-claude-skills" && \
+  test ! -L "$HOME/.claude/hooks/shared-claude-skills" && \
   mkdir "$HOME/.claude/hooks/shared-claude-skills" && \
   cp hooks/*.py "$HOME/.claude/hooks/shared-claude-skills/"
 ```

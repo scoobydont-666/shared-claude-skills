@@ -1,7 +1,6 @@
 ---
 name: model-evaluation
-description: Evaluate model quality, latency, reliability and cost with held-out tasks, controlled
-  comparisons, verified scoring and regression criteria.
+description: "Compare model quality, latency, reliability and cost using held-out tasks, controlled conditions, verified scoring and regression criteria."
 ---
 # Model evaluation
 
