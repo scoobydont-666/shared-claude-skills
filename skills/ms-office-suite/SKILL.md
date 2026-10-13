@@ -1,13 +1,13 @@
 ---
 name: ms-office-suite
-description: >
-  Generate professional Excel workbooks, Word documents, PowerPoint decks, and PDFs,
-  including CPA-grade financial reports, cost analyses, ROI projections, executive
-  summaries, budgets, and break-even reports. Uses python-docx, openpyxl, python-pptx,
-  reportlab, weasyprint, and Markdown. Use when asked to generate a report, spreadsheet,
-  PDF, pitch deck, presentation, financial projection, cloud-cost analysis, or other
-  Microsoft Office-style deliverable.
+description: Generate professional documents — Excel workbooks, Word docs, PowerPoint decks, PDFs.
+  CPA-grade financial reports, cost analyses, executive summaries. Uses python-docx, openpyxl, python-pptx,
+  reportlab, weasyprint.
 ---
+Examples require the libraries they import, including `markdown` for Markdown-to-PDF.
+They are recipes to adapt and test, not a preinstalled document service. Use a
+validated output basename in a user-chosen directory; never interpolate an untrusted
+title/project name into a filesystem path.
 
 # MS Office Suite — Document Generation Skill
 
@@ -26,11 +26,10 @@ reports = [
     "reportlab>=4.0",
     "weasyprint>=62.0",
     "matplotlib>=3.8.0",
-    "markdown>=3.6",
 ]
 ```
 
-Standalone install: `uv pip install python-docx openpyxl python-pptx reportlab weasyprint matplotlib markdown`
+Standalone install: `uv pip install python-docx openpyxl python-pptx reportlab weasyprint matplotlib`
 
 ## Output Conventions
 
@@ -44,6 +43,8 @@ Standalone install: `uv pip install python-docx openpyxl python-pptx reportlab w
 ### Cost Comparison Matrix
 
 ```python
+from datetime import date
+from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side, numbers
 from openpyxl.chart import BarChart, Reference
@@ -53,7 +54,7 @@ def create_cost_workbook(project_name: str, data: dict) -> str:
     """Generate a multi-sheet cost comparison workbook.
 
     Args:
-        project_name: e.g. "sample-app"
+        project_name: e.g. "example-project"
         data: {
             "tiers": ["Starter", "Growth", "Scale"],
             "providers": ["AWS", "Azure", "GCP", "OCI", "Hetzner"],
@@ -97,6 +98,7 @@ def create_cost_workbook(project_name: str, data: dict) -> str:
     ws = wb.create_sheet(title="Hidden Costs")
     # Data transfer, DNS, SSL certs, log retention, backup storage, support plans
 
+    Path("reports").mkdir(exist_ok=True)
     path = f"reports/{project_name}-cloud-cost-{date.today()}.xlsx"
     wb.save(path)
     return path
@@ -149,6 +151,8 @@ ws.add_chart(chart, "H2")
 ### Executive Summary / Memo
 
 ```python
+from datetime import date, datetime
+from pathlib import Path
 from docx import Document
 from docx.shared import Inches, Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -195,9 +199,10 @@ def create_memo(title: str, sections: list[dict]) -> str:
     section = doc.sections[0]
     footer = section.footer
     footer_para = footer.paragraphs[0]
-    footer_para.text = f"{title} — Page "
+    footer_para.text = f"Project — {title} — Page "
     footer_para.alignment = WD_ALIGN_PARAGRAPH.CENTER
 
+    Path("reports").mkdir(exist_ok=True)
     path = f"reports/{title.lower().replace(' ', '-')}-{date.today()}.docx"
     doc.save(path)
     return path
@@ -328,6 +333,8 @@ def breakeven_chart(months: range, revenue: dict, cost: float, output_path: str)
 ## PowerPoint Decks (python-pptx)
 
 ```python
+from datetime import date
+from pathlib import Path
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
@@ -360,31 +367,6 @@ def create_deck(title: str, slides_data: list[dict]) -> str:
                 Inches(1), Inches(1.5), Inches(11), Inches(5.5)
             )
 
-        if slide_data["layout"] == "table":
-            table_data = slide_data.get("table")
-            if not table_data or not table_data[0]:
-                raise ValueError("table slides require a non-empty 'table' matrix")
-
-            column_count = len(table_data[0])
-            if any(len(row) != column_count for row in table_data):
-                raise ValueError("table slides require rows with equal column counts")
-
-            table = slide.shapes.add_table(
-                len(table_data),
-                column_count,
-                Inches(0.75),
-                Inches(1.5),
-                Inches(11.8),
-                Inches(5.25),
-            ).table
-            for row_index, row_data in enumerate(table_data):
-                for column_index, value in enumerate(row_data):
-                    cell = table.cell(row_index, column_index)
-                    cell.text = str(value)
-                    if row_index == 0:
-                        for run in cell.text_frame.paragraphs[0].runs:
-                            run.font.bold = True
-
         if "bullets" in slide_data:
             tf = slide.placeholders[1].text_frame
             for i, bullet in enumerate(slide_data["bullets"]):
@@ -394,6 +376,7 @@ def create_deck(title: str, slides_data: list[dict]) -> str:
                     p = tf.add_paragraph()
                     p.text = bullet
 
+    Path("reports").mkdir(exist_ok=True)
     path = f"reports/{title.lower().replace(' ', '-')}-{date.today()}.pptx"
     prs.save(path)
     return path
@@ -413,13 +396,13 @@ These rules are NON-NEGOTIABLE for any financial document:
 
 5. **Hidden costs**: Always include data transfer, DNS, SSL, monitoring, logging, backups, support plans. These typically add 15-30% to base compute+DB costs.
 
-6. **Self-hosted baseline**: For projects running on existing infrastructure, compare cloud cost to the marginal cost of self-hosting (compute + electricity costs at typical rates).
+6. **Hosting baseline**: Compare measured compute, storage, power, maintenance and availability costs for the intended deployment; do not assume owned hardware is free.
 
 7. **Break-even analysis**: For each tier, show months to break-even at each revenue scenario. If break-even exceeds 24 months at base case, flag it.
 
 8. **Assumptions box**: Every report gets a clearly labeled "Key Assumptions" section listing what was assumed and what could change.
 
-9. **Conservative by default**: When in doubt, round costs UP and revenue DOWN. finance/CPA reviewers immediately spot optimistic bias.
+9. **Conservative by default**: When in doubt, round costs UP and revenue DOWN. State assumptions and uncertainty explicitly.
 
 10. **Currency and precision**: USD, two decimal places for per-unit costs, whole dollars for monthly/annual totals.
 

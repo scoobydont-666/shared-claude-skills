@@ -1,13 +1,9 @@
 ---
 name: insecure-defaults
-description: "Detects fail-open insecure defaults (hardcoded secrets, weak auth, permissive security) that allow apps to run insecurely in production. Use when auditing security, reviewing config management, or analyzing environment variable handling."
-allowed-tools:
-  - Read
-  - Grep
-  - Glob
-  - Bash
+description: Detects fail-open insecure defaults (hardcoded secrets, weak auth, permissive security)
+  that allow apps to run insecurely in production. Use when auditing security, reviewing config management,
+  or analyzing environment variable handling.
 ---
-
 # Insecure Defaults Detection
 
 Finds **fail-open** vulnerabilities where apps run insecurely with missing configuration. Distinguishes exploitable defaults from fail-secure patterns that crash safely.

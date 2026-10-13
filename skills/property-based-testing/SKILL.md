@@ -1,8 +1,9 @@
 ---
 name: property-based-testing
-description: Provides guidance for property-based testing across multiple languages and smart contracts. Use when writing tests, reviewing code with serialization/validation/parsing patterns, designing features, or when property-based testing would provide stronger coverage than example-based tests.
+description: Provides guidance for property-based testing across multiple languages and smart contracts.
+  Use when writing tests, reviewing code with serialization/validation/parsing patterns, designing
+  features, or when property-based testing would provide stronger coverage than example-based tests.
 ---
-
 # Property-Based Testing Guide
 
 Use this skill proactively during development when you encounter patterns where PBT provides stronger coverage than example-based tests.
@@ -55,8 +56,7 @@ Do NOT use this skill for:
 | **Easy to Verify** | `is_sorted(sort(x))` | Complex algorithms |
 | **No Exception** | No crash on valid input | Baseline property |
 
-**Strength hierarchy** (weakest to strongest):
-No Exception → Type Preservation → Invariant → Idempotence → Roundtrip
+Properties have no universal strength ordering. Roundtrips can pass when both functions share a bug, and idempotence can hold for a constant function. Combine contract-specific invariants with independent expected results or an oracle.
 
 ## Decision Tree
 
@@ -64,23 +64,23 @@ Based on the current task, read the appropriate section:
 
 ```
 TASK: Writing new tests
-  → Read [{baseDir}/references/generating.md]({baseDir}/references/generating.md) (test generation patterns and examples)
-  → Then [{baseDir}/references/strategies.md]({baseDir}/references/strategies.md) if input generation is complex
+  → Read [references/generating.md](references/generating.md) (test generation patterns and examples)
+  → Then [references/strategies.md](references/strategies.md) if input generation is complex
 
 TASK: Designing a new feature
-  → Read [{baseDir}/references/design.md]({baseDir}/references/design.md) (Property-Driven Development approach)
+  → Read [references/design.md](references/design.md) (Property-Driven Development approach)
 
 TASK: Code is difficult to test (mixed I/O, missing inverses)
-  → Read [{baseDir}/references/refactoring.md]({baseDir}/references/refactoring.md) (refactoring patterns for testability)
+  → Read [references/refactoring.md](references/refactoring.md) (refactoring patterns for testability)
 
 TASK: Reviewing existing PBT tests
-  → Read [{baseDir}/references/reviewing.md]({baseDir}/references/reviewing.md) (quality checklist and anti-patterns)
+  → Read [references/reviewing.md](references/reviewing.md) (quality checklist and anti-patterns)
 
 TASK: Test failed, need to interpret
-  → Read [{baseDir}/references/interpreting-failures.md]({baseDir}/references/interpreting-failures.md) (failure analysis and bug classification)
+  → Read [references/interpreting-failures.md](references/interpreting-failures.md) (failure analysis and bug classification)
 
 TASK: Need library reference
-  → Read [{baseDir}/references/libraries.md]({baseDir}/references/libraries.md) (PBT libraries by language, includes smart contract tools)
+  → Read [references/libraries.md](references/libraries.md) (PBT libraries by language, includes smart contract tools)
 ```
 
 ## How to Suggest PBT
@@ -119,5 +119,5 @@ Do not accept these shortcuts:
 - **"The function is simple"** - Simple functions with complex input domains (strings, floats, nested structures) benefit most from PBT
 - **"We don't have time"** - PBT tests are often shorter than comprehensive example suites
 - **"It's too hard to write generators"** - Most PBT libraries have excellent built-in strategies; custom generators are rarely needed
-- **"The test failed, so it's a bug"** - Failures require validation; see [interpreting-failures.md]({baseDir}/references/interpreting-failures.md)
+- **"The test failed, so it's a bug"** - Failures require validation; see [interpreting-failures.md](references/interpreting-failures.md)
 - **"No crash means it works"** - "No exception" is the weakest property; always push for stronger guarantees

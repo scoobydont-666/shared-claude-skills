@@ -148,7 +148,11 @@ my-tool/
 ```bash
 readonly LOG_LEVEL="${LOG_LEVEL:-INFO}"
 
-log_debug() { [[ "${LOG_LEVEL}" == "DEBUG" ]] && echo "[DEBUG] $(date -Iseconds) $*" >&2; }
+log_debug() {
+    if [[ "${LOG_LEVEL}" == "DEBUG" ]]; then
+        printf '[DEBUG] %s %s\n' "$(date -Iseconds)" "$*" >&2
+    fi
+}
 log_info()  { echo "[INFO]  $(date -Iseconds) $*" >&2; }
 log_warn()  { echo "[WARN]  $(date -Iseconds) $*" >&2; }
 log_error() { echo "[ERROR] $(date -Iseconds) $*" >&2; }

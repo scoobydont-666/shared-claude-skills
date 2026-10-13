@@ -6,21 +6,12 @@ Detailed phase-by-phase workflow for security-focused code review.
 
 **FIRST ACTION - Build complete baseline understanding:**
 
-If `audit-context-building` skill is available:
-
-```bash
-# Checkout baseline commit
-git checkout <baseline_commit>
-
-# Invoke audit-context-building skill on baseline codebase
-# Scope = entire relevant project (e.g., packages/contracts/contracts/ for Solidity, src/ for Rust, etc.)
-audit-context-building --scope [entire project or main contract directory] --focus invariants,trust-boundaries,validation-patterns,call-graphs,state-flows
-
-# Examples:
-# For Solidity: audit-context-building --scope packages/contracts/contracts
-# For Rust: audit-context-building --scope src
-# For full repo: audit-context-building --scope .
-```
+Resolve and record full baseline and head commit IDs. Inspect with `git show` or
+create separate clean detached worktrees in new, task-owned directories. Do not
+switch or clean an existing user worktree. Verify each worktree's exact revision
+and preserve uncommitted user changes. Perform line-by-line inspection, call
+tracing and targeted tests directly; an optional installed context-building skill
+can assist only after its real interface and scope are verified.
 
 **Capture from baseline analysis:**
 - System-wide invariants (what must ALWAYS be true across all code)
@@ -39,7 +30,8 @@ audit-context-building --scope [entire project or main contract directory] --foc
 
 **Store baseline context for reference during differential analysis.**
 
-After baseline analysis, checkout back to head commit to analyze changes.
+Analyze the head in its separate verified worktree. Recheck live PR revisions
+before a verdict; an advanced head invalidates evidence tied to an older one.
 
 ---
 
@@ -175,14 +167,11 @@ grep -r "functionName(" --include="*.sol" . | wc -l
 
 ## Phase 4: Deep Context Analysis
 
-**If `audit-context-building` skill is available**, invoke it to help answer all the questions below for each HIGH RISK changed function:
+For each HIGH RISK changed function, inspect its callers, callees, invariants,
+input validation and error paths. If a context-building tool is already installed,
+use its documented interface; no such CLI is bundled here.
 
-```bash
-# Run audit-context-building on the changed function and its dependencies
-audit-context-building --scope [file containing changed function] --focus flow-analysis,call-graphs,invariants,root-cause
-```
-
-**The audit-context-building skill will help you answer:**
+**Answer:**
 
 1. **Map complete function flow:**
    - Entry conditions (preconditions, requires, modifiers)
@@ -213,7 +202,8 @@ audit-context-building --scope [file containing changed function] --focus flow-a
    - WHY is this approach chosen?
    - WHY could this fail in production?
 
-**If `audit-context-building` skill is NOT available**, manually perform the line-by-line analysis above using Read, Grep, and code tracing.
+Perform the line-by-line analysis using available file/search tools and code tracing;
+record any paths that could not be inspected.
 
 **Cross-cutting pattern detection:**
 ```bash

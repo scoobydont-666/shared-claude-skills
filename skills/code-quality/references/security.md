@@ -74,7 +74,7 @@ api_key = "sk-..."
 secret_key = "..."
 AWS_SECRET_ACCESS_KEY = "..."
 DATABASE_URL = "postgres://user:pass@..."
-PRIVATE_KEY = "-----BEGIN RSA PRIVATE KEY-----"
+PRIVATE_KEY = "<private-key-material>"
 ```
 
 ### Critical rules

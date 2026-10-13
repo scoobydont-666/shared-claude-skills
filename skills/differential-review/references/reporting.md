@@ -341,20 +341,17 @@ Summary:
 Next steps:
 - Review findings in detail
 - Address CRITICAL/HIGH issues before merge
-- Consider chaining with issue-writer for stakeholder report
+- Adapt the bundled report to the audience while preserving evidence and scope
 ```
 
 ---
 
-## Integration with issue-writer
+## Sharing a report
 
-After generating differential review, transform into audit report:
-
-```bash
-issue-writer --input DIFFERENTIAL_REVIEW_REPORT.md --format audit-report
-```
-
-This creates polished documentation for non-technical stakeholders.
+Use the report template above. Adjust detail for the audience without removing
+commit IDs, evidence, uncertainties or unresolved findings. Save at the requested
+location and publish externally only within existing authorization. No external
+report-writing command is required.
 
 ---
 

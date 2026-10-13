@@ -1,13 +1,13 @@
 ---
 name: database-design
-description: >
-  Schema design, migration strategy, index planning, and data lifecycle for SQL databases
-  (PostgreSQL, SQLite). Covers table design, normalization, foreign keys, migration tooling
-  (Alembic, raw SQL), index optimization, retention policies, and schema review.
-  Trigger on: "design schema", "database migration", "add table", "schema review",
-  "index strategy", "data model", "retention policy", "normalize".
----
+description: 'Schema design, migration strategy, index planning, and data lifecycle for SQL databases
+  (PostgreSQL, SQLite). Covers table design, normalization, foreign keys, migration tooling (Alembic,
+  raw SQL), index optimization, retention policies, and schema review. Trigger on: "design schema",
+  "database migration", "add table", "schema review", "index strategy", "data model", "retention
+  policy", "normalize".
 
+  '
+---
 # Database Design & Schema Management
 
 ## When to Use
@@ -161,4 +161,5 @@ When reviewing an existing schema:
 ## Integration
 
 - **tdd:** Write schema tests first (can I insert valid data? rejected invalid data?)
+- **repo-hardening-workflow:** Schema review is part of the data governance phase
 - **code-quality:** N+1 queries and missing indexes are performance findings
