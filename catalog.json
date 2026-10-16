@@ -16,6 +16,7 @@
     "definition-of-done",
     "differential-review",
     "exact-head-review",
+    "fast-ci",
     "grill-me",
     "inbound-sync",
     "infosec-architect",
@@ -37,6 +38,7 @@
     "software-developer",
     "software-development-lifecycle",
     "solutions-architect",
+    "stay-ready",
     "supply-chain-risk-auditor",
     "systematic-debugging",
     "tdd",
@@ -71,6 +73,7 @@
     "ms-research",
     "software-developer",
     "solutions-architect",
-    "sre-bot"
+    "sre-bot",
+    "stay-ready"
   ]
 }

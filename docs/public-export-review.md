@@ -10,7 +10,7 @@ deployment evidence.
 
 ## Current package and selection
 
-The [catalog](../catalog.json) explicitly lists 41 skills, eight personas and
+The [catalog](../catalog.json) explicitly lists 43 skills, nine personas and
 five advisory hook bindings. Generated/exported duplicates, personal-biography
 and project-specific personas, vendored third-party packs, private fleet tools
 and retired workflows are excluded. The public tax preparation skill preserves

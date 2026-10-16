@@ -1,0 +1,41 @@
+{
+  "schema": "fast-ci-evidence/v1",
+  "records": [
+    {
+      "job_id": "app",
+      "plan_id": "1bd667093c691f2d86a66f53662f042e7426458376297b42428d42683ebefbed",
+      "status": "passed",
+      "exit_code": 0,
+      "collected": 1,
+      "executed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 10,
+      "artifact_digest": "6666666666666666666666666666666666666666666666666666666666666666"
+    },
+    {
+      "job_id": "controls",
+      "plan_id": "1bd667093c691f2d86a66f53662f042e7426458376297b42428d42683ebefbed",
+      "status": "passed",
+      "exit_code": 0,
+      "collected": 0,
+      "executed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 10,
+      "artifact_digest": "6666666666666666666666666666666666666666666666666666666666666666"
+    },
+    {
+      "job_id": "core",
+      "plan_id": "1bd667093c691f2d86a66f53662f042e7426458376297b42428d42683ebefbed",
+      "status": "passed",
+      "exit_code": 0,
+      "collected": 1,
+      "executed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 10,
+      "artifact_digest": "6666666666666666666666666666666666666666666666666666666666666666"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Portable personas
 
-Eight standalone Claude Code agent definitions provide distinct working styles.
+Nine standalone Claude Code agent definitions provide distinct working styles.
 Skills supply reusable procedures; personas select a role and approach; hooks
 provide event-time advice. Installing one does not install or enable the others.
 These are public adaptations, not biographies or claims of professional credentials.
@@ -17,6 +17,7 @@ These are public adaptations, not biographies or claims of professional credenti
 | [Software Developer](software-developer.md) | Implementing an accepted requirement | `software-developer`, `tdd` |
 | [Solutions Architect](solutions-architect.md) | Architecture and developer-ready decisions | `solutions-architect`, `prd-to-plan` |
 | [SRE Bot](sre-bot.md) | Diagnostics, safe operations and toil reduction | `lonely-sysadmin`, `ci-cd` |
+| [Stay Ready](stay-ready.md) | Prework and status while a CI, review, merge or deploy gate is pending | `ci-cd`, `definition-of-done` |
 
 The files are self-contained: no skill preloads, custom MCP tools, private
 services, environment paths or companion files are required. To add a companion
@@ -62,8 +63,8 @@ discovery to disable it. Back up local edits before upgrading or removing it.
 shell or file-write tools and return proposed artifacts as text. They cannot run
 tests or scanners, inspect a live browser session, or claim interactive validation.
 
-`mr-smartass`, `mr-smith`, `software-developer` and `sre-bot` have shell and file
-write tools for authorized implementation. **Bash can change or delete files and
+`mr-smartass`, `mr-smith`, `software-developer`, `sre-bot` and `stay-ready` have
+shell and file write tools for authorized implementation or prework. **Bash can change or delete files and
 make network calls.** These definitions do not create a sandbox, isolate a host,
 or enforce filesystem/network scope; the executor and permission controls must
 provide those boundaries.

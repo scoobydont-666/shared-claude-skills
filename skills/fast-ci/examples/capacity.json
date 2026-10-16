@@ -1,0 +1,32 @@
+{
+  "schema": "fast-ci-capacity/v1",
+  "host": "fixture-host",
+  "generation": 9,
+  "observed_at": 1000,
+  "ceiling": {
+    "cpu": 16,
+    "memory_mb": 32768,
+    "disk_mb": 100000,
+    "pids": 1024
+  },
+  "protected": {
+    "cpu": 4,
+    "memory_mb": 8192,
+    "disk_mb": 20000,
+    "pids": 128
+  },
+  "active": [
+    {
+      "id": "existing-build",
+      "resources": {
+        "cpu": 4,
+        "memory_mb": 4096,
+        "disk_mb": 4096,
+        "pids": 64
+      }
+    }
+  ],
+  "free_memory_mb": 24576,
+  "free_disk_mb": 70000,
+  "pressure_ok": true
+}

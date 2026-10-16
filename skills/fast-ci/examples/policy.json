@@ -1,0 +1,60 @@
+{
+  "schema": "fast-ci-policy/v1",
+  "global_paths": [
+    ".github/*",
+    "Cargo.lock",
+    "skills/*"
+  ],
+  "jobs": [
+    {
+      "id": "controls",
+      "paths": [
+        "policy/*"
+      ],
+      "needs": [],
+      "always": true,
+      "min_tests": 0
+    },
+    {
+      "id": "docs",
+      "paths": [
+        "docs/*",
+        "README.md"
+      ],
+      "needs": [],
+      "always": false,
+      "min_tests": 0
+    },
+    {
+      "id": "core",
+      "paths": [
+        "src/core/*",
+        "tests/core/*"
+      ],
+      "needs": [],
+      "always": false,
+      "min_tests": 1
+    },
+    {
+      "id": "app",
+      "paths": [
+        "src/app/*",
+        "tests/app/*"
+      ],
+      "needs": [
+        "core"
+      ],
+      "always": false,
+      "min_tests": 1
+    },
+    {
+      "id": "other",
+      "paths": [
+        "other/*"
+      ],
+      "needs": [],
+      "always": false,
+      "min_tests": 1
+    }
+  ]
+}
