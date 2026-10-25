@@ -1,0 +1,21 @@
+{
+  "schema": "fast-ci-timings/v1",
+  "tests": [
+    {
+      "id": "0",
+      "duration_ms": 100
+    },
+    {
+      "id": "1",
+      "duration_ms": 90
+    },
+    {
+      "id": "2",
+      "duration_ms": 20
+    },
+    {
+      "id": "3",
+      "duration_ms": 10
+    }
+  ]
+}

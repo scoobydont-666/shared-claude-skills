@@ -1,0 +1,12 @@
+{
+  "schema": "fast-ci-request/v1",
+  "host": "fixture-host",
+  "resources": {
+    "cpu": 4,
+    "memory_mb": 4096,
+    "disk_mb": 4096,
+    "pids": 64
+  },
+  "workers": 4,
+  "timeout_seconds": 300
+}

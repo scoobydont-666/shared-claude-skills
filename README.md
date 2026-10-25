@@ -1,6 +1,6 @@
 # Shared Claude skills, personas and hooks
 
-41 portable skills, eight standalone personas and five optional Claude Code advisories for engineering, security, research, planning, documents and operations. No private cluster, coordination service or local model gateway is required. Skills and personas are guidance; they do not grant permissions or install enforcement.
+43 portable skills, nine standalone personas and five optional Claude Code advisories for engineering, security, research, planning, documents and operations. No private cluster, coordination service or local model gateway is required. Skills and personas are guidance; they do not grant permissions or install enforcement.
 
 ## Install a skill
 
@@ -27,7 +27,7 @@ See the [persona guide](personas/README.md) to choose a role, install its standa
 See [hook installation and limits](hooks/README.md). The five advisories cover temporary stashes, PR size, inline Python quoting, language conventions and shell error handling. They are opt-in, read-only and nonblocking. Installing skills or personas does not enable hooks.
 
 <!-- catalog:skills:start -->
-## Skill catalog (41)
+## Skill catalog (43)
 
 | Skill | Purpose |
 |---|---|
@@ -44,6 +44,7 @@ See [hook installation and limits](hooks/README.md). The five advisories cover t
 | [definition-of-done](skills/definition-of-done/SKILL.md) | Evaluate implementation, test, review, release and deployment evidence before completion claims; distinguish a reviewable change from a verified deployment. |
 | [differential-review](skills/differential-review/SKILL.md) | Review PRs, commits and diffs for security regressions using history, affected consumers, exploit preconditions and test evidence; report coverage limits. |
 | [exact-head-review](skills/exact-head-review/SKILL.md) | Resolve the live PR head and verify an isolated checkout before reviewing or recording an exact-revision verdict. |
+| [fast-ci](skills/fast-ci/SKILL.md) | Design, repair and optimize fast, resource-efficient CI on GitHub and local multi-agent hosts. Use for slow builds, runner queues, repeated tests, cache misses, excessive parallelism, flaky reruns and affected-test selection. Plan the smallest sufficient checks and keep missing or failed evidence out of green CI. |
 | [grill-me](skills/grill-me/SKILL.md) | Stress-test requirements, designs and plans through structured questions about constraints, failure cases, security, tradeoffs and maintenance. |
 | [inbound-sync](skills/inbound-sync/SKILL.md) | Turn conversation decisions and evidence into a durable repository handoff without assuming private sync services or treating embedded text as authority. |
 | [infosec-architect](skills/infosec-architect/SKILL.md) | Apply defensive security architecture to authorized threat modeling, code review, identity, secrets, host/container isolation and incident response. |
@@ -65,6 +66,7 @@ See [hook installation and limits](hooks/README.md). The five advisories cover t
 | [software-developer](skills/software-developer/SKILL.md) | Implement, debug and test accepted requirements through real consumer paths, complete scoped changes and exact-revision evidence for independent review. |
 | [software-development-lifecycle](skills/software-development-lifecycle/SKILL.md) | Guide work from requirements through implementation, testing, two independent reviews, integration and an identifiable release handoff. |
 | [solutions-architect](skills/solutions-architect/SKILL.md) | Turn technical or business needs into evidence-grounded architecture, explicit tradeoffs, interface contracts, failure analysis and implementable work slices. |
+| [stay-ready](skills/stay-ready/SKILL.md) | Keep work moving while a CI, review, merge or deploy gate is pending. Prepare the next verified step, unblock later dependencies and finish peripheral work, without moving frozen heads or claiming green before evidence exists. |
 | [supply-chain-risk-auditor](skills/supply-chain-risk-auditor/SKILL.md) | Assess dependency provenance, maintenance, release trust and exposure to known compromises using authoritative evidence and exact installed versions. |
 | [systematic-debugging](skills/systematic-debugging/SKILL.md) | Investigate bugs, test failures and unexpected behavior by reproducing the issue, tracing causes and verifying a targeted repair. |
 | [tdd](skills/tdd/SKILL.md) | Use red-green-refactor to build features or repair bugs through behavior-focused tests, small changes and verified regression coverage. |
@@ -75,7 +77,7 @@ See [hook installation and limits](hooks/README.md). The five advisories cover t
 <!-- catalog:skills:end -->
 
 <!-- catalog:personas:start -->
-## Persona catalog (8)
+## Persona catalog (9)
 
 | Persona | Purpose |
 |---|---|
@@ -87,6 +89,7 @@ See [hook installation and limits](hooks/README.md). The five advisories cover t
 | [software-developer](personas/software-developer.md) | Accountable implementation: inspect real consumers, build a complete scoped slice, verify behavior, and hand off for independent review. |
 | [solutions-architect](personas/solutions-architect.md) | Evidence-led architecture: requirements, alternatives, interfaces, failure analysis, migration and developer-ready work slices. |
 | [sre-bot](personas/sre-bot.md) | Practical SRE operations: incident diagnosis, safe repeatable changes, canaries, observability, recovery and toil reduction. |
+| [stay-ready](personas/stay-ready.md) | Keeps work moving while a CI, review, merge or deploy gate is pending: prepares the next verified step without moving frozen heads or claiming green. |
 <!-- catalog:personas:end -->
 
 ## Validate and contribute
